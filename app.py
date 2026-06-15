@@ -44,7 +44,7 @@ RULES = {
         r"\buntung\b", r"\bkeuntungan\b", r"\bberganda\b", r"\bdijamin\b",
         r"\blulus\b", r"\bdiluluskan\b", r"\btanpa slip gaji\b",
         r"\btanpa semakan\b", r"\bmodal\b.*\bjadi\b", r"\bRM\d+.*RM\d+",
-        r"\bdalam 24 jam\b", r"\bkeuntungan harian\b"
+        r"\bdalam 24 jam\b", r"\bkeuntungan harian\b", r"\bRM\s?\d+\s?sehari\b", r"\bkomisen\b", r"\blike video\b", r"\bkerja mudah\b"
     ],
     "R3_Penyamaran_Autoriti": [
         r"\bpolis\b", r"\bbank\b", r"\bLHDN\b", r"\bmahkamah\b", r"\bBNM\b",
@@ -55,7 +55,7 @@ RULES = {
     "R4_Tekanan_Masa": [
         r"\bsekarang\b", r"\bsegera\b", r"\bhari ini\b", r"\bmalam ini\b",
         r"\bsebelum\b", r"\bslot\b", r"\bterhad\b", r"\bnotis akhir\b",
-        r"\bpeluang terakhir\b", r"\btinggal\s+\d+\b"
+        r"\bpeluang terakhir\b", r"\btinggal\s+\d+\b", r"\bdahulu\b"
     ],
     "R5_Manipulasi_Emosi": [
         r"\btahniah\b", r"\bterpilih\b", r"\bjangan lepaskan\b",
@@ -108,6 +108,7 @@ def infer_scam_type(text: str) -> str:
         "Pinjaman/Bantuan Palsu": sum(k in t for k in ["pinjaman", "bantuan", "caj proses", "caj pengesahan", "diluluskan", "kelulusan", "dana"]),
         "Penyamaran Autoriti": sum(k in t for k in ["polis", "bank", "lhdn", "mahkamah", "kurier", "otp", "tac", "akaun keselamatan", "jenayah", "siasatan", "dibekukan"]),
         "Pelaburan Tidak Wujud": sum(k in t for k in ["pelaburan", "modal", "untung", "keuntungan", "withdraw", "vip", "mentor", "screenshot", "gandakan"]),
+        "Kerja Sambilan/Task Scam": sum(k in t for k in ["kerja mudah", "like video", "komisen", "bayar pendaftaran", "rm500 sehari", "sehari"]),
     }
     best = max(scores, key=scores.get)
     return best if scores[best] > 0 else "Tidak pasti / perlu semakan"
@@ -132,15 +133,52 @@ def analyze_rules(text: str):
         for m in re.finditer(pat, text, flags=re.IGNORECASE):
             safe_hits.append(m.group(0))
 
+    t = text.lower()
+
     # Empirical protection: reduce over-detection for official/safety messages.
-    # If safe language appears and there is no direct request for money/data, cap score.
-    has_critical = "R1_Arahan_Wang_Data" in found and not re.search(r"jangan\s+berkongsi|tidak\s+akan\s+meminta", text, flags=re.IGNORECASE)
-    if safe_hits and not has_critical and score <= 35:
+    # Example: "Promosi tamat malam ini. Bayaran melalui aplikasi rasmi" should not become high-risk.
+    official_or_safe_context = re.search(
+        r"aplikasi rasmi|checkout|invois rasmi|kaunter rasmi|cawangan|platform rasmi|saluran rasmi|"
+        r"jangan\s+berkongsi|tidak\s+berkongsi|tidak\s+akan\s+meminta|tiada\s+bayaran\s+pendaftaran|semak\s+dahulu",
+        t,
+        flags=re.IGNORECASE,
+    )
+    scam_escalator = re.search(
+        r"akaun\s+peribadi|akaun\s+keselamatan|dibekukan|jenayah|siasatan|pindahkan|"
+        r"modal|pinjaman|pelaburan|caj\s+proses|caj\s+pengesahan|bayar\s+pendaftaran|"
+        r"like\s+video|komisen|RM\s?\d+\s?sehari|masukkan\s+otp|beri\s+otp|berikan\s+otp|hantar\s+otp",
+        t,
+        flags=re.IGNORECASE,
+    )
+    if official_or_safe_context and not scam_escalator:
         score = min(score, 24)
+
+    # Critical escalation: direct OTP/TAC request + account/bank threat should be high/very high.
+    otp_request = re.search(
+        r"(masukkan|beri|berikan|hantar|sahkan).*?(otp|tac)|(otp|tac).*?(masukkan|beri|berikan|hantar|sahkan)",
+        t,
+        flags=re.IGNORECASE,
+    )
+    account_threat = re.search(r"akaun|bank|dibekukan|disekat|keselamatan", t, flags=re.IGNORECASE)
+    if otp_request and account_threat:
+        score = max(score, 80)
+        found.setdefault("R1_Arahan_Wang_Data", []).append("OTP/TAC")
+        found.setdefault("R3_Penyamaran_Autoriti", []).append("akaun/bank")
+        found.setdefault("R4_Tekanan_Masa", []).append("ancaman akaun")
+
+    # Task scam escalation: high pay for simple online task + registration payment.
+    task_scam = re.search(r"kerja\s+mudah|like\s+video|komisen|RM\s?\d+\s?sehari", t, flags=re.IGNORECASE)
+    task_payment = re.search(r"bayar\s+pendaftaran|bayaran\s+pendaftaran|deposit", t, flags=re.IGNORECASE)
+    if task_scam and task_payment:
+        score = max(score, 70)
 
     for hits in found.values():
         phrases.extend(hits)
-    return min(score, 100), found, sorted(set(phrases), key=lambda x: text.lower().find(x.lower())), sorted(set(safe_hits))
+    final_score = min(score, 100)
+    if final_score <= 24:
+        # For low-risk texts, do not visually frame ordinary words as "dangerous".
+        phrases = []
+    return final_score, found, sorted(set(phrases), key=lambda x: text.lower().find(x.lower())), sorted(set(safe_hits))
 
 
 @st.cache_resource
@@ -215,6 +253,9 @@ def make_decision(user_text, data):
             category = best_category
 
     final_score = min(final_score, 100)
+    if final_score <= 24:
+        phrases = []
+        category = "Tidak menunjukkan pola scam kuat"
     return {
         "score": final_score,
         "level": risk_level(final_score),
@@ -257,7 +298,7 @@ page = st.sidebar.radio(
     ["Home", "Semak Teks", "Perbandingan Empirikal", "Dashboard", "Kodbook & Rubrik"],
 )
 
-st.sidebar.caption("Prototaip v0.1 untuk tujuan pertandingan inovasi. Keputusan ialah amaran awal, bukan pengesahan rasmi.")
+st.sidebar.caption("Prototaip v0.3 untuk tujuan pertandingan inovasi. Keputusan ialah amaran awal, bukan pengesahan rasmi.")
 
 if page == "Home":
     st.title("🛡️ ScamAlert Web Prototype")
@@ -306,7 +347,7 @@ elif page == "Semak Teks":
 
             st.subheader("Komponen Risiko Dikesan")
             feature_rows = describe_features(result["found"])
-            if feature_rows:
+            if feature_rows and result["score"] > 24:
                 st.dataframe(pd.DataFrame(feature_rows), use_container_width=True, hide_index=True)
             else:
                 st.success("Tiada komponen risiko utama yang kuat dikesan.")
