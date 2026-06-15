@@ -15,11 +15,11 @@ except Exception:
     from difflib import SequenceMatcher
 
 
-APP_TITLE = "ScamShield"
-DATA_PATH = Path(__file__).parent / "ScamShield_Dataset_Kodbook_2000_v0_2.xlsx"
+APP_TITLE = "ScamAlert"
+DATA_PATH = Path(__file__).parent / "ScamAlert_Dataset_Kodbook_2000_v0_2.xlsx"
 
 st.set_page_config(
-    page_title="ScamShield Web Prototype",
+    page_title="ScamAlert Web Prototype",
     page_icon="🛡️",
     layout="wide",
 )
@@ -78,6 +78,9 @@ SAFE_PATTERNS = [
 
 @st.cache_data
 def load_data():
+    if DATA_PATH is None:
+        st.error("Fail dataset Excel tidak dijumpai. Sila upload fail scamalert_dataset.xlsx ke folder yang sama dengan app.py.")
+        st.stop()
     xls = pd.ExcelFile(DATA_PATH)
     data = pd.read_excel(xls, "DATASET_UTAMA")
     kawalan = pd.read_excel(xls, "DATASET_KAWALAN_500")
@@ -248,7 +251,7 @@ def render_badge(level):
 
 data, kawalan, kodbook, rubric, levels, contrast, tests = load_data()
 
-st.sidebar.title("🛡️ ScamShield")
+st.sidebar.title("🛡️ ScamAlert")
 page = st.sidebar.radio(
     "Navigasi",
     ["Home", "Semak Teks", "Perbandingan Empirikal", "Dashboard", "Kodbook & Rubrik"],
@@ -257,11 +260,11 @@ page = st.sidebar.radio(
 st.sidebar.caption("Prototaip v0.1 untuk tujuan pertandingan inovasi. Keputusan ialah amaran awal, bukan pengesahan rasmi.")
 
 if page == "Home":
-    st.title("🛡️ ScamShield Web Prototype")
+    st.title("🛡️ ScamAlert Web Prototype")
     st.subheader("Kenali bahasa scam sebelum terpedaya")
     st.write(
         """
-        ScamShield ialah prototaip aplikasi web yang menganalisis mesej mencurigakan
+        ScamAlert ialah prototaip aplikasi web yang menganalisis mesej mencurigakan
         berdasarkan **lakuan pertuturan**, **pola manipulasi**, **skor risiko** dan
         **perbandingan data scam dengan data kawalan bukan scam**.
         """
@@ -335,7 +338,7 @@ elif page == "Perbandingan Empirikal":
     st.title("Perbandingan Empirikal: Scam vs Bukan Scam")
     st.write(
         """
-        Bahagian ini menunjukkan bahawa ScamShield tidak melabel sesuatu ayat sebagai scam
+        Bahagian ini menunjukkan bahawa ScamAlert tidak melabel sesuatu ayat sebagai scam
         hanya kerana ada perkataan seperti "promosi", "segera" atau "bayar".
         Sistem melihat gabungan ciri risiko dan konteks tindakan.
         """

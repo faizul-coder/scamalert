@@ -1,31 +1,43 @@
-# ScamShield Web Prototype v0.1
+# ScamAlert Web Prototype v0.2
 
-Prototaip aplikasi web untuk mengesan risiko mesej scam berdasarkan dataset Excel ScamShield.
+Prototaip aplikasi web untuk mengesan risiko mesej penipuan berdasarkan dataset Excel.
+
+## Nama Sistem
+ScamAlert
+
+## Fail Penting
+- app.py
+- scamalert_dataset.xlsx
+- requirements.txt
+- README.md
+- SPECIFICATION.md
 
 ## Cara Jalankan Secara Lokal
-
-1. Pasang Python 3.10 atau ke atas.
-2. Buka folder ini dalam terminal.
-3. Jalankan arahan:
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-4. Browser akan membuka aplikasi ScamShield.
+## Cara Deploy di Streamlit
+Upload semua fail ke GitHub repository yang sama:
+- app.py
+- scamalert_dataset.xlsx
+- requirements.txt
+- README.md
+- SPECIFICATION.md
 
-## Fungsi Utama
+Kemudian deploy melalui Streamlit Community Cloud dengan main file path:
 
-- Semak teks mencurigakan
-- Skor risiko 0-100
-- Tahap risiko: rendah, sederhana, tinggi, sangat tinggi
-- Jenis scam yang hampir
-- Highlight frasa berisiko
-- Perbandingan empirikal scam vs bukan scam
-- Dashboard dataset
-- Kodbook dan rubrik risiko
+```text
+app.py
+```
 
 ## Nota
+App ini kini akan mencari fail dataset dengan beberapa nama:
+- scamalert_dataset.xlsx
+- scamalert.xlsx
+- dataset.xlsx
+- mana-mana fail .xlsx dalam folder yang sama
 
-Keputusan sistem ialah amaran awal, bukan pengesahan rasmi. Untuk versi pertandingan, web ini boleh dihubungkan dengan landing page Canva.
+Jadi, jika nama Excel diubah kepada `scamalert.xlsx`, app masih boleh membaca fail tersebut.
