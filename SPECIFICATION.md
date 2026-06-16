@@ -1,40 +1,37 @@
-# Spesifikasi ScamAlert Web Prototype v0.4.4
+# Spesifikasi ScamAlert Web Prototype v0.5.0
 
 ## Objektif
 
-Versi v0.4.4 menaik taraf ScamAlert kepada antara muka visual infografik yang lebih selari dengan landing page Canva dan lebih sesuai untuk demonstrasi pertandingan inovasi.
+Versi v0.5.0 menyelaraskan paparan Streamlit dengan fail Excel sebenar yang telah dinaik taraf kepada 3,000 data prototaip.
 
-## Struktur Halaman
+## Dataset
 
-1. Tentang ScamAlert
-2. Analisis Mesej
-3. Perbandingan Empirikal
-4. Papan Pemuka
-5. Buku Kod dan Rubrik Skor
+Dataset sebenar dalam fail `scamalert_dataset.xlsx` mengandungi:
 
-## Identiti Visual
+- 3,000 jumlah data prototaip
+- 1,500 data penipuan siber
+- 1,500 data kawalan sepadan
 
-- Tema utama: hitam, putih dan merah.
-- Hijau: hanya untuk Risiko Rendah.
-- Kuning: hanya untuk Risiko Sederhana.
-- Merah: Risiko Tinggi dan Sangat Tinggi.
-- Sidebar disorokkan untuk mengelakkan isu teks tidak jelas.
+## Data Penipuan Siber
 
-## Dataset Naratif
+1. Pinjaman / Bantuan Palsu — 500
+2. Penyamaran Autoriti — 500
+3. Pelaburan Tidak Wujud — 500
 
-- 3,000 data prototaip.
-- 1,500 data penipuan siber.
-- 1,500 data kawalan sepadan.
-- 50 pengguna awal.
+## Data Kawalan Sepadan
 
-## Paparan Keputusan
+1. Promosi / Transaksi Sah — 500
+2. Hebahan Rasmi / Keselamatan Sah — 500
+3. Pendidikan Kewangan / Kerjaya / Pelaburan Sah — 500
 
-Kad keputusan terdiri daripada:
+## Komponen Risiko
 
-1. Skor Risiko
-2. Tahap Risiko
-3. Jenis Dikesan
-4. Padanan Data
+1. R1 Arahan wang / data sensitif
+2. R2 Janji tidak realistik
+3. R3 Penyamaran autoriti
+4. R4 Tekanan masa
+5. R5 Manipulasi emosi
+6. R6 Bukti sosial palsu
 
 ## Julat Risiko
 
@@ -43,31 +40,14 @@ Kad keputusan terdiri daripada:
 - 50–74: Tinggi
 - 75–100: Sangat Tinggi
 
-## Komponen Risiko
+## Paparan
 
-1. Arahan wang / data sensitif
-2. Janji tidak realistik
-3. Penyamaran autoriti
-4. Tekanan masa
-5. Manipulasi emosi
-6. Bukti sosial palsu
+- Tab pertama: Tentang ScamAlert
+- Tab analisis: Analisis Mesej
+- Tab metodologi: Perbandingan Empirikal
+- Tab ringkasan: Papan Pemuka
+- Tab kodbook: Buku Kod dan Rubrik Skor
 
 ## Penafian
 
 ScamAlert ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.
-
-## Pembetulan v0.4.5
-
-Bahagian atas paparan diberi ruang tambahan kerana Streamlit mempunyai header tetap di bahagian atas. Tanpa ruang tambahan, tab navigasi boleh kelihatan terselindung di bawah toolbar Streamlit. Versi ini menambah `padding-top` pada `.block-container`, menambah spacer kecil sebelum tab, dan menjadikan header Streamlit berwarna cerah.
-
-## Pembetulan v0.4.6
-
-Versi ini membetulkan isu warna gelap/biru pada widget Streamlit seperti selectbox dan text area. Semua input dipaksa menggunakan latar putih, teks hitam dan border merah. Tema asas turut ditukar kepada `base = "light"` supaya aplikasi kekal dalam palet hitam, putih dan merah.
-
-## Pembetulan v0.4.7
-
-Versi ini membetulkan fungsi `render_bar_chart` supaya HTML tidak ditafsir sebagai blok kod Markdown. Semua carta custom kini dipaparkan sebagai infografik bar yang bersih. Latar utama aplikasi turut dipaksa kepada putih sepenuhnya.
-
-## Perubahan v0.4.8
-
-- Tab `Rumah` digantikan kepada `Tentang ScamAlert`.

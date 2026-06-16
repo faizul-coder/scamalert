@@ -16,7 +16,7 @@ except Exception:
 
 
 APP_TITLE = "ScamAlert"
-APP_VERSION = "v0.4.4"
+APP_VERSION = "v0.5.0"
 BASE_DIR = Path(__file__).parent
 
 DISPLAY_STATS = {
@@ -505,7 +505,10 @@ def get_top_matches(user_text, data, top_n=3):
 
 def is_fraud_label(label: str) -> bool:
     label = str(label).lower()
-    return label in ["scam", "penipuan siber", "fraud"] or "scam" in label or "penipuan" in label
+    if "bukan" in label or "kawalan" in label or "control" in label:
+        return False
+    return label in ["penipuan siber", "fraud"] or "penipuan siber" in label
+
 
 
 def is_control_label(label: str) -> bool:
@@ -709,7 +712,7 @@ def render_bar_chart(title, rows, max_value=None, color_cycle=None):
 
     html_rows = []
     for label, value, color in rows:
-        pct = max(2, min(100, (value / max_value) * 100))
+        pct = 0 if value == 0 else max(2, min(100, (value / max_value) * 100))
         html_rows.append(
             "<div class='bar-row'>"
             f"<div class='bar-top'><span>{html.escape(label)}</span><span>{value:,}</span></div>"
@@ -906,13 +909,13 @@ def render_dashboard(dataset_file):
     )
 
     render_bar_chart(
-        "Label Empirikal v0.4: Dataset Seimbang",
+        "Label Empirikal v0.5: Dataset Seimbang",
         [("Penipuan Siber", 1500, "fill-red"), ("Bukan Penipuan Siber", 1500, "fill-black")],
         max_value=1500,
     )
 
     render_bar_chart(
-        "Pecahan Konseptual Dataset",
+        "Pecahan Dataset v0.5",
         [
             ("Pinjaman / Bantuan Palsu", 500, "fill-red"),
             ("Penyamaran Autoriti", 500, "fill-red"),
@@ -925,21 +928,21 @@ def render_dashboard(dataset_file):
     )
 
     render_bar_chart(
-        "Agihan Tahap Risiko Konseptual",
+        "Agihan Tahap Risiko Dataset v0.5",
         [
-            ("Rendah", 750, "fill-green"),
-            ("Sederhana", 750, "fill-yellow"),
-            ("Tinggi", 750, "fill-red"),
-            ("Sangat Tinggi", 750, "fill-darkred"),
+            ("Rendah", 1500, "fill-green"),
+            ("Sederhana", 0, "fill-yellow"),
+            ("Tinggi", 292, "fill-red"),
+            ("Sangat Tinggi", 1208, "fill-darkred"),
         ],
-        max_value=750,
+        max_value=1500,
     )
 
     st.markdown(
         f"""
         <div class="sa-disclaimer">
             <strong>Sumber paparan papan pemuka:</strong><br>
-            Papan pemuka menggunakan paparan konseptual v0.4. Fail dataset dimuatkan untuk fungsi prototaip: {html.escape(dataset_file)}.
+            Papan pemuka menggunakan dataset sebenar v0.5 sebanyak 3,000 baris. Fail dataset dimuatkan: {html.escape(dataset_file)}.
         </div>
         """,
         unsafe_allow_html=True,
