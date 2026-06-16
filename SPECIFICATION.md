@@ -1,39 +1,57 @@
-# Spesifikasi Prototaip ScamAlert v0.2
+# Spesifikasi ScamAlert Web Prototype v0.4
 
-## Nama Sistem
-ScamAlert
+## Objektif
 
-## Nama Umum
-Sistem Amaran Awal Penipuan Digital Berasaskan Analisis Bahasa
+Menaik taraf antara muka Streamlit supaya selari dengan landing page Canva dan lebih sesuai untuk demonstrasi pertandingan inovasi.
 
-## Tujuan
-Membantu pengguna mengenal pasti risiko mesej penipuan melalui analisis bahasa, lakuan pertuturan, ciri manipulasi dan perbandingan data scam dengan data kawalan.
+## Identiti Visual
 
-## Fungsi Utama
-1. Pengguna memasukkan teks mencurigakan.
-2. Sistem mengesan komponen risiko R1-R6.
-3. Sistem mengira skor risiko 0-100.
-4. Sistem memaparkan tahap risiko.
-5. Sistem mencadangkan jenis scam yang paling hampir.
-6. Sistem highlight frasa berisiko.
-7. Sistem memaparkan tindakan selamat.
+- Tema: putih, hitam dan merah
+- Latar utama: `#F8FAFC`
+- Kad: `#FFFFFF`
+- Merah utama: `#DC2626`
+- Teks utama: `#111827`
+- Teks sokongan: `#374151`
 
-## Kelebihan Empirikal
-Sistem menggunakan dataset scam dan dataset kawalan bukan scam. Ini membolehkan sistem membezakan bahasa scam daripada bahasa promosi/harian yang hampir sama bentuknya.
+## Sistem Warna Risiko
 
-## Fail Dataset
-Nama fail dataset diselaraskan kepada:
+| Tahap Risiko | Background | Text | Border |
+|---|---|---|---|
+| Rendah | `#DCFCE7` | `#166534` | `#22C55E` |
+| Sederhana | `#FEF3C7` | `#92400E` | `#F59E0B` |
+| Tinggi | `#FED7AA` | `#9A3412` | `#F97316` |
+| Sangat Tinggi | `#FEE2E2` | `#991B1B` | `#DC2626` |
 
-```text
-scamalert_dataset.xlsx
-```
+## Struktur Paparan
 
-## Teknologi
-- Streamlit
-- Python
-- Pandas
-- Scikit-learn
-- Excel sebagai dataset
+1. Header / hero ringkas
+2. Kad statistik dataset
+3. Input mesej
+4. Butang Semak Risiko
+5. Kad ringkasan keputusan
+6. Teks dengan frasa berisiko
+7. Komponen risiko dikesan
+8. Cadangan tindakan selamat
+9. Perbandingan empirikal
+10. Dashboard ringkas
+11. Kodbook & rubrik
 
-## Nota Penamaan
-Nama ScamAlert lebih umum dan tidak menggunakan nama ScamShield bagi mengelakkan kekeliruan dengan aplikasi atau inisiatif sedia ada.
+## Statistik Naratif v0.4
+
+- 3,000 data prototaip
+- 1,500 data penipuan siber
+- 1,500 data kawalan sepadan
+- 50 pengguna awal
+
+## Ambang Risiko
+
+| Skor | Tahap Risiko |
+|---:|---|
+| 0–24 | Rendah |
+| 25–49 | Sederhana |
+| 50–74 | Tinggi |
+| 75–100 | Sangat Tinggi |
+
+## Penafian
+
+ScamAlert ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat bayaran.
