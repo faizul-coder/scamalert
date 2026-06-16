@@ -12,7 +12,7 @@ ScamAlert ialah prototaip web amaran awal untuk membantu pengguna mengenal pasti
 - Merah digunakan untuk Risiko Tinggi dan Sangat Tinggi.
 - Teks antara muka dikemas kini kepada istilah “penipuan siber”.
 - Kad statistik dikemas kini kepada 3,000 data prototaip, 1,500 data penipuan siber dan 1,500 data kawalan sepadan.
-- Halaman Rumah, Analisis Mesej, Perbandingan Empirikal, Papan Pemuka serta Buku Kod dan Rubrik Skor ditambah baik dengan elemen infografik.
+- Halaman Tentang ScamAlert, Analisis Mesej, Perbandingan Empirikal, Papan Pemuka serta Buku Kod dan Rubrik Skor ditambah baik dengan elemen infografik.
 
 ## Nota Dataset
 
@@ -43,3 +43,7 @@ Paparan dashboard menggunakan naratif konseptual v0.4: 1,500 data penipuan siber
 - Membetulkan isu kod HTML `<div class=...>` yang terpapar dalam Papan Pemuka.
 - Graf custom kini dirender sebagai infografik sebenar, bukan kod mentah.
 - Memaksa latar utama aplikasi kepada putih sepenuhnya.
+
+## Perubahan v0.4.8
+
+- Tab `Rumah` digantikan kepada `Tentang ScamAlert`.

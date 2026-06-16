@@ -6,7 +6,7 @@ Versi v0.4.4 menaik taraf ScamAlert kepada antara muka visual infografik yang le
 
 ## Struktur Halaman
 
-1. Rumah
+1. Tentang ScamAlert
 2. Analisis Mesej
 3. Perbandingan Empirikal
 4. Papan Pemuka
@@ -67,3 +67,7 @@ Versi ini membetulkan isu warna gelap/biru pada widget Streamlit seperti selectb
 ## Pembetulan v0.4.7
 
 Versi ini membetulkan fungsi `render_bar_chart` supaya HTML tidak ditafsir sebagai blok kod Markdown. Semua carta custom kini dipaparkan sebagai infografik bar yang bersih. Latar utama aplikasi turut dipaksa kepada putih sepenuhnya.
+
+## Perubahan v0.4.8
+
+- Tab `Rumah` digantikan kepada `Tentang ScamAlert`.

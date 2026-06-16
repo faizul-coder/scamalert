@@ -1007,11 +1007,11 @@ data, kawalan, kodbook, rubric, levels, contrast, tests, dataset_file = load_dat
 
 st.markdown('<div class="sa-top-spacer"></div>', unsafe_allow_html=True)
 
-tab_rumah, tab_analisis, tab_perbandingan, tab_dashboard, tab_kodbook = st.tabs(
-    ["Rumah", "Analisis Mesej", "Perbandingan Empirikal", "Papan Pemuka", "Buku Kod dan Rubrik Skor"]
+tab_tentang, tab_analisis, tab_perbandingan, tab_dashboard, tab_kodbook = st.tabs(
+    ["Tentang ScamAlert", "Analisis Mesej", "Perbandingan Empirikal", "Papan Pemuka", "Buku Kod dan Rubrik Skor"]
 )
 
-with tab_rumah:
+with tab_tentang:
     render_home()
 
 with tab_analisis:
