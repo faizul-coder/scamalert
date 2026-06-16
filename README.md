@@ -23,3 +23,23 @@ Paparan dashboard menggunakan naratif konseptual v0.4: 1,500 data penipuan siber
 1. Upload semua fail ke GitHub repo Streamlit.
 2. Pastikan `app.py`, `requirements.txt`, `scamalert_dataset.xlsx` dan folder `.streamlit` berada dalam repo.
 3. Streamlit Community Cloud akan redeploy secara automatik.
+
+## Perubahan v0.4.5
+
+- Membetulkan isu bahagian atas paparan yang terselindung di bawah header tetap Streamlit.
+- Menambah padding atas dan spacer supaya tab navigasi dan hero section tidak bertindih dengan toolbar Streamlit.
+- Menukar latar header Streamlit kepada warna cerah supaya selari dengan tema hitam, putih dan merah.
+
+## Perubahan v0.4.6
+
+- Memaksa semua widget input Streamlit menggunakan latar putih, teks hitam dan border merah.
+- Menghapuskan kesan warna biru/gelap pada selectbox dan text area.
+- Menetapkan tema Streamlit kepada `base = "light"`.
+- Butang `Semak Risiko` dipaksa menggunakan teks putih di atas latar merah.
+- Warna antara muka diperkemas kepada hitam, putih dan merah sahaja kecuali hijau untuk Risiko Rendah dan kuning untuk Risiko Sederhana.
+
+## Perubahan v0.4.7
+
+- Membetulkan isu kod HTML `<div class=...>` yang terpapar dalam Papan Pemuka.
+- Graf custom kini dirender sebagai infografik sebenar, bukan kod mentah.
+- Memaksa latar utama aplikasi kepada putih sepenuhnya.

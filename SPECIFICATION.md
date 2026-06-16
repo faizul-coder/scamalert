@@ -55,3 +55,15 @@ Kad keputusan terdiri daripada:
 ## Penafian
 
 ScamAlert ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.
+
+## Pembetulan v0.4.5
+
+Bahagian atas paparan diberi ruang tambahan kerana Streamlit mempunyai header tetap di bahagian atas. Tanpa ruang tambahan, tab navigasi boleh kelihatan terselindung di bawah toolbar Streamlit. Versi ini menambah `padding-top` pada `.block-container`, menambah spacer kecil sebelum tab, dan menjadikan header Streamlit berwarna cerah.
+
+## Pembetulan v0.4.6
+
+Versi ini membetulkan isu warna gelap/biru pada widget Streamlit seperti selectbox dan text area. Semua input dipaksa menggunakan latar putih, teks hitam dan border merah. Tema asas turut ditukar kepada `base = "light"` supaya aplikasi kekal dalam palet hitam, putih dan merah.
+
+## Pembetulan v0.4.7
+
+Versi ini membetulkan fungsi `render_bar_chart` supaya HTML tidak ditafsir sebagai blok kod Markdown. Semua carta custom kini dipaparkan sebagai infografik bar yang bersih. Latar utama aplikasi turut dipaksa kepada putih sepenuhnya.

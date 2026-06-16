@@ -122,29 +122,51 @@ def inject_css():
             --sa-red: #DC2626;
             --sa-red-dark: #991B1B;
             --sa-red-soft: #FEE2E2;
-            --sa-black: #111827;
-            --sa-text: #374151;
-            --sa-muted: #6B7280;
-            --sa-border: #E5E7EB;
-            --sa-bg: #F8FAFC;
+            --sa-black: #000000;
+            --sa-text: #000000;
+            --sa-muted: #222222;
+            --sa-border: #DDDDDD;
+            --sa-bg: #FFFFFF;
             --sa-card: #FFFFFF;
             --sa-green: #16A34A;
             --sa-green-dark: #166534;
             --sa-green-soft: #DCFCE7;
             --sa-yellow: #FACC15;
-            --sa-yellow-dark: #92400E;
+            --sa-yellow-dark: #7C4A03;
             --sa-yellow-soft: #FEF3C7;
         }
-        .stApp { background: var(--sa-bg); }
-        .block-container { padding-top: 1.6rem; padding-bottom: 3rem; max-width: 1360px; }
+        .stApp { background: #FFFFFF !important; }
+        [data-testid="stAppViewContainer"] { background: #FFFFFF !important; }
+        [data-testid="stMain"] { background: #FFFFFF !important; }
+        [data-testid="stVerticalBlock"] { background: transparent !important; }
+        [data-testid="stDecoration"] { background: var(--sa-red) !important; }
+        [data-testid="stHeader"] * { color: #000000 !important; }
+        [data-testid="stMarkdownContainer"] p { color: #000000 !important; }
+        .stTabs [data-baseweb="tab-list"] { gap: 18px; border-bottom: 1px solid #DDDDDD; }
+        .stTabs [data-baseweb="tab"] {
+            color: #000000 !important;
+            font-weight: 900 !important;
+            background: #FFFFFF !important;
+        }
+        .stTabs [aria-selected="true"] {
+            color: #DC2626 !important;
+            border-bottom: 3px solid #DC2626 !important;
+        }
+        
+        header[data-testid="stHeader"] {
+            background: #FFFFFF !important;
+            border-bottom: 1px solid var(--sa-border);
+            backdrop-filter: blur(8px);
+        }
+        [data-testid="stToolbar"] { color: var(--sa-black) !important; }
+        .sa-top-spacer { height: 16px; }
+        .block-container { padding-top: 5.8rem !important; padding-bottom: 3rem; max-width: 1360px; }
         [data-testid="stSidebar"] { display: none !important; }
         [data-testid="collapsedControl"] { display: none !important; }
         h1, h2, h3 { color: var(--sa-black); letter-spacing: -0.03em; }
         p, li, label, .stMarkdown { color: var(--sa-text); }
         .sa-hero {
-            background:
-                radial-gradient(circle at 92% 14%, rgba(220,38,38,0.10) 0%, rgba(220,38,38,0) 30%),
-                linear-gradient(135deg, #FFFFFF 0%, #FFF7F7 50%, #FFFFFF 100%);
+            background: #FFFFFF;
             border: 1px solid #FECACA;
             border-radius: 28px;
             padding: 36px 40px;
@@ -199,11 +221,62 @@ def inject_css():
         .sa-step-text { color: var(--sa-text); font-size: 14px; line-height: 1.45; }
         .sa-input-panel { background: #FFFFFF; border: 1px solid #FECACA; border-radius: 22px; padding: 24px; box-shadow: 0 14px 35px rgba(17,24,39,.07); }
         div.stButton > button:first-child {
-            background: var(--sa-red); color: white; border: 1px solid var(--sa-red); border-radius: 12px;
-            font-weight: 900; padding: .65rem 1.15rem; box-shadow: 0 12px 24px rgba(220,38,38,.22);
+            background: var(--sa-red) !important;
+            color: #FFFFFF !important;
+            border: 1px solid var(--sa-red) !important;
+            border-radius: 12px !important;
+            font-weight: 900 !important;
+            padding: .65rem 1.15rem !important;
+            box-shadow: 0 12px 24px rgba(220,38,38,.22) !important;
         }
-        div.stButton > button:first-child:hover { background: #B91C1C; border-color: #B91C1C; color: white; }
-        textarea, input, .stSelectbox div[data-baseweb="select"] > div { border-radius: 12px !important; }
+        div.stButton > button:first-child:hover {
+            background: #991B1B !important;
+            border-color: #991B1B !important;
+            color: #FFFFFF !important;
+        }
+        div.stButton > button:first-child * { color: #FFFFFF !important; }
+
+        /* Paksa semua input Streamlit jadi putih, hitam dan merah sahaja */
+        textarea,
+        input,
+        [data-baseweb="input"] input,
+        [data-baseweb="textarea"] textarea {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+            border-color: var(--sa-red) !important;
+            caret-color: var(--sa-red) !important;
+            border-radius: 12px !important;
+        }
+        textarea::placeholder,
+        input::placeholder {
+            color: #555555 !important;
+            opacity: 1 !important;
+        }
+        [data-baseweb="select"] > div,
+        .stSelectbox [data-baseweb="select"] > div {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+            border: 1.5px solid var(--sa-red) !important;
+            border-radius: 12px !important;
+        }
+        [data-baseweb="select"] *,
+        .stSelectbox [data-baseweb="select"] * {
+            color: #000000 !important;
+        }
+        [data-baseweb="popover"],
+        [data-baseweb="menu"],
+        [role="listbox"] {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+        }
+        [role="option"] {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+        }
+        [role="option"]:hover {
+            background-color: #FEE2E2 !important;
+            color: #000000 !important;
+        }
         .sa-result-grid { display:grid; grid-template-columns: 1fr 1fr 1.15fr .9fr; gap: 14px; margin: 18px 0 20px; }
         .risk-card {
             border-radius: 20px; padding: 20px; border: 1.5px solid; box-shadow: 0 14px 30px rgba(17,24,39,.08);
@@ -633,26 +706,24 @@ def render_phrase_chips(phrases, safe_hits):
 def render_bar_chart(title, rows, max_value=None, color_cycle=None):
     if max_value is None:
         max_value = max(v for _, v, _ in rows) if rows else 1
+
     html_rows = []
-    for i, (label, value, color) in enumerate(rows):
+    for label, value, color in rows:
         pct = max(2, min(100, (value / max_value) * 100))
         html_rows.append(
-            f"""
-            <div class="bar-row">
-                <div class="bar-top"><span>{html.escape(label)}</span><span>{value:,}</span></div>
-                <div class="bar-track"><div class="bar-fill {color}" style="width:{pct}%"></div></div>
-            </div>
-            """
+            "<div class='bar-row'>"
+            f"<div class='bar-top'><span>{html.escape(label)}</span><span>{value:,}</span></div>"
+            f"<div class='bar-track'><div class='bar-fill {color}' style='width:{pct}%'></div></div>"
+            "</div>"
         )
-    st.markdown(
-        f"""
-        <div class="sa-bars">
-            <div class="sa-section-title" style="font-size:22px;margin-top:0;">{html.escape(title)}</div>
-            {''.join(html_rows)}
-        </div>
-        """,
-        unsafe_allow_html=True,
+
+    chart_html = (
+        "<div class='sa-bars'>"
+        f"<div class='sa-section-title' style='font-size:22px;margin-top:0;'>{html.escape(title)}</div>"
+        + "".join(html_rows) +
+        "</div>"
     )
+    st.markdown(chart_html, unsafe_allow_html=True)
 
 
 def pretty_display_df(df):
@@ -933,6 +1004,8 @@ def render_codebook(kodbook, rubric, levels):
 
 inject_css()
 data, kawalan, kodbook, rubric, levels, contrast, tests, dataset_file = load_data()
+
+st.markdown('<div class="sa-top-spacer"></div>', unsafe_allow_html=True)
 
 tab_rumah, tab_analisis, tab_perbandingan, tab_dashboard, tab_kodbook = st.tabs(
     ["Rumah", "Analisis Mesej", "Perbandingan Empirikal", "Papan Pemuka", "Buku Kod dan Rubrik Skor"]
