@@ -1,3 +1,4 @@
+
 import html
 import re
 from pathlib import Path
@@ -15,7 +16,7 @@ except Exception:
 
 
 APP_TITLE = "ScamAlert"
-APP_VERSION = "v0.4"
+APP_VERSION = "v0.4.4"
 BASE_DIR = Path(__file__).parent
 
 DISPLAY_STATS = {
@@ -90,18 +91,19 @@ RULES = {
 SAFE_PATTERNS = [
     r"\brasmi\b", r"\bkaunter rasmi\b", r"\baplikasi rasmi\b", r"\blaman rasmi\b",
     r"\bcawangan\b", r"\bcheckout\b", r"\binvois rasmi\b", r"\bsyarikat berdaftar\b",
-    r"\bjangan berkongsi\b", r"\btiada bayaran pendaftaran\b",
+    r"\bjangan berkongsi\b", r"\bjangan kongsi\b", r"\btiada bayaran pendaftaran\b",
     r"\btidak akan meminta\b", r"\bsemak dahulu\b", r"\bsaluran rasmi\b"
 ]
 
-EXTRA_TESTS = [
-    "Masukkan OTP untuk mengelakkan akaun bank anda dibekukan.",
-    "Kerja mudah dari rumah. Like video dapat RM500 sehari. Bayar pendaftaran dahulu.",
-    "Promosi tamat malam ini. Bayaran dibuat melalui aplikasi rasmi.",
-    "Sila bayar deposit tempahan kek selepas invois rasmi dikeluarkan oleh kedai.",
-    "Modal RM100 boleh jadi RM1,000 dalam masa sehari. Slot terhad, daftar sekarang.",
-    "Pihak bank mengingatkan pelanggan supaya tidak berkongsi nombor OTP dengan sesiapa.",
-]
+EXAMPLE_MESSAGES = {
+    "Tulis sendiri": "",
+    "OTP + akaun dibekukan": "Pihak bank telah mengesan aktiviti luar biasa. Sila berikan OTP untuk sahkan identiti anda sekarang. Jika gagal, akaun anda akan dibekukan dalam 24 jam.",
+    "Penipuan kerja mudah": "Kerja mudah dari rumah. Hanya tekan like dan follow. Bayaran harian RM300 hingga RM500. Daftar sekarang, bayar yuran pendaftaran RM50 untuk bermula.",
+    "Pelaburan tidak wujud": "Modal RM300 boleh jadi RM3,000 dalam 24 jam. Slot VIP tinggal 5 sahaja. Daftar sekarang.",
+    "Pinjaman / bantuan palsu": "Pinjaman anda telah diluluskan. Bayar caj proses RM150 dahulu sebelum wang dilepaskan.",
+    "Promosi aplikasi rasmi": "Nikmati promosi istimewa sehingga 20% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+    "Deposit dengan invois rasmi": "Sila buat pembayaran seperti invois yang dilampirkan. Pembayaran ke akaun syarikat berdaftar. Sebarang pertanyaan, hubungi emel rasmi.",
+}
 
 
 st.set_page_config(
@@ -127,98 +129,133 @@ def inject_css():
             --sa-bg: #F8FAFC;
             --sa-card: #FFFFFF;
             --sa-green: #16A34A;
+            --sa-green-dark: #166534;
             --sa-green-soft: #DCFCE7;
-            --sa-amber: #F59E0B;
-            --sa-amber-soft: #FEF3C7;
-            --sa-orange: #F97316;
-            --sa-orange-soft: #FED7AA;
+            --sa-yellow: #FACC15;
+            --sa-yellow-dark: #92400E;
+            --sa-yellow-soft: #FEF3C7;
         }
         .stApp { background: var(--sa-bg); }
-        .block-container { padding-top: 2rem; padding-bottom: 3rem; max-width: 1320px; }
-        div[data-testid="stSidebar"] { background: #FFFFFF; border-right: 1px solid var(--sa-border); }
+        .block-container { padding-top: 1.6rem; padding-bottom: 3rem; max-width: 1360px; }
+        [data-testid="stSidebar"] { display: none !important; }
+        [data-testid="collapsedControl"] { display: none !important; }
         h1, h2, h3 { color: var(--sa-black); letter-spacing: -0.03em; }
         p, li, label, .stMarkdown { color: var(--sa-text); }
         .sa-hero {
-            background: linear-gradient(135deg, #FFFFFF 0%, #FFF7F7 48%, #FFFFFF 100%);
+            background:
+                radial-gradient(circle at 92% 14%, rgba(220,38,38,0.10) 0%, rgba(220,38,38,0) 30%),
+                linear-gradient(135deg, #FFFFFF 0%, #FFF7F7 50%, #FFFFFF 100%);
             border: 1px solid #FECACA;
-            border-radius: 24px;
-            padding: 34px 38px;
+            border-radius: 28px;
+            padding: 36px 40px;
             box-shadow: 0 18px 45px rgba(17, 24, 39, 0.08);
-            margin-bottom: 22px;
-            position: relative;
+            margin-bottom: 20px;
             overflow: hidden;
         }
-        .sa-hero:after {
-            content: "";
-            position: absolute;
-            right: -80px;
-            top: -80px;
-            width: 260px;
-            height: 260px;
-            background: radial-gradient(circle, rgba(220,38,38,0.10) 0%, rgba(220,38,38,0) 68%);
-            pointer-events: none;
+        .sa-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+        .sa-logo {
+            width: 54px; height: 54px; border-radius: 16px;
+            background: var(--sa-red); color: white;
+            display:flex; align-items:center; justify-content:center;
+            font-size: 30px; font-weight: 900; box-shadow: 0 10px 24px rgba(220,38,38,.25);
         }
-        .sa-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-        .sa-shield {
-            width: 44px; height: 44px; border-radius: 14px;
-            background: var(--sa-red); color: white; display:flex; align-items:center; justify-content:center;
-            font-size: 24px; font-weight: 900; box-shadow: 0 10px 24px rgba(220,38,38,.25);
-        }
-        .sa-kicker { color: var(--sa-red); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: 13px; }
-        .sa-title { font-size: 48px; line-height: 1.05; font-weight: 900; color: var(--sa-black); margin: 0; }
-        .sa-subtitle { font-size: 18px; line-height: 1.6; color: var(--sa-text); margin: 14px 0 0; max-width: 880px; }
+        .sa-kicker { color: var(--sa-red); font-weight: 900; letter-spacing: .08em; text-transform: uppercase; font-size: 13px; }
+        .sa-title { font-size: 48px; line-height: 1.05; font-weight: 950; color: var(--sa-black); margin: 0; }
+        .sa-subtitle { font-size: 18px; line-height: 1.65; color: var(--sa-text); margin: 14px 0 0; max-width: 1000px; }
         .sa-badge {
             display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px;
             border-radius: 999px; background: #FFFFFF; border: 1px solid #FCA5A5;
-            color: var(--sa-red-dark); font-weight: 800; font-size: 13px; margin-top: 16px;
+            color: var(--sa-red-dark); font-weight: 900; font-size: 13px; margin-top: 16px;
         }
-        .sa-grid { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; margin: 18px 0 24px; }
-        .sa-stat, .sa-card, .sa-panel {
-            background: var(--sa-card); border: 1px solid var(--sa-border); border-radius: 18px;
-            padding: 18px 20px; box-shadow: 0 12px 30px rgba(17,24,39,.06);
+        .sa-grid-4 { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; margin: 18px 0 24px; }
+        .sa-grid-3 { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin: 18px 0 24px; }
+        .sa-grid-2 { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; margin: 18px 0 24px; }
+        .sa-card, .sa-stat, .sa-panel, .sa-infocard {
+            background: var(--sa-card); border: 1px solid var(--sa-border); border-radius: 20px;
+            padding: 20px 22px; box-shadow: 0 12px 30px rgba(17,24,39,.06);
         }
-        .sa-stat .value { font-size: 34px; line-height: 1; font-weight: 900; color: var(--sa-red); margin-bottom: 6px; }
-        .sa-stat .label { font-size: 14px; color: var(--sa-text); font-weight: 700; }
-        .sa-section-title { font-size: 28px; font-weight: 900; margin: 8px 0 10px; color: var(--sa-black); }
-        .sa-small { color: var(--sa-muted); font-size: 14px; }
-        .sa-input-panel { background: #FFFFFF; border: 1px solid #FECACA; border-radius: 20px; padding: 22px; box-shadow: 0 14px 35px rgba(17,24,39,.07); }
+        .sa-stat { min-height: 126px; position: relative; overflow:hidden; }
+        .sa-stat:after {
+            content:""; position:absolute; width:90px; height:90px; border-radius:50%; right:-30px; bottom:-30px;
+            background: rgba(220,38,38,.07);
+        }
+        .sa-icon {
+            width: 42px; height: 42px; border-radius: 14px; display:inline-flex; align-items:center; justify-content:center;
+            background: var(--sa-red-soft); color: var(--sa-red-dark); font-size: 22px; font-weight: 900; margin-bottom: 12px;
+        }
+        .sa-stat .value { font-size: 36px; line-height: 1; font-weight: 950; color: var(--sa-red); margin-bottom: 8px; }
+        .sa-stat .label { font-size: 14px; color: var(--sa-text); font-weight: 800; }
+        .sa-section-title { font-size: 28px; font-weight: 950; margin: 10px 0 12px; color: var(--sa-black); }
+        .sa-section-sub { color: var(--sa-muted); font-size: 15px; line-height: 1.6; margin-bottom: 14px; }
+        .sa-process { display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 18px; }
+        .sa-step {
+            border: 1px solid #FECACA; background: #fff; border-radius: 18px; padding: 18px; position: relative;
+        }
+        .sa-step-num {
+            width:32px; height:32px; border-radius:50%; background: var(--sa-red); color:#fff; display:flex; align-items:center; justify-content:center;
+            font-weight: 950; margin-bottom: 10px;
+        }
+        .sa-step-title { font-weight: 950; color: var(--sa-black); margin-bottom: 6px; }
+        .sa-step-text { color: var(--sa-text); font-size: 14px; line-height: 1.45; }
+        .sa-input-panel { background: #FFFFFF; border: 1px solid #FECACA; border-radius: 22px; padding: 24px; box-shadow: 0 14px 35px rgba(17,24,39,.07); }
         div.stButton > button:first-child {
             background: var(--sa-red); color: white; border: 1px solid var(--sa-red); border-radius: 12px;
-            font-weight: 800; padding: .65rem 1.15rem; box-shadow: 0 12px 24px rgba(220,38,38,.22);
+            font-weight: 900; padding: .65rem 1.15rem; box-shadow: 0 12px 24px rgba(220,38,38,.22);
         }
         div.stButton > button:first-child:hover { background: #B91C1C; border-color: #B91C1C; color: white; }
-        textarea, input, .stSelectbox div[data-baseweb="select"] > div {
-            border-radius: 12px !important;
-        }
-        .sa-result-grid { display:grid; grid-template-columns: 1.05fr 1.1fr 1.1fr .9fr; gap: 14px; margin: 18px 0 20px; }
+        textarea, input, .stSelectbox div[data-baseweb="select"] > div { border-radius: 12px !important; }
+        .sa-result-grid { display:grid; grid-template-columns: 1fr 1fr 1.15fr .9fr; gap: 14px; margin: 18px 0 20px; }
         .risk-card {
-            border-radius: 18px; padding: 20px; border: 1.5px solid; box-shadow: 0 14px 30px rgba(17,24,39,.08);
-            min-height: 128px;
+            border-radius: 20px; padding: 20px; border: 1.5px solid; box-shadow: 0 14px 30px rgba(17,24,39,.08);
+            min-height: 142px;
         }
-        .risk-label { font-size: 13px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; opacity: .9; }
-        .risk-value { font-size: 36px; font-weight: 950; line-height: 1.05; margin-bottom: 6px; }
-        .risk-caption { font-size: 13px; font-weight: 700; }
-        .risk-low { background:#DCFCE7; color:#166534; border-color:#22C55E; }
-        .risk-medium { background:#FEF3C7; color:#92400E; border-color:#F59E0B; }
-        .risk-high { background:#FED7AA; color:#9A3412; border-color:#F97316; }
-        .risk-very-high { background:#FEE2E2; color:#991B1B; border-color:#DC2626; }
+        .risk-label { font-size: 12px; font-weight: 950; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; opacity: .9; }
+        .risk-value { font-size: 34px; font-weight: 950; line-height: 1.05; margin-bottom: 8px; }
+        .risk-caption { font-size: 13px; font-weight: 750; line-height: 1.4; }
+        .risk-low { background:#DCFCE7; color:#166534; border-color:#16A34A; }
+        .risk-medium { background:#FEF3C7; color:#92400E; border-color:#FACC15; }
+        .risk-high { background:#FEE2E2; color:#991B1B; border-color:#DC2626; }
+        .risk-very-high { background:#991B1B; color:#FFFFFF; border-color:#7F1D1D; }
         .neutral-card { background: #FFFFFF; color: var(--sa-black); border-color: var(--sa-border); }
-        .neutral-card .risk-value { color: var(--sa-black); }
+        .neutral-card .risk-value { color: var(--sa-black); font-size: 26px; }
         .sa-chip {
-            display: inline-flex; align-items:center; padding: 7px 11px; border-radius: 999px; margin: 4px 6px 4px 0;
-            font-size: 13px; font-weight: 800; border: 1px solid #FCA5A5; background: var(--sa-red-soft); color: var(--sa-red-dark);
+            display: inline-flex; align-items:center; padding: 8px 12px; border-radius: 999px; margin: 4px 6px 4px 0;
+            font-size: 13px; font-weight: 900; border: 1px solid #FCA5A5; background: var(--sa-red-soft); color: var(--sa-red-dark);
         }
         .sa-chip.safe { border-color:#86EFAC; background:#DCFCE7; color:#166534; }
+        .sa-chip.yellow { border-color:#FACC15; background:#FEF3C7; color:#92400E; }
+        .sa-chip.black { border-color:#111827; background:#111827; color:#FFFFFF; }
         .sa-chip.muted { border-color:var(--sa-border); background:#F3F4F6; color:#6B7280; }
-        mark { background:#FEF08A; color:#111827; padding: 2px 5px; border-radius: 5px; font-weight: 850; }
+        mark { background:#FEF08A; color:#111827; padding: 2px 5px; border-radius: 5px; font-weight: 900; }
         .sa-text-box { background:#FFFFFF; border:1px solid var(--sa-border); border-radius:18px; padding:20px; font-size:18px; line-height:1.85; box-shadow: 0 10px 25px rgba(17,24,39,.05); }
-        .sa-action { background:#FFF7ED; border:1px solid #FDBA74; border-left:6px solid #F97316; border-radius:16px; padding:18px 20px; }
-        .sa-action strong { color:#9A3412; }
+        .sa-action { background:#FFFFFF; border:1px solid #FCA5A5; border-left:6px solid var(--sa-red); border-radius:16px; padding:18px 20px; margin: 18px 0; }
+        .sa-action strong { color:#991B1B; }
         .sa-disclaimer { background:#FFFFFF; border:1px dashed #D1D5DB; border-radius:16px; padding:16px 18px; color:#4B5563; font-size:14px; }
-        .sa-two-col { display:grid; grid-template-columns: 1fr 1fr; gap:18px; margin-top:14px; }
-        .sa-compare-title { font-weight: 900; font-size:20px; margin-bottom:12px; }
+        .sa-callout {
+            background: #FFFFFF; border: 1px solid #FCA5A5; border-left: 6px solid var(--sa-red);
+            border-radius: 18px; padding: 18px 22px; box-shadow: 0 10px 25px rgba(17,24,39,.05); margin: 18px 0;
+        }
+        .sa-callout-title { font-weight: 950; color: var(--sa-red-dark); font-size: 20px; margin-bottom: 6px; }
+        .sa-bars { background:#fff; border:1px solid var(--sa-border); border-radius:20px; padding:20px; box-shadow: 0 12px 30px rgba(17,24,39,.06); }
+        .bar-row { margin: 14px 0; }
+        .bar-top { display:flex; justify-content:space-between; gap:16px; font-weight:850; color:var(--sa-black); font-size:14px; margin-bottom:6px; }
+        .bar-track { height: 15px; background:#F3F4F6; border-radius:999px; overflow:hidden; border:1px solid #E5E7EB; }
+        .bar-fill { height:100%; border-radius:999px; }
+        .fill-red { background: var(--sa-red); }
+        .fill-black { background: var(--sa-black); }
+        .fill-green { background: var(--sa-green); }
+        .fill-yellow { background: var(--sa-yellow); }
+        .fill-darkred { background: var(--sa-red-dark); }
+        .sa-ladder { display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .ladder-item { border-radius:18px; padding:16px; border:1.5px solid; min-height:115px; }
+        .ladder-title { font-weight:950; font-size:18px; margin-bottom:4px; }
+        .ladder-score { font-weight:900; font-size:14px; margin-bottom:8px; }
+        .ladder-note { font-size:13px; line-height:1.4; }
+        .sa-user-strip { display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-top:14px; }
+        .sa-user { background:#fff; border:1px solid #FECACA; border-radius:18px; padding:15px; text-align:center; font-weight:900; color:var(--sa-black); }
+        .sa-user .uicon { font-size:28px; margin-bottom:8px; }
         @media (max-width: 900px) {
-            .sa-grid, .sa-result-grid, .sa-two-col { grid-template-columns: 1fr; }
+            .sa-grid-4, .sa-grid-3, .sa-grid-2, .sa-result-grid, .sa-process, .sa-ladder, .sa-user-strip { grid-template-columns: 1fr; }
             .sa-title { font-size: 36px; }
         }
         </style>
@@ -325,7 +362,7 @@ def analyze_rules(text: str):
 
     official_or_safe_context = re.search(
         r"aplikasi rasmi|checkout|invois rasmi|kaunter rasmi|cawangan|platform rasmi|saluran rasmi|"
-        r"jangan\s+berkongsi|tidak\s+berkongsi|tidak\s+akan\s+meminta|tiada\s+bayaran\s+pendaftaran|semak\s+dahulu|syarikat\s+berdaftar",
+        r"jangan\s+berkongsi|jangan\s+kongsi|tidak\s+berkongsi|tidak\s+akan\s+meminta|tiada\s+bayaran\s+pendaftaran|semak\s+dahulu|syarikat\s+berdaftar",
         t,
         flags=re.IGNORECASE,
     )
@@ -386,12 +423,11 @@ def get_top_matches(user_text, data, top_n=3):
         results = data.iloc[idxs].copy()
         results["Similarity"] = sims[idxs]
         return results
-    else:
-        sims = [SequenceMatcher(None, user_text.lower(), c.lower()).ratio() for c in corpus]
-        idxs = sorted(range(len(sims)), key=lambda i: sims[i], reverse=True)[:top_n]
-        results = data.iloc[idxs].copy()
-        results["Similarity"] = [sims[i] for i in idxs]
-        return results
+    sims = [SequenceMatcher(None, user_text.lower(), c.lower()).ratio() for c in corpus]
+    idxs = sorted(range(len(sims)), key=lambda i: sims[i], reverse=True)[:top_n]
+    results = data.iloc[idxs].copy()
+    results["Similarity"] = [sims[i] for i in idxs]
+    return results
 
 
 def is_fraud_label(label: str) -> bool:
@@ -455,45 +491,22 @@ def make_decision(user_text, data):
 
 def recommendation(level):
     if level == "Sangat Tinggi":
-        return "Mesej ini menunjukkan risiko yang sangat tinggi. Jangan kongsi OTP, jangan tekan pautan, jangan buat bayaran dan semak segera melalui saluran rasmi."
+        return "Mesej ini menunjukkan risiko yang sangat tinggi. Jangan kongsi OTP, jangan tekan pautan, jangan buat bayaran dan segera semak dengan pihak rasmi."
     if level == "Tinggi":
-        return "Mesej ini berisiko tinggi. Jangan berkongsi maklumat peribadi atau membuat bayaran sebelum pengesahan rasmi dibuat."
+        return "Mesej menunjukkan ciri manipulatif yang kuat. Jangan berkongsi maklumat peribadi, jangan membuat bayaran dan semak melalui saluran rasmi."
     if level == "Sederhana":
-        return "Terdapat beberapa ciri mencurigakan. Semak sumber mesej dan elakkan bertindak terburu-buru."
+        return "Terdapat beberapa ciri mencurigakan. Semak sumber mesej dan elakkan membuat bayaran atau menekan pautan sebelum pengesahan lanjut."
     return "Risiko rendah dikesan. Walau bagaimanapun, pengguna masih digalakkan menyemak kesahihan mesej melalui saluran rasmi."
 
 
-def render_hero():
-    st.markdown(
-        f"""
-        <div class="sa-hero">
-            <div class="sa-brand">
-                <div class="sa-shield">!</div>
-                <div>
-                    <div class="sa-kicker">{APP_TITLE} Web Prototype {APP_VERSION}</div>
-                    <h1 class="sa-title">Kenal Pasti Bahasa Penipuan Siber Sebelum Terpedaya</h1>
-                </div>
-            </div>
-            <p class="sa-subtitle">ScamAlert membantu pengguna mengenal pasti mesej yang mencurigakan melalui analisis bahasa, skor risiko dan cadangan tindakan selamat.</p>
-            <div class="sa-badge">🛡️ Prototaip amaran awal • Analisis bahasa • Skor risiko</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def render_stats():
-    st.markdown(
-        f"""
-        <div class="sa-grid">
-            <div class="sa-stat"><div class="value">{DISPLAY_STATS['total']}</div><div class="label">Data prototaip</div></div>
-            <div class="sa-stat"><div class="value">{DISPLAY_STATS['cyber_fraud']}</div><div class="label">Data penipuan siber</div></div>
-            <div class="sa-stat"><div class="value">{DISPLAY_STATS['control']}</div><div class="label">Data kawalan sepadan</div></div>
-            <div class="sa-stat"><div class="value">{DISPLAY_STATS['users']}</div><div class="label">Pengguna awal</div></div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+def summary_text(level):
+    if level == "Sangat Tinggi":
+        return "Gabungan arahan sensitif, tekanan masa atau penyamaran autoriti menunjukkan risiko yang sangat tinggi."
+    if level == "Tinggi":
+        return "Beberapa komponen risiko hadir serentak dan meningkatkan kemungkinan mesej bersifat manipulatif."
+    if level == "Sederhana":
+        return "Terdapat petanda tertentu yang memerlukan semakan lanjut sebelum pengguna bertindak."
+    return "Bahasa mesej lebih hampir kepada komunikasi sah atau tidak cukup menunjukkan pola penipuan siber."
 
 
 def html_card(label, value, caption="", klass="neutral-card"):
@@ -506,6 +519,67 @@ def html_card(label, value, caption="", klass="neutral-card"):
     """
 
 
+def render_hero():
+    st.markdown(
+        f"""
+        <div class="sa-hero">
+            <div class="sa-brand">
+                <div class="sa-logo">!</div>
+                <div>
+                    <div class="sa-kicker">{APP_TITLE} Web Prototype {APP_VERSION}</div>
+                    <h1 class="sa-title">Kenal Pasti Bahasa Penipuan Siber Sebelum Terpedaya</h1>
+                </div>
+            </div>
+            <p class="sa-subtitle">ScamAlert membantu pengguna mengenal pasti mesej yang mencurigakan melalui analisis lakuan pertuturan langsung dan lakuan pertuturan tidak langsung. ScamAlert juga mengandungi skor risiko dan cadangan tindakan selamat.</p>
+            <div class="sa-badge">🛡️ Prototaip amaran awal • Analisis bahasa • Skor risiko</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_stats():
+    st.markdown(
+        f"""
+        <div class="sa-grid-4">
+            <div class="sa-stat"><div class="sa-icon">▦</div><div class="value">{DISPLAY_STATS['total']}</div><div class="label">Data prototaip</div></div>
+            <div class="sa-stat"><div class="sa-icon">!</div><div class="value">{DISPLAY_STATS['cyber_fraud']}</div><div class="label">Data penipuan siber</div></div>
+            <div class="sa-stat"><div class="sa-icon">✓</div><div class="value">{DISPLAY_STATS['control']}</div><div class="label">Data kawalan sepadan</div></div>
+            <div class="sa-stat"><div class="sa-icon">●</div><div class="value">{DISPLAY_STATS['users']}</div><div class="label">Pengguna awal</div></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_process():
+    st.markdown(
+        """
+        <div class="sa-process">
+            <div class="sa-step"><div class="sa-step-num">1</div><div class="sa-step-title">Masukkan Mesej</div><div class="sa-step-text">Pengguna menampal mesej yang ingin disemak.</div></div>
+            <div class="sa-step"><div class="sa-step-num">2</div><div class="sa-step-title">Analisis Bahasa</div><div class="sa-step-text">Sistem mengenal pasti frasa berisiko dan lakuan pertuturan.</div></div>
+            <div class="sa-step"><div class="sa-step-num">3</div><div class="sa-step-title">Skor Risiko</div><div class="sa-step-text">Tahap risiko dikira berdasarkan pola bahasa yang mencurigakan.</div></div>
+            <div class="sa-step"><div class="sa-step-num">4</div><div class="sa-step-title">Tindakan Selamat</div><div class="sa-step-text">Pengguna menerima cadangan tindakan yang lebih berhati-hati.</div></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_user_strip():
+    st.markdown(
+        """
+        <div class="sa-user-strip">
+            <div class="sa-user"><div class="uicon">🎓</div>Pelajar</div>
+            <div class="sa-user"><div class="uicon">👨‍👩‍👧</div>Ibu bapa</div>
+            <div class="sa-user"><div class="uicon">👵</div>Warga emas</div>
+            <div class="sa-user"><div class="uicon">💬</div>Pengguna media sosial</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def render_result_cards(result):
     level = result["level"]
     klass = risk_class(level)
@@ -513,10 +587,20 @@ def render_result_cards(result):
     st.markdown(
         f"""
         <div class="sa-result-grid">
-            {html_card('Skor Risiko', f"{result['score']}/100", 'Skor keseluruhan', klass)}
-            {html_card('Tahap Risiko', f"{risk_icon(level)} {html.escape(level)}", 'Keputusan amaran awal', klass)}
-            {html_card('Jenis Dikesan', category, 'Kategori paling hampir', 'neutral-card')}
-            {html_card('Padanan Data', f"{result['best_similarity']:.2f}", 'Kesamaan dengan dataset', 'neutral-card')}
+            {html_card('Skor Risiko', f"{result['score']}/100", 'Penilaian keseluruhan tahap risiko', klass)}
+            {html_card('Tahap Risiko', f"{risk_icon(level)} {html.escape(level)}", 'Kategori tahap amaran', klass)}
+            {html_card('Jenis Dikesan', category, 'Kategori paling hampir dengan pola mesej', 'neutral-card')}
+            {html_card('Padanan Data', f"{result['best_similarity']:.2f}", 'Padanan konseptual terhadap dataset', 'neutral-card')}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    fill_cls = {"Rendah": "fill-green", "Sederhana": "fill-yellow", "Tinggi": "fill-red", "Sangat Tinggi": "fill-darkred"}.get(level, "fill-red")
+    st.markdown(
+        f"""
+        <div class="sa-bars">
+            <div class="bar-top"><span>Meter Skor Risiko</span><span>{result['score']}/100</span></div>
+            <div class="bar-track"><div class="bar-fill {fill_cls}" style="width:{result['score']}%"></div></div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -543,7 +627,32 @@ def render_phrase_chips(phrases, safe_hits):
     if safe_hits:
         st.markdown("<br>", unsafe_allow_html=True)
         for p in safe_hits:
-            st.markdown(f'<span class="sa-chip safe">Faktor selamat: {html.escape(str(p))}</span>', unsafe_allow_html=True)
+            st.markdown(f'<span class="sa-chip safe">Isyarat sah: {html.escape(str(p))}</span>', unsafe_allow_html=True)
+
+
+def render_bar_chart(title, rows, max_value=None, color_cycle=None):
+    if max_value is None:
+        max_value = max(v for _, v, _ in rows) if rows else 1
+    html_rows = []
+    for i, (label, value, color) in enumerate(rows):
+        pct = max(2, min(100, (value / max_value) * 100))
+        html_rows.append(
+            f"""
+            <div class="bar-row">
+                <div class="bar-top"><span>{html.escape(label)}</span><span>{value:,}</span></div>
+                <div class="bar-track"><div class="bar-fill {color}" style="width:{pct}%"></div></div>
+            </div>
+            """
+        )
+    st.markdown(
+        f"""
+        <div class="sa-bars">
+            <div class="sa-section-title" style="font-size:22px;margin-top:0;">{html.escape(title)}</div>
+            {''.join(html_rows)}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def pretty_display_df(df):
@@ -563,57 +672,56 @@ def pretty_display_df(df):
     return out
 
 
-inject_css()
-data, kawalan, kodbook, rubric, levels, contrast, tests, dataset_file = load_data()
-
-st.sidebar.markdown("### 🛡️ ScamAlert")
-st.sidebar.caption(f"Prototaip Web {APP_VERSION}")
-page = st.sidebar.radio(
-    "Navigasi",
-    ["Home", "Analisis Mesej", "Perbandingan Empirikal", "Dashboard", "Kodbook & Rubrik"],
-)
-st.sidebar.markdown("---")
-st.sidebar.caption("ScamAlert ialah prototaip amaran awal, bukan pengesahan rasmi.")
-
-if page == "Home":
+def render_home():
     render_hero()
     render_stats()
-    st.markdown('<div class="sa-two-col">', unsafe_allow_html=True)
+    st.markdown('<div class="sa-grid-2">', unsafe_allow_html=True)
     st.markdown(
         """
         <div class="sa-panel">
-            <div class="sa-section-title">Apa itu ScamAlert?</div>
-            <p>ScamAlert ialah prototaip web yang menganalisis mesej mencurigakan berdasarkan pola bahasa, komponen risiko dan perbandingan data penipuan siber dengan data kawalan sepadan.</p>
+            <div class="sa-icon">?</div>
+            <div class="sa-section-title">Apakah itu ScamAlert?</div>
+            <p>ScamAlert ialah prototaip web yang menganalisis mesej mencurigakan berdasarkan analisis lakuan pertuturan langsung dan lakuan pertuturan tidak langsung, komponen risiko serta perbandingan data penipuan siber dengan data kawalan sepadan.</p>
         </div>
         <div class="sa-panel">
-            <div class="sa-section-title">Mengapa penting?</div>
-            <p>Bahasa penipuan siber sering menyerupai promosi, urusan rasmi atau mesej harian. ScamAlert membantu pengguna menilai risiko sebelum berkongsi data, menekan pautan atau membuat bayaran.</p>
+            <div class="sa-icon">!</div>
+            <div class="sa-section-title">Mengapakah ScamAlert penting?</div>
+            <p>Bahasa penipuan siber sering menyerupai promosi, urusan rasmi atau mesej harian. ScamAlert membantu pengguna menilai risiko sebelum berkongsi data, menekan pautan atau membuat sebarang transaksi kewangan.</p>
         </div>
         """,
         unsafe_allow_html=True,
     )
     st.markdown('</div>', unsafe_allow_html=True)
-    st.info("Pergi ke halaman **Analisis Mesej** untuk mencuba prototaip.")
 
-elif page == "Analisis Mesej":
+    st.markdown('<div class="sa-section-title">Bagaimana ScamAlert Berfungsi?</div>', unsafe_allow_html=True)
+    render_process()
+
+    st.markdown('<div class="sa-section-title">Siapa yang Dibantu?</div>', unsafe_allow_html=True)
+    render_user_strip()
+
+    st.markdown(
+        """
+        <div class="sa-callout">
+            <div class="sa-callout-title">Nota prototaip</div>
+            ScamAlert ialah prototaip amaran awal. Keputusan yang dipaparkan membantu pengguna membuat semakan awal dan tidak menggantikan pengesahan rasmi oleh pihak berkuasa.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_analysis(data, tests):
     render_hero()
     render_stats()
 
     st.markdown('<div class="sa-input-panel">', unsafe_allow_html=True)
     st.markdown('<div class="sa-section-title">Semak Teks Mencurigakan</div>', unsafe_allow_html=True)
-    st.caption("Pilih contoh ujian atau tampal mesej sendiri untuk mendapatkan skor risiko dan cadangan tindakan selamat.")
+    st.markdown('<div class="sa-section-sub">Pilih contoh mesej atau tampal mesej anda sendiri untuk dianalisis.</div>', unsafe_allow_html=True)
 
-    test_list = EXTRA_TESTS.copy()
-    if not tests.empty and "Mesej_Ujian" in tests.columns:
-        test_list += tests["Mesej_Ujian"].dropna().astype(str).tolist()
-    # Remove duplicates while preserving order
-    seen = set()
-    test_list = [x for x in test_list if not (x in seen or seen.add(x))]
-
-    example_options = ["Tulis sendiri"] + test_list
-    selected = st.selectbox("Pilih contoh ujian atau tulis sendiri", example_options)
-    default_text = "" if selected == "Tulis sendiri" else selected
-    user_text = st.text_area("Masukkan mesej untuk dianalisis", value=default_text, height=165, placeholder="Tampal mesej WhatsApp, Telegram, SMS atau media sosial yang mencurigakan di sini…")
+    test_list = list(EXAMPLE_MESSAGES.keys())
+    selected = st.selectbox("Pilih contoh mesej", test_list)
+    default_text = EXAMPLE_MESSAGES[selected]
+    user_text = st.text_area("Masukkan mesej untuk dianalisis", value=default_text, height=165, placeholder="Tampal mesej yang mencurigakan di sini…")
     clicked = st.button("Semak Risiko", type="primary")
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -633,10 +741,10 @@ elif page == "Analisis Mesej":
 
             c1, c2 = st.columns([1, 1])
             with c1:
-                st.markdown('<div class="sa-section-title">Frasa Dikesan</div>', unsafe_allow_html=True)
+                st.markdown('<div class="sa-section-title">Frasa Berisiko Dikesan</div>', unsafe_allow_html=True)
                 render_phrase_chips(result["phrases"], result["safe_hits"])
             with c2:
-                st.markdown('<div class="sa-section-title">Komponen Risiko</div>', unsafe_allow_html=True)
+                st.markdown('<div class="sa-section-title">Komponen Risiko Dikesan</div>', unsafe_allow_html=True)
                 render_feature_chips(result["found"] if result["score"] > 24 else {})
 
             st.markdown(
@@ -644,6 +752,10 @@ elif page == "Analisis Mesej":
                 <div class="sa-action">
                     <strong>Cadangan Tindakan Selamat</strong><br>
                     {html.escape(recommendation(result['level']))}
+                </div>
+                <div class="sa-callout">
+                    <div class="sa-callout-title">Ringkasan Keputusan</div>
+                    {html.escape(summary_text(result['level']))}
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -654,83 +766,189 @@ elif page == "Analisis Mesej":
                 st.dataframe(pretty_display_df(result["matches"][display_cols]), use_container_width=True, hide_index=True)
 
             st.markdown(
-                '<div class="sa-disclaimer">ScamAlert ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat bayaran.</div>',
+                '<div class="sa-disclaimer">ScamAlert ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.</div>',
                 unsafe_allow_html=True,
             )
 
-elif page == "Perbandingan Empirikal":
+
+def render_comparison(contrast):
     render_hero()
     st.markdown('<div class="sa-section-title">Perbandingan Empirikal</div>', unsafe_allow_html=True)
-    st.write(
-        "ScamAlert membandingkan pola bahasa penipuan siber dengan data kawalan sepadan supaya sistem tidak terus melabel perkataan seperti ‘promosi’, ‘segera’ atau ‘bayar’ sebagai berisiko tanpa melihat konteks."
-    )
-    st.markdown('<div class="sa-two-col">', unsafe_allow_html=True)
+    st.markdown('<div class="sa-section-sub">ScamAlert tidak terus melabel sesuatu perkataan sebagai penipuan siber tanpa melihat konteks. Sistem membandingkan pola bahasa penipuan siber dengan data kawalan sepadan.</div>', unsafe_allow_html=True)
+
     st.markdown(
         """
-        <div class="sa-panel">
-            <div class="sa-compare-title" style="color:#991B1B;">Data Penipuan Siber</div>
-            <span class="sa-chip">Berikan OTP</span>
-            <span class="sa-chip">Akaun dibekukan</span>
-            <span class="sa-chip">Modal berganda</span>
-            <span class="sa-chip">Bayar caj proses</span>
-            <span class="sa-chip">Slot terhad</span>
+        <div class="sa-grid-2">
+            <div class="sa-panel">
+                <div class="sa-icon">!</div>
+                <div class="sa-section-title" style="font-size:24px;">Data Penipuan Siber</div>
+                <p>Contoh pola bahasa berisiko tinggi yang sering muncul dalam mesej manipulatif.</p>
+                <span class="sa-chip">Berikan OTP</span>
+                <span class="sa-chip">Akaun dibekukan</span>
+                <span class="sa-chip">Modal berganda</span>
+                <span class="sa-chip">Bayar caj proses</span>
+                <span class="sa-chip">Slot terhad</span>
+                <span class="sa-chip">Yuran pendaftaran</span>
+            </div>
+            <div class="sa-panel">
+                <div class="sa-icon">✓</div>
+                <div class="sa-section-title" style="font-size:24px;">Data Kawalan Sepadan</div>
+                <p>Contoh mesej sah yang kelihatan hampir sama tetapi tidak semestinya penipuan siber.</p>
+                <span class="sa-chip safe">Promosi melalui aplikasi rasmi</span>
+                <span class="sa-chip safe">Deposit dengan invois rasmi</span>
+                <span class="sa-chip safe">Bank mengingatkan jangan kongsi OTP</span>
+                <span class="sa-chip safe">Iklan kerja tanpa bayaran pendaftaran</span>
+                <span class="sa-chip safe">Semak status syarikat melalui saluran rasmi</span>
+            </div>
         </div>
-        <div class="sa-panel">
-            <div class="sa-compare-title" style="color:#166534;">Data Kawalan Sepadan</div>
-            <span class="sa-chip safe">Promosi melalui aplikasi rasmi</span>
-            <span class="sa-chip safe">Deposit dengan invois rasmi</span>
-            <span class="sa-chip safe">Jangan kongsi OTP</span>
-            <span class="sa-chip safe">Tiada bayaran pendaftaran</span>
-            <span class="sa-chip safe">Semak saluran rasmi</span>
+        <div class="sa-callout">
+            <div class="sa-callout-title">Bukan sekadar kata kunci</div>
+            Satu perkataan seperti “promosi”, “segera” atau “bayar” tidak semestinya perlu dilabelkan sebagai penipuan siber. Risiko hanya meningkat apabila beberapa ciri manipulatif muncul bersama-sama dalam konteks yang mencurigakan.
         </div>
         """,
         unsafe_allow_html=True,
     )
-    st.markdown('</div>', unsafe_allow_html=True)
-    if not contrast.empty:
-        st.subheader("Jadual pasangan kontras")
-        st.dataframe(contrast, use_container_width=True, hide_index=True)
 
-elif page == "Dashboard":
+    st.markdown('<div class="sa-section-title">Komponen Skor Risiko</div>', unsafe_allow_html=True)
+    chips = "".join([f'<span class="sa-chip">{html.escape(v)}</span>' for v in RISK_LABELS.values()])
+    st.markdown(chips, unsafe_allow_html=True)
+
+    if not contrast.empty:
+        with st.expander("Lihat jadual pasangan kontras"):
+            st.dataframe(contrast, use_container_width=True, hide_index=True)
+
+
+def render_dashboard(dataset_file):
     render_hero()
     render_stats()
-    st.markdown('<div class="sa-section-title">Dashboard Ringkas</div>', unsafe_allow_html=True)
 
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown(html_card("Keyakinan pengguna", "92%", "Lebih yakin mengenal pasti mesej berisiko", "neutral-card"), unsafe_allow_html=True)
-    with c2:
-        st.markdown(html_card("Kebolehgunaan", "94%", "Bersetuju ScamAlert mudah digunakan", "neutral-card"), unsafe_allow_html=True)
-    with c3:
-        st.markdown(html_card("Cadangan penggunaan", "93%", "Akan mencadangkan ScamAlert", "neutral-card"), unsafe_allow_html=True)
-
-    if "Label_Empirikal" in data.columns:
-        st.subheader("Label Empirikal dalam Dataset Semasa")
-        st.bar_chart(data["Label_Empirikal"].replace({"Scam": "Penipuan Siber", "Bukan Scam": "Bukan Penipuan Siber"}).value_counts())
-    if "Tahap_Risiko" in data.columns:
-        st.subheader("Tahap Risiko")
-        st.bar_chart(data["Tahap_Risiko"].value_counts())
-    if "Jenis_Scam_Kawalan" in data.columns:
-        st.subheader("Jenis Data")
-        st.bar_chart(data["Jenis_Scam_Kawalan"].value_counts())
-
-    st.caption(f"Fail dataset dimuatkan: {dataset_file}")
-
-elif page == "Kodbook & Rubrik":
-    render_hero()
-    st.markdown('<div class="sa-section-title">Kodbook & Rubrik Risiko</div>', unsafe_allow_html=True)
-
-    if not kodbook.empty:
-        st.subheader("Kodbook / Legend")
-        st.dataframe(kodbook, use_container_width=True, hide_index=True)
-    if not rubric.empty:
-        st.subheader("Rubrik Skor Risiko")
-        st.dataframe(rubric, use_container_width=True, hide_index=True)
-    if not levels.empty:
-        st.subheader("Tahap Risiko")
-        st.dataframe(levels, use_container_width=True, hide_index=True)
-
+    st.markdown('<div class="sa-section-title">Papan Pemuka Ringkas</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="sa-disclaimer">ScamAlert ialah prototaip amaran awal. Keputusan sistem membantu pengguna mengenal pasti risiko awal, tetapi tidak menggantikan semakan rasmi.</div>',
+        """
+        <div class="sa-grid-3">
+            <div class="sa-stat"><div class="sa-icon">▲</div><div class="value">92%</div><div class="label">Lebih yakin mengenal pasti mesej berisiko</div></div>
+            <div class="sa-stat"><div class="sa-icon">✓</div><div class="value">94%</div><div class="label">Bersetuju ScamAlert mudah digunakan</div></div>
+            <div class="sa-stat"><div class="sa-icon">●</div><div class="value">93%</div><div class="label">Akan mencadangkan ScamAlert</div></div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
+
+    render_bar_chart(
+        "Label Empirikal v0.4: Dataset Seimbang",
+        [("Penipuan Siber", 1500, "fill-red"), ("Bukan Penipuan Siber", 1500, "fill-black")],
+        max_value=1500,
+    )
+
+    render_bar_chart(
+        "Pecahan Konseptual Dataset",
+        [
+            ("Pinjaman / Bantuan Palsu", 500, "fill-red"),
+            ("Penyamaran Autoriti", 500, "fill-red"),
+            ("Pelaburan Tidak Wujud", 500, "fill-red"),
+            ("Promosi / Transaksi Sah", 500, "fill-black"),
+            ("Hebahan Rasmi / Keselamatan Sah", 500, "fill-black"),
+            ("Pendidikan Kewangan / Kerjaya / Pelaburan Sah", 500, "fill-black"),
+        ],
+        max_value=500,
+    )
+
+    render_bar_chart(
+        "Agihan Tahap Risiko Konseptual",
+        [
+            ("Rendah", 750, "fill-green"),
+            ("Sederhana", 750, "fill-yellow"),
+            ("Tinggi", 750, "fill-red"),
+            ("Sangat Tinggi", 750, "fill-darkred"),
+        ],
+        max_value=750,
+    )
+
+    st.markdown(
+        f"""
+        <div class="sa-disclaimer">
+            <strong>Sumber paparan papan pemuka:</strong><br>
+            Papan pemuka menggunakan paparan konseptual v0.4. Fail dataset dimuatkan untuk fungsi prototaip: {html.escape(dataset_file)}.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_codebook(kodbook, rubric, levels):
+    render_hero()
+    st.markdown('<div class="sa-section-title">Buku Kod dan Rubrik Skor</div>', unsafe_allow_html=True)
+
+    st.markdown(
+        """
+        <div class="sa-grid-2">
+            <div class="sa-panel">
+                <div class="sa-icon">!</div>
+                <div class="sa-section-title" style="font-size:22px;">Definisi data penipuan siber</div>
+                <p>Data yang mengandungi pola bahasa manipulatif seperti arahan wang, permintaan data sensitif, penyamaran autoriti, tekanan masa, janji tidak realistik atau bukti sosial palsu.</p>
+            </div>
+            <div class="sa-panel">
+                <div class="sa-icon">✓</div>
+                <div class="sa-section-title" style="font-size:22px;">Definisi data kawalan</div>
+                <p>Data sah yang menyerupai mesej biasa atau rasmi, tetapi bukan data bahasa penipuan siber. Sebagai contohnya promosi aplikasi rasmi, invois rasmi dan peringatan keselamatan sah.</p>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown('<div class="sa-section-title">Julat Skor Risiko</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div class="sa-ladder">
+            <div class="ladder-item risk-low"><div class="ladder-title">Rendah</div><div class="ladder-score">0–24</div><div class="ladder-note">Semak melalui saluran rasmi.</div></div>
+            <div class="ladder-item risk-medium"><div class="ladder-title">Sederhana</div><div class="ladder-score">25–49</div><div class="ladder-note">Buat semakan lanjut sebelum bertindak.</div></div>
+            <div class="ladder-item risk-high"><div class="ladder-title">Tinggi</div><div class="ladder-score">50–74</div><div class="ladder-note">Jangan kongsi data atau buat bayaran sebelum pengesahan dibuat.</div></div>
+            <div class="ladder-item risk-very-high"><div class="ladder-title">Sangat Tinggi</div><div class="ladder-score">75–100</div><div class="ladder-note">Jangan kongsi OTP, jangan tekan pautan, dan semak segera dengan pihak rasmi.</div></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown('<div class="sa-section-title">Komponen Skor Risiko</div>', unsafe_allow_html=True)
+    chips = "".join([f'<span class="sa-chip">{html.escape(v)}</span>' for v in RISK_LABELS.values()])
+    st.markdown(chips, unsafe_allow_html=True)
+
+    with st.expander("Lihat data kodbook dan rubrik asal"):
+        if not kodbook.empty:
+            st.subheader("Kodbook / Legend")
+            st.dataframe(kodbook, use_container_width=True, hide_index=True)
+        if not rubric.empty:
+            st.subheader("Rubrik Skor Risiko")
+            st.dataframe(rubric, use_container_width=True, hide_index=True)
+        if not levels.empty:
+            st.subheader("Tahap Risiko")
+            st.dataframe(levels, use_container_width=True, hide_index=True)
+
+    st.markdown(
+        '<div class="sa-disclaimer">ScamAlert ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.</div>',
+        unsafe_allow_html=True,
+    )
+
+
+inject_css()
+data, kawalan, kodbook, rubric, levels, contrast, tests, dataset_file = load_data()
+
+tab_rumah, tab_analisis, tab_perbandingan, tab_dashboard, tab_kodbook = st.tabs(
+    ["Rumah", "Analisis Mesej", "Perbandingan Empirikal", "Papan Pemuka", "Buku Kod dan Rubrik Skor"]
+)
+
+with tab_rumah:
+    render_home()
+
+with tab_analisis:
+    render_analysis(data, tests)
+
+with tab_perbandingan:
+    render_comparison(contrast)
+
+with tab_dashboard:
+    render_dashboard(dataset_file)
+
+with tab_kodbook:
+    render_codebook(kodbook, rubric, levels)
