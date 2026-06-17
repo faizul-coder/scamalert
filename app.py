@@ -30,39 +30,42 @@ html, body, [class*="css"] { font-family: "Inter", sans-serif; }
     pointer-events: none;
     z-index: 0;
     background-image:
-        linear-gradient(rgba(185, 28, 28, 0.085) 1.2px, transparent 1.2px),
-        linear-gradient(90deg, rgba(185, 28, 28, 0.085) 1.2px, transparent 1.2px),
-        radial-gradient(circle at 16% 18%, rgba(250, 204, 21, 0.24), transparent 20%),
-        radial-gradient(circle at 84% 78%, rgba(185, 28, 28, 0.18), transparent 24%),
-        repeating-linear-gradient(135deg, rgba(17, 24, 39, 0.035) 0 1px, transparent 1px 26px);
-    background-size: 58px 58px, 58px 58px, 100% 100%, 100% 100%, 100% 100%;
-    opacity: 0.95;
+        linear-gradient(rgba(185, 28, 28, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(185, 28, 28, 0.055) 1px, transparent 1px),
+        radial-gradient(circle at 18% 15%, rgba(250, 204, 21, 0.12), transparent 18%),
+        radial-gradient(circle at 88% 78%, rgba(185, 28, 28, 0.10), transparent 24%);
+    background-size: 82px 82px, 82px 82px, 100% 100%, 100% 100%;
+    opacity: 0.82;
 }
 .stApp::after {
     content: "";
     position: fixed;
-    right: -30px;
-    top: 105px;
-    width: 430px;
-    height: 430px;
+    right: 62px;
+    top: 158px;
+    width: 330px;
+    height: 410px;
     pointer-events: none;
     z-index: 0;
-    border-radius: 50%;
-    border: 1.5px solid rgba(185, 28, 28, 0.20);
-    box-shadow:
-        inset 0 0 0 22px rgba(250, 204, 21, 0.07),
-        inset 0 0 0 58px rgba(185, 28, 28, 0.055),
-        0 0 0 1px rgba(250, 204, 21, 0.04);
-}
-.cyber-strip {
-    height: 44px;
-    margin: 0 0 1.1rem 0;
-    border-radius: 18px;
-    border: 1px solid rgba(185, 28, 28, 0.16);
+    opacity: 0.22;
     background:
-        linear-gradient(90deg, rgba(185,28,28,0.11), rgba(250,204,21,0.08), rgba(185,28,28,0.04)),
-        repeating-linear-gradient(90deg, transparent 0 32px, rgba(185,28,28,0.12) 32px 33px, transparent 33px 76px);
-    box-shadow: 0 10px 26px rgba(17, 24, 39, 0.035);
+        linear-gradient(145deg, rgba(185, 28, 28, 0.42), rgba(250, 204, 21, 0.25));
+    clip-path: polygon(50% 0%, 86% 12%, 86% 48%, 78% 67%, 50% 100%, 22% 67%, 14% 48%, 14% 12%);
+    box-shadow:
+        inset 0 0 0 16px rgba(255, 255, 255, 0.55),
+        inset 0 0 0 34px rgba(185, 28, 28, 0.18),
+        0 18px 50px rgba(185, 28, 28, 0.14);
+}
+.shield-note {
+    position: fixed;
+    right: 118px;
+    top: 326px;
+    width: 220px;
+    height: 6px;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    background: linear-gradient(90deg, transparent, rgba(185,28,28,0.65), rgba(250,204,21,0.65), transparent);
+    border-radius: 999px;
 }
 .block-container {
     max-width: 980px;
@@ -272,7 +275,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="cyber-strip"></div>', unsafe_allow_html=True)
+st.markdown('<div class="shield-note"></div>', unsafe_allow_html=True)
 
 st.markdown('<div class="panel-card">', unsafe_allow_html=True)
 st.markdown("## Semak Mesej Mencurigakan")
