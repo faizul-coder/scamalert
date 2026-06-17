@@ -1,43 +1,40 @@
-# ScamAlert Web Prototype v0.5.0
+# ScamAlert Selangor Streamlit Prototype v0.1
 
-ScamAlert ialah prototaip web amaran awal untuk membantu pengguna mengenal pasti mesej mencurigakan berdasarkan analisis lakuan pertuturan langsung, lakuan pertuturan tidak langsung, skor risiko dan cadangan tindakan selamat.
+**ScamAlert Selangor** ialah aplikasi web induk yang menggabungkan tiga modul analisis bahasa penipuan siber:
 
-## Perubahan v0.5.0
+1. **ScamSpeech** – analisis lakuan pertuturan langsung dan tidak langsung.
+2. **ScamEmotion Trigger 6E** – analisis pencetus emosi dan manipulasi emosi.
+3. **ScamMove 6M** – analisis gerakan wacana dan strategi bahasa.
 
-- Fail Excel sebenar telah dinaik taraf kepada **3,000 data**.
-- Dataset kini seimbang:
-  - **1,500 data penipuan siber**
-  - **1,500 data kawalan sepadan**
-- Data kawalan sepadan kini ditambah kepada tiga kategori utama:
-  - Promosi / Transaksi Sah — 500
-  - Hebahan Rasmi / Keselamatan Sah — 500
-  - Pendidikan Kewangan / Kerjaya / Pelaburan Sah — 500
-- Paparan Papan Pemuka kini selaras dengan kandungan sebenar Excel.
-- Tab `Tentang ScamAlert` dikekalkan.
-- Tema visual kekal hitam, putih dan merah.
-- Hijau hanya digunakan untuk Risiko Rendah.
-- Kuning hanya digunakan untuk Risiko Sederhana.
-- Merah digunakan untuk Risiko Tinggi dan Sangat Tinggi.
+Versi ini direka sebagai **satu halaman Streamlit sahaja**. Landing page boleh digunakan untuk penerangan lengkap, manakala aplikasi ini hanya memfokuskan demonstrasi fungsi.
 
-## Struktur Dataset
+## Struktur Fail
 
-| Label Empirikal | Jumlah |
-|---|---:|
-| Penipuan Siber | 1,500 |
-| Bukan Penipuan Siber | 1,500 |
-| **Jumlah** | **3,000** |
+```text
+ScamAlert_Selangor_Streamlit_v0_1/
+├── app.py
+├── requirements.txt
+├── README.md
+├── SPECIFICATION.md
+├── .streamlit/
+│   └── config.toml
+└── data/
+    ├── scamspeech_dataset.xlsx
+    ├── scamemotion_dataset.xlsx
+    └── scammove_dataset.xlsx
+```
 
-## Pecahan Kategori
+## Cara Deploy di Streamlit Community Cloud
 
-| Kategori | Jumlah |
-|---|---:|
-| Pinjaman / Bantuan Palsu | 500 |
-| Penyamaran Autoriti | 500 |
-| Pelaburan Tidak Wujud | 500 |
-| Promosi / Transaksi Sah | 500 |
-| Hebahan Rasmi / Keselamatan Sah | 500 |
-| Pendidikan Kewangan / Kerjaya / Pelaburan Sah | 500 |
+1. Cipta satu repository baharu di GitHub.
+2. Upload semua fail dalam folder ini ke repository tersebut.
+3. Pastikan `app.py`, `requirements.txt`, folder `.streamlit` dan folder `data` berada dalam root repository.
+4. Buka Streamlit Community Cloud.
+5. Pilih repository GitHub, branch dan fail utama `app.py`.
+6. Klik **Deploy**.
 
-## Nota
+## Nota Penting
 
-Dataset ini ialah simulasi terkawal untuk pembangunan dan ujian awal prototaip. Dataset ini bukan data rasmi agensi penguatkuasaan.
+- Data dalam fail Excel ialah **simulasi terkawal prototaip**.
+- Aplikasi ini ialah alat amaran awal dan tidak menggantikan semakan rasmi oleh pihak berkuasa.
+- Tujuan utama versi ini ialah demonstrasi inovasi untuk pembentangan, pameran dan penilaian awal.

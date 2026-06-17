@@ -1,53 +1,53 @@
-# Spesifikasi ScamAlert Web Prototype v0.5.0
+# Spesifikasi ScamAlert Selangor v0.1
 
 ## Objektif
 
-Versi v0.5.0 menyelaraskan paparan Streamlit dengan fail Excel sebenar yang telah dinaik taraf kepada 3,000 data prototaip.
+Membangunkan satu halaman aplikasi web yang membolehkan pengguna menyemak mesej mencurigakan dan menerima tiga lapisan analisis:
 
-## Dataset
+1. **ScamSpeech** – lakuan pertuturan, frasa berisiko dan skor risiko bahasa.
+2. **ScamEmotion Trigger 6E** – pencetus emosi, intensiti emosi dan skor risiko emosi.
+3. **ScamMove 6M** – gerakan wacana, strategi manipulasi dan skor risiko gerakan.
 
-Dataset sebenar dalam fail `scamalert_dataset.xlsx` mengandungi:
+## Input
 
-- 3,000 jumlah data prototaip
-- 1,500 data penipuan siber
-- 1,500 data kawalan sepadan
+Pengguna boleh:
 
-## Data Penipuan Siber
+- memilih contoh mesej ujian; atau
+- menampal mesej sendiri.
 
-1. Pinjaman / Bantuan Palsu — 500
-2. Penyamaran Autoriti — 500
-3. Pelaburan Tidak Wujud — 500
+## Output
 
-## Data Kawalan Sepadan
+Aplikasi memaparkan:
 
-1. Promosi / Transaksi Sah — 500
-2. Hebahan Rasmi / Keselamatan Sah — 500
-3. Pendidikan Kewangan / Kerjaya / Pelaburan Sah — 500
+- Skor Risiko Keseluruhan
+- Tahap Risiko
+- Padanan Data
+- Frasa Berisiko
+- Petanda Kawalan / Isyarat Sah
+- Analisis ScamSpeech
+- Analisis ScamEmotion Trigger 6E
+- Analisis ScamMove 6M
+- Cadangan Tindakan Selamat
+- Contoh padanan data penipuan siber dan data kawalan sepadan
 
-## Komponen Risiko
+## Dataset Digabungkan
 
-1. R1 Arahan wang / data sensitif
-2. R2 Janji tidak realistik
-3. R3 Penyamaran autoriti
-4. R4 Tekanan masa
-5. R5 Manipulasi emosi
-6. R6 Bukti sosial palsu
+Aplikasi memuatkan tiga dataset:
 
-## Julat Risiko
+1. `scamspeech_dataset.xlsx`
+2. `scamemotion_dataset.xlsx`
+3. `scammove_dataset.xlsx`
 
-- 0–24: Rendah
-- 25–49: Sederhana
-- 50–74: Tinggi
-- 75–100: Sangat Tinggi
+Setiap dataset mempunyai data penipuan siber dan data kawalan sepadan.
 
-## Paparan
+## Prinsip Reka Bentuk
 
-- Tab pertama: Tentang ScamAlert
-- Tab analisis: Analisis Mesej
-- Tab metodologi: Perbandingan Empirikal
-- Tab ringkasan: Papan Pemuka
-- Tab kodbook: Buku Kod dan Rubrik Skor
+- Satu halaman sahaja.
+- Tiada landing page dalam app.
+- Tiada tab yang banyak.
+- Fokus kepada fungsi semakan mesej.
+- Reka bentuk bersih, mudah digunakan dan sesuai untuk demo penilaian.
 
 ## Penafian
 
-ScamAlert ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.
+ScamAlert Selangor ialah prototaip amaran awal. Keputusan yang dipaparkan membantu pengguna membuat semakan awal dan tidak menggantikan pengesahan rasmi oleh pihak berkuasa.
