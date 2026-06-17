@@ -6,7 +6,6 @@ from typing import Dict, List, Tuple
 import pandas as pd
 import streamlit as st
 
-APP_TITLE = "ScamAlert Selangor"
 DATA_DIR = Path(__file__).parent / "data"
 
 st.set_page_config(
@@ -17,107 +16,184 @@ st.set_page_config(
 )
 
 # -----------------------------------------------------------------------------
-# Visual style
+# Clean light UI
 # -----------------------------------------------------------------------------
 st.markdown(
     """
     <style>
     [data-testid="stSidebar"] {display: none;}
     [data-testid="collapsedControl"] {display: none;}
-    .block-container {padding-top: 2.4rem; padding-bottom: 2.4rem; max-width: 1200px;}
-    .main-hero {
-        border-radius: 26px;
-        padding: 34px 38px;
-        background: linear-gradient(135deg, #111111 0%, #1A1A1A 55%, #2A1010 100%);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        box-shadow: 0 18px 45px rgba(17, 24, 39, 0.15);
-        margin-bottom: 22px;
-    }
-    .eyebrow {font-size: 0.86rem; letter-spacing: 0.12em; text-transform: uppercase; color: #FACC15; font-weight: 700; margin-bottom: 8px;}
-    .hero-title {font-size: 3.2rem; line-height: 1.05; font-weight: 900; margin: 0 0 10px 0;}
-    .hero-subtitle {font-size: 1.1rem; line-height: 1.55; max-width: 850px; color: #F3F4F6; margin: 0;}
-    .soft-card {
-        border-radius: 20px;
-        padding: 22px;
+    .block-container {padding-top: 2rem; padding-bottom: 2.2rem; max-width: 1120px;}
+    body {background: #F8F7F4;}
+    .main .block-container {background: #F8F7F4;}
+    .hero {
         background: #FFFFFF;
         border: 1px solid #E5E7EB;
-        box-shadow: 0 12px 34px rgba(17, 24, 39, 0.07);
-        margin-bottom: 18px;
+        border-radius: 26px;
+        padding: 34px 38px;
+        box-shadow: 0 18px 42px rgba(17, 24, 39, 0.06);
+        margin-bottom: 22px;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero:before {
+        content: "";
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 8px;
+        background: #B91C1C;
+    }
+    .hero h1 {
+        color: #111827;
+        font-size: 3.05rem;
+        line-height: 1.05;
+        margin: 0 0 13px 0;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+    }
+    .hero p {
+        color: #374151;
+        font-size: 1.08rem;
+        line-height: 1.62;
+        max-width: 900px;
+        margin: 0;
+    }
+    .section-card {
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-radius: 22px;
+        padding: 24px;
+        margin-bottom: 20px;
+        box-shadow: 0 14px 34px rgba(17, 24, 39, 0.055);
     }
     .result-card {
-        border-radius: 20px;
+        background: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-radius: 22px;
         padding: 22px;
-        background: #111111;
-        color: white;
-        border: 1px solid rgba(250, 204, 21, 0.35);
-        box-shadow: 0 18px 45px rgba(17, 24, 39, 0.18);
-        margin-bottom: 18px;
+        min-height: 150px;
+        box-shadow: 0 12px 28px rgba(17, 24, 39, 0.045);
     }
-    .metric-label {font-size: 0.82rem; color: #6B7280; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;}
-    .metric-value {font-size: 2rem; font-weight: 900; color: #111827; margin: 4px 0 0 0;}
-    .metric-value-light {font-size: 2rem; font-weight: 900; color: #FFFFFF; margin: 4px 0 0 0;}
-    .pill {
-        display: inline-block;
-        padding: 7px 12px;
-        margin: 3px 5px 3px 0;
-        border-radius: 999px;
-        background: #FEF3C7;
-        color: #78350F;
-        font-weight: 700;
-        font-size: 0.88rem;
-        border: 1px solid #FDE68A;
+    .result-card-accent {
+        background: #FFF7ED;
+        border: 1px solid #FED7AA;
+        border-radius: 22px;
+        padding: 22px;
+        min-height: 150px;
+        box-shadow: 0 12px 28px rgba(17, 24, 39, 0.045);
+    }
+    .mini-label {
+        color: #6B7280;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 900;
+        margin-bottom: 7px;
+    }
+    .big-value {
+        color: #111827;
+        font-size: 2.35rem;
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 8px;
+    }
+    .medium-value {
+        color: #111827;
+        font-size: 1.2rem;
+        font-weight: 850;
+        line-height: 1.35;
+    }
+    .muted {
+        color: #6B7280;
+        line-height: 1.55;
+        font-size: 0.96rem;
     }
     .risk-pill {
         display: inline-block;
-        padding: 8px 14px;
+        padding: 9px 14px;
         border-radius: 999px;
         color: white;
-        font-weight: 800;
-        font-size: 0.95rem;
+        font-weight: 900;
+        font-size: 0.98rem;
     }
     .risk-low {background: #15803D;}
     .risk-mid {background: #CA8A04;}
     .risk-high {background: #DC2626;}
     .risk-very {background: #7F1D1D;}
-    .highlighted-text {
-        font-size: 1.04rem;
+    .pill {
+        display: inline-block;
+        padding: 7px 12px;
+        margin: 4px 6px 4px 0;
+        border-radius: 999px;
+        background: #FEF3C7;
+        color: #78350F;
+        font-weight: 800;
+        font-size: 0.9rem;
+        border: 1px solid #FDE68A;
+    }
+    .pill-red {
+        display: inline-block;
+        padding: 7px 12px;
+        margin: 4px 6px 4px 0;
+        border-radius: 999px;
+        background: #FEE2E2;
+        color: #7F1D1D;
+        font-weight: 800;
+        font-size: 0.9rem;
+        border: 1px solid #FECACA;
+    }
+    .text-box {
+        font-size: 1.02rem;
         line-height: 1.85;
         background: #FAFAFA;
         border: 1px solid #E5E7EB;
         border-radius: 16px;
-        padding: 16px;
+        padding: 17px;
         color: #111827;
     }
     mark {
-        background: #FDE047;
+        background: #FACC15;
         color: #111827;
-        border-radius: 5px;
-        padding: 2px 4px;
-        font-weight: 800;
+        border-radius: 6px;
+        padding: 2px 5px;
+        font-weight: 900;
     }
-    .mini-title {font-size: 1.08rem; font-weight: 900; margin-bottom: 6px; color: #111827;}
-    .muted {color: #6B7280; font-size: 0.95rem; line-height: 1.55;}
     .action-box {
-        border-left: 5px solid #DC2626;
-        padding: 15px 17px;
+        border-left: 5px solid #B91C1C;
+        padding: 16px 18px;
         background: #FFF7ED;
-        border-radius: 14px;
+        border-radius: 15px;
         color: #111827;
-        font-weight: 700;
-        margin-top: 8px;
+        font-weight: 800;
+        line-height: 1.55;
+    }
+    .small-note {
+        color: #6B7280;
+        font-size: 0.9rem;
+        line-height: 1.55;
     }
     div.stButton > button:first-child {
         background: #B91C1C;
-        color: white;
+        color: #FFFFFF;
         border: none;
         border-radius: 14px;
-        padding: 0.78rem 1.4rem;
+        padding: 0.8rem 1.35rem;
         font-weight: 900;
-        width: 100%;
+        min-width: 180px;
     }
-    div.stButton > button:first-child:hover {background: #991B1B; color: white; border: none;}
-    textarea, input, select {border-radius: 14px !important;}
+    div.stButton > button:first-child:hover {
+        background: #991B1B;
+        color: #FFFFFF;
+        border: none;
+    }
+    textarea {
+        background-color: #FFFFFF !important;
+        color: #111827 !important;
+        border: 1px solid #D1D5DB !important;
+        border-radius: 16px !important;
+    }
+    .stTextArea label, .stTextInput label {color: #111827 !important; font-weight: 800 !important;}
+    h2, h3 {color: #111827 !important; letter-spacing: -0.02em;}
     </style>
     """,
     unsafe_allow_html=True,
@@ -136,12 +212,11 @@ def load_dataset(filename: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     except Exception:
         return pd.DataFrame(), pd.DataFrame()
 
-scamspeech_fraud, scamspeech_control = load_dataset("scamspeech_dataset.xlsx")
-scamemotion_fraud, scamemotion_control = load_dataset("scamemotion_dataset.xlsx")
-scammove_fraud, scammove_control = load_dataset("scammove_dataset.xlsx")
+speech_fraud, speech_control = load_dataset("scamspeech_dataset.xlsx")
+emotion_fraud, emotion_control = load_dataset("scamemotion_dataset.xlsx")
 
 # -----------------------------------------------------------------------------
-# Lexicons and helper functions
+# Analysis helpers
 # -----------------------------------------------------------------------------
 def normalize(text: str) -> str:
     return re.sub(r"\s+", " ", text.lower().strip())
@@ -172,36 +247,37 @@ def risk_class(level: str) -> str:
     }.get(level, "risk-mid")
 
 def tokenize(text: str) -> set:
-    stop = {"dan", "atau", "yang", "untuk", "dengan", "dalam", "akan", "anda", "saya", "kami", "ini", "itu", "ke", "di", "dari", "pada", "telah", "sila"}
+    stop = {"dan", "atau", "yang", "untuk", "dengan", "dalam", "akan", "anda", "saya", "kami", "ini", "itu", "ke", "di", "dari", "pada", "telah", "sila", "the", "and"}
     words = re.findall(r"[a-zA-ZÀ-ÿ0-9]+", normalize(text))
     return {w for w in words if len(w) > 2 and w not in stop}
 
-def best_match(df: pd.DataFrame, text: str, text_col: str = "Ayat_Ujaran") -> Dict[str, str]:
+def best_match(df: pd.DataFrame, text: str, text_col: str = "Ayat_Ujaran") -> Dict[str, object]:
     if df.empty or text_col not in df.columns or not text.strip():
-        return {"similarity": 0, "text": "Tiada padanan data dipaparkan.", "category": "-"}
+        return {"similarity": 0, "category": "-"}
     query = tokenize(text)
     if not query:
-        return {"similarity": 0, "text": "Tiada padanan data dipaparkan.", "category": "-"}
-    sample = df[[c for c in [text_col, "Label_Empirikal", "Jenis_Scam_Kawalan", "Pencetus_Emosi", "Gerakan_Dominan"] if c in df.columns]].copy()
+        return {"similarity": 0, "category": "-"}
+    useful_cols = [c for c in [text_col, "Label_Empirikal", "Jenis_Scam_Kawalan", "Pencetus_Emosi"] if c in df.columns]
+    sample = df[useful_cols].copy()
     best_idx, best_score = 0, 0.0
-    # Limit computation for fast Streamlit response while preserving representative matching
     for idx, row_text in enumerate(sample[text_col].astype(str).head(1500)):
         toks = tokenize(row_text)
         if not toks:
             continue
-        overlap = len(query & toks)
-        denom = max(1, len(query | toks))
-        score = overlap / denom
+        score = len(query & toks) / max(1, len(query | toks))
         if score > best_score:
             best_score = score
             best_idx = idx
     row = sample.iloc[best_idx]
-    cat = row.get("Jenis_Scam_Kawalan", row.get("Pencetus_Emosi", row.get("Gerakan_Dominan", "-")))
-    return {
-        "similarity": int(round(best_score * 100)),
-        "text": str(row.get(text_col, "")),
-        "category": str(cat),
-    }
+    category = row.get("Jenis_Scam_Kawalan", row.get("Pencetus_Emosi", "-"))
+    return {"similarity": int(round(best_score * 100)), "category": str(category)}
+
+def data_match_phrase(risk_score: int, fraud_sim: int, control_sim: int) -> str:
+    if risk_score >= 50 or fraud_sim > control_sim + 3:
+        return "Lebih hampir kepada data penipuan siber"
+    if risk_score <= 24 or control_sim >= fraud_sim:
+        return "Lebih hampir kepada data kawalan sepadan"
+    return "Memerlukan semakan lanjut"
 
 def highlight_phrases(text: str, phrases: List[str]) -> str:
     safe = html.escape(text)
@@ -211,299 +287,210 @@ def highlight_phrases(text: str, phrases: List[str]) -> str:
         safe = pattern.sub(lambda m: f"<mark>{m.group(0)}</mark>", safe)
     return safe
 
-# ScamSpeech lexicon
-money_data = ["otp", "kata laluan", "password", "pin", "nombor kad", "akaun bank", "bayar", "caj proses", "yuran pendaftaran", "deposit", "transfer", "pindahan", "duit", "rm"]
-unrealistic = ["modal berganda", "modal", "untung", "dijamin", "pulangan", "jadi rm", "bonus", "hadiah", "wang dilepaskan", "lulus", "diluluskan", "tanpa risiko"]
+def render_pills(items: List[str], red: bool = False, fallback: str = "Tiada dikesan") -> str:
+    if not items:
+        return f"<span class='small-note'>{fallback}</span>"
+    cls = "pill-red" if red else "pill"
+    return "".join(f"<span class='{cls}'>{html.escape(str(item))}</span>" for item in sorted(set(items)))
+
+# Lexicons
+money_data = ["otp", "kata laluan", "password", "pin", "akaun bank", "nombor kad", "bayar", "caj proses", "yuran pendaftaran", "deposit", "transfer", "pindahan", "duit", "rm"]
+directive = ["klik", "sahkan", "daftar", "hantar", "berikan", "hubungi", "bayar", "masukkan", "isi", "tekan"]
+unrealistic = ["modal berganda", "modal", "untung", "dijamin", "pulangan", "jadi rm", "bonus", "hadiah", "wang dilepaskan", "diluluskan", "tanpa risiko"]
 authority = ["pihak bank", "bank", "pegawai", "polis", "mahkamah", "lhdn", "kwsp", "syarikat", "admin", "pusat bantuan"]
 urgency = ["segera", "sekarang", "hari ini", "24 jam", "15 minit", "5 minit", "slot terhad", "tinggal", "jika gagal", "akan dibekukan"]
-emotion_words = ["takut", "cemas", "bimbang", "rugi", "hilang", "kasihan", "tolong", "malu", "bersalah", "tanggungjawab"]
-social_proof = ["testimoni", "ramai sudah", "terbukti", "vip", "ahli", "sah", "lesen", "terjamin"]
-control_signals = ["laman rasmi", "aplikasi rasmi", "emel rasmi", "invois rasmi", "terma dan syarat", "semak melalui saluran rasmi", "jangan kongsi otp", "syarikat berdaftar", "kaunter cawangan", "rujukan rasmi"]
-
-# ScamEmotion lexicon
+implicit_pressure = ["jika gagal", "akan dibekukan", "slot terhad", "tinggal", "peluang terakhir", "wang dilepaskan", "dijamin", "terpilih", "vip"]
+control_signals = ["laman rasmi", "aplikasi rasmi", "emel rasmi", "invois rasmi", "terma dan syarat", "saluran rasmi", "jangan kongsi otp", "syarikat berdaftar", "kaunter cawangan", "rujukan rasmi"]
 emotion_map = {
-    "E1 Ketakutan": ["dibekukan", "disekat", "ditutup", "hilang", "polis", "mahkamah", "saman", "akaun akan", "aktiviti luar biasa"],
-    "E2 Kecemasan dan Kesegeraan": ["segera", "sekarang", "15 minit", "24 jam", "hari ini", "jika gagal", "slot terhad", "tinggal"],
-    "E3 Harapan dan Ganjaran": ["untung", "modal", "hadiah", "bonus", "ganjaran", "diluluskan", "wang dilepaskan", "pulangan", "vip"],
-    "E4 Kepercayaan dan Keakraban": ["puan", "tuan", "kami bantu", "pegawai", "pihak bank", "admin", "rakan", "keluarga", "dipercayai"],
-    "E5 Simpati dan Kasihan": ["tolong", "bantuan", "kasihan", "sakit", "kecemasan", "derma", "anak", "keluarga susah"],
-    "E6 Malu, Bersalah dan Tanggungjawab": ["malu", "bersalah", "gagal", "nama", "tanggungjawab", "disenarai", "reputasi"],
+    "Ketakutan": ["dibekukan", "disekat", "ditutup", "hilang", "polis", "mahkamah", "saman", "akaun akan", "aktiviti luar biasa"],
+    "Kecemasan": ["segera", "sekarang", "15 minit", "24 jam", "hari ini", "jika gagal", "slot terhad", "tinggal"],
+    "Harapan": ["untung", "modal", "hadiah", "bonus", "ganjaran", "diluluskan", "wang dilepaskan", "pulangan", "vip"],
+    "Kepercayaan": ["puan", "tuan", "kami bantu", "pegawai", "pihak bank", "admin", "rakan", "keluarga", "dipercayai"],
+    "Simpati": ["tolong", "bantuan", "kasihan", "sakit", "kecemasan", "derma", "anak", "keluarga susah"],
+    "Rasa Bersalah": ["malu", "bersalah", "gagal", "nama", "tanggungjawab", "disenarai", "reputasi"],
 }
 
-# ScamMove lexicon
-move_map = {
-    "M1 Membina Identiti / Peranan": ["saya pegawai", "pihak bank", "admin", "wakil", "pegawai", "pusat bantuan", "syarikat"],
-    "M2 Membina Kepercayaan / Kredibiliti": ["rasmi", "berdaftar", "terbukti", "lesen", "testimoni", "dipercayai", "selamat"],
-    "M3 Mencipta Tarikan atau Krisis": ["akaun dibekukan", "aktiviti luar biasa", "peluang", "untung", "hadiah", "kerugian", "slot terhad"],
-    "M4 Mengarahkan Tindakan": ["klik", "bayar", "hantar", "berikan", "daftar", "sahkan", "transfer", "hubungi"],
-    "M5 Mengawal Komunikasi / Keputusan": ["jangan beritahu", "rahsia", "private", "whatsapp sahaja", "jangan hubungi", "ikut arahan"],
-    "M6 Mengekalkan Eksploitasi": ["caj tambahan", "bayaran tambahan", "upgrade", "teruskan", "lagi rm", "proses seterusnya"],
-}
-
-def analyze_scamspeech(text: str) -> Dict[str, object]:
-    components = {
-        "Arahan wang / data sensitif": contains_any(text, money_data),
-        "Janji tidak realistik": contains_any(text, unrealistic),
-        "Penyamaran autoriti": contains_any(text, authority),
-        "Tekanan masa": contains_any(text, urgency),
-        "Manipulasi emosi": contains_any(text, emotion_words),
-        "Bukti sosial / legitimasi palsu": contains_any(text, social_proof),
-    }
-    weights = {
-        "Arahan wang / data sensitif": 24,
-        "Janji tidak realistik": 18,
-        "Penyamaran autoriti": 18,
-        "Tekanan masa": 18,
-        "Manipulasi emosi": 12,
-        "Bukti sosial / legitimasi palsu": 10,
-    }
-    score = sum(weights[k] for k, v in components.items() if v)
-    controls = contains_any(text, control_signals)
-    if controls:
-        score = max(0, score - min(25, 8 * len(controls)))
-    score = int(min(score, 100))
-    direct = bool(components["Arahan wang / data sensitif"] or contains_any(text, ["klik", "sahkan", "daftar", "hantar", "berikan", "hubungi"]))
-    indirect = bool(components["Janji tidak realistik"] or components["Tekanan masa"] or components["Manipulasi emosi"] or components["Penyamaran autoriti"])
-    if direct and indirect:
-        lakuan = "Langsung dan Tidak Langsung"
-    elif direct:
-        lakuan = "Langsung"
-    elif indirect:
-        lakuan = "Tidak Langsung"
+def analyze_speech(text: str) -> Dict[str, object]:
+    direct_phrases = sorted(set(contains_any(text, directive + money_data)))
+    indirect_phrases = sorted(set(contains_any(text, unrealistic + authority + urgency + implicit_pressure)))
+    control = contains_any(text, control_signals)
+    score = 0
+    if direct_phrases:
+        score += 32
+    if contains_any(text, money_data):
+        score += 20
+    if contains_any(text, unrealistic):
+        score += 18
+    if contains_any(text, authority):
+        score += 14
+    if contains_any(text, urgency):
+        score += 16
+    if control:
+        score = max(0, score - min(30, 8 * len(control)))
+    score = min(100, int(score))
+    if direct_phrases and indirect_phrases:
+        speech_type = "Gabungan lakuan pertuturan langsung dan tidak langsung"
+    elif direct_phrases:
+        speech_type = "Lakuan pertuturan langsung"
+    elif indirect_phrases:
+        speech_type = "Lakuan pertuturan tidak langsung"
     else:
-        lakuan = "Tiada lakuan berisiko jelas"
-    if components["Arahan wang / data sensitif"]:
-        searle = "Direktif"
-    elif components["Janji tidak realistik"]:
-        searle = "Komisif"
-    elif components["Penyamaran autoriti"]:
-        searle = "Representatif"
-    elif components["Manipulasi emosi"]:
-        searle = "Ekspresif tersirat"
-    else:
-        searle = "Representatif neutral"
-    risky_phrases = []
-    for values in components.values():
-        risky_phrases.extend(values)
+        speech_type = "Tiada lakuan berisiko jelas"
+    fraud_match = best_match(speech_fraud, text)
+    control_match = best_match(speech_control, text)
     return {
         "score": score,
         "level": risk_level(score),
-        "components": components,
-        "risky_phrases": sorted(set(risky_phrases)),
-        "control_signals": controls,
-        "lakuan": lakuan,
-        "searle": searle,
+        "match": data_match_phrase(score, fraud_match["similarity"], control_match["similarity"]),
+        "speech_type": speech_type,
+        "direct_phrases": direct_phrases,
+        "indirect_phrases": indirect_phrases,
+        "control_signals": control,
     }
 
-def analyze_scamemotion(text: str) -> Dict[str, object]:
-    found = {label: contains_any(text, pats) for label, pats in emotion_map.items()}
-    active = [label for label, pats in found.items() if pats]
-    score = min(100, sum(15 for label in active) + (10 if len(active) >= 2 else 0) + (10 if contains_any(text, urgency) else 0))
-    controls = contains_any(text, control_signals)
-    if controls:
-        score = max(0, score - min(20, 6 * len(controls)))
-    phrases = []
-    for values in found.values():
-        phrases.extend(values)
-    if score >= 75:
-        intensity = "Sangat Tinggi"
-    elif score >= 50:
-        intensity = "Tinggi"
-    elif score >= 25:
-        intensity = "Sederhana"
-    else:
-        intensity = "Rendah"
+def analyze_emotion(text: str) -> Dict[str, object]:
+    detected = {label: contains_any(text, pats) for label, pats in emotion_map.items()}
+    triggers = [label for label, vals in detected.items() if vals]
+    emotion_phrases = []
+    for vals in detected.values():
+        emotion_phrases.extend(vals)
+    score = min(100, (len(triggers) * 18) + (12 if contains_any(text, urgency) else 0) + (8 if len(triggers) >= 2 else 0))
+    control = contains_any(text, control_signals)
+    if control:
+        score = max(0, score - min(25, 7 * len(control)))
+    score = int(score)
+    fraud_match = best_match(emotion_fraud, text)
+    control_match = best_match(emotion_control, text)
     return {
-        "score": int(score),
-        "level": risk_level(int(score)),
-        "active": active or ["Tiada pencetus emosi manipulatif yang jelas"],
-        "phrases": sorted(set(phrases)),
-        "intensity": intensity,
+        "score": score,
+        "level": risk_level(score),
+        "match": data_match_phrase(score, fraud_match["similarity"], control_match["similarity"]),
+        "triggers": triggers or ["Tiada pencetus emosi manipulatif yang jelas"],
+        "emotion_phrases": sorted(set(emotion_phrases)),
     }
 
-def analyze_scammove(text: str) -> Dict[str, object]:
-    found = {label: contains_any(text, pats) for label, pats in move_map.items()}
-    active = [label for label, pats in found.items() if pats]
-    score = min(100, sum(14 for label in active) + (14 if len(active) >= 3 else 0) + (8 if contains_any(text, ["bayar", "otp", "klik", "transfer"]) else 0))
-    controls = contains_any(text, control_signals)
-    if controls:
-        score = max(0, score - min(20, 6 * len(controls)))
-    phrases = []
-    for values in found.values():
-        phrases.extend(values)
-    return {
-        "score": int(score),
-        "level": risk_level(int(score)),
-        "active": active or ["Tiada gerakan manipulatif yang jelas"],
-        "phrases": sorted(set(phrases)),
-    }
-
-def safe_action(overall_level: str) -> str:
-    if overall_level == "Sangat Tinggi":
-        return "Jangan kongsi OTP, kata laluan atau maklumat peribadi. Jangan tekan pautan dan jangan buat bayaran. Semak segera melalui saluran rasmi."
-    if overall_level == "Tinggi":
-        return "Jangan membuat bayaran atau berkongsi data sebelum pengesahan. Hubungi organisasi melalui laman rasmi atau nombor rasmi."
-    if overall_level == "Sederhana":
-        return "Terdapat beberapa petanda mencurigakan. Buat semakan lanjut melalui saluran rasmi sebelum bertindak."
-    return "Risiko rendah dikesan, tetapi pengguna masih digalakkan menyemak kesahihan mesej melalui saluran rasmi."
-
-def render_pills(items: List[str], fallback: str = "Tiada") -> str:
-    if not items:
-        return f"<span class='muted'>{fallback}</span>"
-    return "".join(f"<span class='pill'>{html.escape(str(item))}</span>" for item in items)
+def safe_action(level: str) -> str:
+    if level == "Sangat Tinggi":
+        return "Mesej ini menunjukkan risiko yang sangat tinggi. Jangan kongsi kata laluan, jangan tekan pautan, jangan buat bayaran dan segera semak dengan pihak rasmi."
+    if level == "Tinggi":
+        return "Mesej menunjukkan ciri manipulatif yang kuat. Jangan berkongsi maklumat peribadi, jangan membuat bayaran dan semak melalui saluran rasmi."
+    if level == "Sederhana":
+        return "Terdapat beberapa ciri mencurigakan. Semak sumber mesej dan elakkan membuat bayaran atau menekan pautan sebelum pengesahan lanjut."
+    return "Risiko rendah dikesan. Namun begitu, pengguna masih digalakkan menyemak kesahihan mesej melalui saluran rasmi."
 
 # -----------------------------------------------------------------------------
-# Header
+# Interface
 # -----------------------------------------------------------------------------
 st.markdown(
-    f"""
-    <div class="main-hero">
-        <div class="eyebrow">AINS 2026 • Prototaip Aplikasi Web</div>
-        <div class="hero-title">{APP_TITLE}</div>
-        <p class="hero-subtitle">Satu mesej dianalisis melalui tiga lapisan: <b>ScamSpeech</b>, <b>ScamEmotion Trigger 6E</b> dan <b>ScamMove 6M</b>. Sistem memaparkan skor risiko, frasa berkaitan, padanan data dan cadangan tindakan selamat.</p>
+    """
+    <div class="hero">
+      <h1>ScamAlert Selangor</h1>
+      <p>ScamAlert Selangor ialah prototaip aplikasi web amaran awal yang membantu pengguna menyemak mesej mencurigakan sebelum berkongsi maklumat peribadi, menekan pautan atau membuat bayaran.</p>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# -----------------------------------------------------------------------------
-# Input area
-# -----------------------------------------------------------------------------
-examples = {
-    "Tulis sendiri": "",
-    "OTP + akaun dibekukan": "Pihak bank telah mengesan aktiviti luar biasa. Sila berikan OTP untuk sahkan identiti anda sekarang. Jika gagal, akaun anda akan dibekukan dalam 24 jam.",
-    "Pelaburan tidak wujud": "Modal RM300 boleh jadi RM3,000 dalam 24 jam. Slot VIP tinggal 5 sahaja. Daftar sekarang.",
-    "Pinjaman / bantuan palsu": "Pinjaman anda telah diluluskan. Bayar caj proses RM150 dahulu sebelum wang dilepaskan.",
-    "Promosi aplikasi rasmi": "Nikmati promosi istimewa sehingga 20% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
-    "Peringatan keselamatan sah": "Pihak bank mengingatkan pelanggan supaya tidak berkongsi OTP atau kata laluan dengan sesiapa. Semak maklumat melalui saluran rasmi sahaja.",
-}
-
-with st.container():
-    st.markdown("<div class='soft-card'>", unsafe_allow_html=True)
-    st.subheader("Semak Mesej")
-    col_a, col_b = st.columns([0.34, 0.66])
-    with col_a:
-        choice = st.selectbox("Pilih contoh mesej", list(examples.keys()))
-    with col_b:
-        message = st.text_area(
-            "Masukkan mesej untuk dianalisis",
-            value=examples[choice],
-            height=140,
-            placeholder="Tampal mesej yang mencurigakan di sini…",
-        )
-    run = st.button("Semak Risiko")
-    st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("<div class='section-card'>", unsafe_allow_html=True)
+st.subheader("Semak Mesej Mencurigakan")
+st.markdown("<p class='muted'>Masukkan mesej yang diterima untuk menilai tahap risiko bahasa penipuan siber.</p>", unsafe_allow_html=True)
+message = st.text_area(
+    "Masukkan mesej di sini",
+    height=150,
+    placeholder="Contoh: Tampal mesej SMS, WhatsApp, Telegram atau media sosial yang mencurigakan di sini…",
+)
+run = st.button("Semak Risiko")
+st.markdown("</div>", unsafe_allow_html=True)
 
 if not run and not message.strip():
-    st.info("Pilih contoh mesej atau tampal mesej sendiri, kemudian tekan **Semak Risiko**.")
+    st.info("Masukkan mesej mencurigakan, kemudian tekan **Semak Risiko**.")
     st.stop()
 
-text = message.strip()
-if not text:
+if not message.strip():
     st.warning("Sila masukkan mesej untuk dianalisis.")
     st.stop()
 
-speech = analyze_scamspeech(text)
-emotion = analyze_scamemotion(text)
-move = analyze_scammove(text)
-
-overall_score = int(round((speech["score"] * 0.40) + (emotion["score"] * 0.30) + (move["score"] * 0.30)))
+text = message.strip()
+speech = analyze_speech(text)
+emotion = analyze_emotion(text)
+overall_score = int(round((speech["score"] * 0.55) + (emotion["score"] * 0.45)))
 overall_level = risk_level(overall_score)
-all_risky_phrases = sorted(set(speech["risky_phrases"] + emotion["phrases"] + move["phrases"]))
-all_controls = speech["control_signals"]
 
-if overall_score >= 50 and len(all_risky_phrases) >= max(1, len(all_controls)):
-    data_match = "Lebih hampir kepada data penipuan siber"
-elif overall_score <= 24 or len(all_controls) > len(all_risky_phrases):
-    data_match = "Lebih hampir kepada data kawalan sepadan"
+if overall_score >= 50 or ("penipuan siber" in speech["match"].lower()) or ("penipuan siber" in emotion["match"].lower()):
+    overall_match = "Lebih hampir kepada data penipuan siber"
+elif overall_score <= 24 and ("kawalan" in speech["match"].lower() or "kawalan" in emotion["match"].lower()):
+    overall_match = "Lebih hampir kepada data kawalan sepadan"
 else:
-    data_match = "Perlu semakan lanjut"
+    overall_match = "Memerlukan semakan lanjut"
 
-speech_fraud_match = best_match(scamspeech_fraud, text)
-speech_control_match = best_match(scamspeech_control, text)
-emotion_fraud_match = best_match(scamemotion_fraud, text)
-move_fraud_match = best_match(scammove_fraud, text)
+all_highlights = speech["direct_phrases"] + speech["indirect_phrases"] + emotion["emotion_phrases"] + speech["control_signals"]
 
-# -----------------------------------------------------------------------------
-# Results
-# -----------------------------------------------------------------------------
-st.markdown("<div class='result-card'>", unsafe_allow_html=True)
-st.markdown("### Keputusan Ringkas")
-col1, col2, col3, col4 = st.columns(4)
+st.markdown("<div class='section-card'>", unsafe_allow_html=True)
+st.subheader("Keputusan Analisis")
+st.markdown("<p class='muted'>Keputusan ini memaparkan skor risiko keseluruhan serta pecahan risiko mengikut analisis lakuan pertuturan dan analisis emosi.</p>", unsafe_allow_html=True)
+
+col1, col2, col3 = st.columns(3)
 with col1:
-    st.markdown("<div class='metric-label'>Skor Risiko</div>", unsafe_allow_html=True)
-    st.markdown(f"<div class='metric-value-light'>{overall_score}/100</div>", unsafe_allow_html=True)
-with col2:
-    st.markdown("<div class='metric-label'>Tahap Risiko</div>", unsafe_allow_html=True)
+    st.markdown("<div class='result-card-accent'>", unsafe_allow_html=True)
+    st.markdown("<div class='mini-label'>Skor Risiko Keseluruhan</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='big-value'>{overall_score}/100</div>", unsafe_allow_html=True)
     st.markdown(f"<span class='risk-pill {risk_class(overall_level)}'>{overall_level}</span>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+with col2:
+    st.markdown("<div class='result-card'>", unsafe_allow_html=True)
+    st.markdown("<div class='mini-label'>Padanan Data Keseluruhan</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='medium-value'>{overall_match}</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 with col3:
-    st.markdown("<div class='metric-label'>Padanan Data</div>", unsafe_allow_html=True)
-    st.markdown(f"<div style='font-weight:900; color:#FACC15; font-size:1.15rem;'>{data_match}</div>", unsafe_allow_html=True)
-with col4:
-    st.markdown("<div class='metric-label'>Modul Aktif</div>", unsafe_allow_html=True)
-    st.markdown("<div style='font-weight:900; color:#FFFFFF; font-size:1.15rem;'>ScamSpeech • ScamEmotion • ScamMove</div>", unsafe_allow_html=True)
+    st.markdown("<div class='result-card'>", unsafe_allow_html=True)
+    st.markdown("<div class='mini-label'>Cadangan Awal</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='medium-value'>{safe_action(overall_level)}</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+sub1, sub2 = st.columns(2)
+with sub1:
+    st.markdown("<div class='result-card'>", unsafe_allow_html=True)
+    st.markdown("<div class='mini-label'>Analisis Lakuan Pertuturan</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='big-value'>{speech['score']}/100</div>", unsafe_allow_html=True)
+    st.markdown(f"<span class='risk-pill {risk_class(speech['level'])}'>{speech['level']}</span>", unsafe_allow_html=True)
+    st.markdown(f"<p class='muted'><b>Lakuan:</b> {html.escape(speech['speech_type'])}<br><b>Padanan:</b> {html.escape(speech['match'])}</p>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+with sub2:
+    st.markdown("<div class='result-card'>", unsafe_allow_html=True)
+    st.markdown("<div class='mini-label'>Analisis Emosi</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='big-value'>{emotion['score']}/100</div>", unsafe_allow_html=True)
+    st.markdown(f"<span class='risk-pill {risk_class(emotion['level'])}'>{emotion['level']}</span>", unsafe_allow_html=True)
+    st.markdown(f"<p class='muted'><b>Pencetus:</b> {html.escape(', '.join(emotion['triggers']))}<br><b>Padanan:</b> {html.escape(emotion['match'])}</p>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
+st.markdown("<div class='section-card'>", unsafe_allow_html=True)
+st.subheader("Frasa Dikesan")
+st.markdown("<p class='muted'>Bahagian ini menunjukkan frasa dalam mesej yang menyumbang kepada keputusan analisis.</p>", unsafe_allow_html=True)
+st.markdown(f"<div class='text-box'>{highlight_phrases(text, all_highlights)}</div>", unsafe_allow_html=True)
+
+f1, f2 = st.columns(2)
+with f1:
+    st.markdown("<div class='mini-label'>Frasa Lakuan Pertuturan Langsung</div>", unsafe_allow_html=True)
+    st.markdown(render_pills(speech["direct_phrases"], red=True), unsafe_allow_html=True)
+    st.markdown("<br><div class='mini-label'>Frasa Lakuan Pertuturan Tidak Langsung</div>", unsafe_allow_html=True)
+    st.markdown(render_pills(speech["indirect_phrases"], red=True), unsafe_allow_html=True)
+with f2:
+    st.markdown("<div class='mini-label'>Frasa Pencetus Emosi</div>", unsafe_allow_html=True)
+    st.markdown(render_pills(emotion["emotion_phrases"], red=False), unsafe_allow_html=True)
+    st.markdown("<br><div class='mini-label'>Petanda Kawalan / Isyarat Sah</div>", unsafe_allow_html=True)
+    st.markdown(render_pills(speech["control_signals"], red=False, fallback="Tiada petanda kawalan jelas dikesan"), unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
+st.markdown("<div class='section-card'>", unsafe_allow_html=True)
+st.subheader("Cadangan Tindakan Selamat")
 st.markdown(f"<div class='action-box'>{html.escape(safe_action(overall_level))}</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown("<div class='soft-card'>", unsafe_allow_html=True)
-st.markdown("### Teks dengan Frasa Berkaitan")
-st.markdown(f"<div class='highlighted-text'>{highlight_phrases(text, all_risky_phrases + all_controls)}</div>", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
-
-col_left, col_right = st.columns(2)
-with col_left:
-    st.markdown("<div class='soft-card'>", unsafe_allow_html=True)
-    st.markdown("<div class='mini-title'>Frasa Berisiko Dikesan</div>", unsafe_allow_html=True)
-    st.markdown(render_pills(all_risky_phrases, "Tiada frasa berisiko jelas dikesan."), unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
-with col_right:
-    st.markdown("<div class='soft-card'>", unsafe_allow_html=True)
-    st.markdown("<div class='mini-title'>Petanda Kawalan / Isyarat Sah</div>", unsafe_allow_html=True)
-    st.markdown(render_pills(all_controls, "Tiada petanda kawalan jelas dikesan."), unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
-
-st.markdown("<div class='soft-card'>", unsafe_allow_html=True)
-st.markdown("### Tiga Lapisan Analisis")
-mod1, mod2, mod3 = st.columns(3)
-with mod1:
-    st.markdown("<div class='mini-title'>ScamSpeech</div>", unsafe_allow_html=True)
-    st.metric("Skor Bahasa", f"{speech['score']}/100")
-    st.write(f"**Tahap:** {speech['level']}")
-    st.write(f"**Lakuan:** {speech['lakuan']}")
-    st.write(f"**Kategori:** {speech['searle']}")
-with mod2:
-    st.markdown("<div class='mini-title'>ScamEmotion Trigger 6E</div>", unsafe_allow_html=True)
-    st.metric("Skor Emosi", f"{emotion['score']}/100")
-    st.write(f"**Tahap:** {emotion['level']}")
-    st.write(f"**Intensiti:** {emotion['intensity']}")
-    st.write("**Pencetus:** " + ", ".join(emotion["active"][:3]))
-with mod3:
-    st.markdown("<div class='mini-title'>ScamMove 6M</div>", unsafe_allow_html=True)
-    st.metric("Skor Gerakan", f"{move['score']}/100")
-    st.write(f"**Tahap:** {move['level']}")
-    st.write("**Gerakan:** " + ", ".join(move["active"][:3]))
-st.markdown("</div>", unsafe_allow_html=True)
-
-with st.expander("Lihat komponen risiko ScamSpeech"):
-    rows = []
-    for k, v in speech["components"].items():
-        rows.append({"Komponen": k, "Dikesan": "Ya" if v else "Tidak", "Frasa": ", ".join(v) if v else "-"})
-    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
-
-with st.expander("Lihat padanan contoh data"):
-    st.markdown("**Padanan data ini digunakan sebagai rujukan konsep prototaip, bukan keputusan forensik rasmi.**")
-    rows = [
-        {"Sumber Data": "ScamSpeech - Penipuan Siber", "Padanan": f"{speech_fraud_match['similarity']}%", "Kategori": speech_fraud_match["category"], "Contoh Data": speech_fraud_match["text"]},
-        {"Sumber Data": "ScamSpeech - Kawalan Sepadan", "Padanan": f"{speech_control_match['similarity']}%", "Kategori": speech_control_match["category"], "Contoh Data": speech_control_match["text"]},
-        {"Sumber Data": "ScamEmotion - Penipuan Siber", "Padanan": f"{emotion_fraud_match['similarity']}%", "Kategori": emotion_fraud_match["category"], "Contoh Data": emotion_fraud_match["text"]},
-        {"Sumber Data": "ScamMove - Penipuan Siber", "Padanan": f"{move_fraud_match['similarity']}%", "Kategori": move_fraud_match["category"], "Contoh Data": move_fraud_match["text"]},
-    ]
-    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
-
-st.markdown("<div class='soft-card'>", unsafe_allow_html=True)
-st.markdown("### Nota Prototaip")
+st.markdown("<div class='section-card'>", unsafe_allow_html=True)
+st.subheader("Penafian")
 st.markdown(
-    "<p class='muted'>ScamAlert Selangor ialah prototaip amaran awal. Keputusan yang dipaparkan membantu pengguna membuat semakan awal dan tidak menggantikan pengesahan rasmi oleh pihak berkuasa. Data yang digunakan ialah simulasi terkawal bagi tujuan pembangunan inovasi.</p>",
+    "<p class='small-note'>ScamAlert Selangor ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.</p>",
     unsafe_allow_html=True,
 )
 st.markdown("</div>", unsafe_allow_html=True)
