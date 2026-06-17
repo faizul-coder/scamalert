@@ -1,13 +1,15 @@
 # SPECIFICATION
 
 Nama aplikasi: ScamAlert Selangor
-Versi: v0.4 Cyber Background
+Versi: v0.5 Visible Cyber Background
 Jenis: Prototaip aplikasi web amaran awal
 
 ## Reka bentuk
 - latar putih lembut (#F8F7F4)
-- corak cybersecurity halus di belakang kandungan
-- kad putih
+- grid cybersecurity lebih jelas
+- circular cyber pattern di kanan
+- cyber strip halus di bawah header
+- kad putih untuk kandungan utama
 - teks utama hitam lembut (#111827)
 - aksen merah (#B91C1C)
 - kuning untuk tahap sederhana / sorotan

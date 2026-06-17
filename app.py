@@ -30,25 +30,39 @@ html, body, [class*="css"] { font-family: "Inter", sans-serif; }
     pointer-events: none;
     z-index: 0;
     background-image:
-        linear-gradient(rgba(185, 28, 28, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(185, 28, 28, 0.045) 1px, transparent 1px),
-        radial-gradient(circle at 15% 15%, rgba(250, 204, 21, 0.16), transparent 20%),
-        radial-gradient(circle at 88% 82%, rgba(185, 28, 28, 0.12), transparent 23%);
-    background-size: 74px 74px, 74px 74px, 100% 100%, 100% 100%;
-    opacity: 0.62;
+        linear-gradient(rgba(185, 28, 28, 0.085) 1.2px, transparent 1.2px),
+        linear-gradient(90deg, rgba(185, 28, 28, 0.085) 1.2px, transparent 1.2px),
+        radial-gradient(circle at 16% 18%, rgba(250, 204, 21, 0.24), transparent 20%),
+        radial-gradient(circle at 84% 78%, rgba(185, 28, 28, 0.18), transparent 24%),
+        repeating-linear-gradient(135deg, rgba(17, 24, 39, 0.035) 0 1px, transparent 1px 26px);
+    background-size: 58px 58px, 58px 58px, 100% 100%, 100% 100%, 100% 100%;
+    opacity: 0.95;
 }
 .stApp::after {
     content: "";
     position: fixed;
-    right: -80px;
-    top: 110px;
-    width: 360px;
-    height: 360px;
+    right: -30px;
+    top: 105px;
+    width: 430px;
+    height: 430px;
     pointer-events: none;
     z-index: 0;
     border-radius: 50%;
-    border: 1px solid rgba(185, 28, 28, 0.10);
-    box-shadow: inset 0 0 0 18px rgba(250, 204, 21, 0.035), inset 0 0 0 42px rgba(185, 28, 28, 0.025);
+    border: 1.5px solid rgba(185, 28, 28, 0.20);
+    box-shadow:
+        inset 0 0 0 22px rgba(250, 204, 21, 0.07),
+        inset 0 0 0 58px rgba(185, 28, 28, 0.055),
+        0 0 0 1px rgba(250, 204, 21, 0.04);
+}
+.cyber-strip {
+    height: 44px;
+    margin: 0 0 1.1rem 0;
+    border-radius: 18px;
+    border: 1px solid rgba(185, 28, 28, 0.16);
+    background:
+        linear-gradient(90deg, rgba(185,28,28,0.11), rgba(250,204,21,0.08), rgba(185,28,28,0.04)),
+        repeating-linear-gradient(90deg, transparent 0 32px, rgba(185,28,28,0.12) 32px 33px, transparent 33px 76px);
+    box-shadow: 0 10px 26px rgba(17, 24, 39, 0.035);
 }
 .block-container {
     max-width: 980px;
@@ -257,6 +271,8 @@ st.markdown("""
   <p class="subtitle-main">ScamAlert Selangor ialah prototaip aplikasi web amaran awal yang membantu pengguna menyemak mesej mencurigakan sebelum berkongsi maklumat peribadi, menekan pautan atau membuat bayaran.</p>
 </div>
 """, unsafe_allow_html=True)
+
+st.markdown('<div class="cyber-strip"></div>', unsafe_allow_html=True)
 
 st.markdown('<div class="panel-card">', unsafe_allow_html=True)
 st.markdown("## Semak Mesej Mencurigakan")

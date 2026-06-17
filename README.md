@@ -1,9 +1,11 @@
-# ScamAlert Selangor Streamlit v0.4 Cyber Background
+# ScamAlert Selangor Streamlit v0.5 Visible Cyber Background
 
-Versi ini menggunakan latar cerah dengan corak cybersecurity yang sangat halus supaya paparan kekal bersih dan mudah dibaca.
+Versi ini menggunakan latar cerah dengan corak cybersecurity yang lebih jelas tetapi masih tidak mengganggu kebolehbacaan.
 
 Ciri utama:
-- latar putih lembut dengan pattern cybersecurity halus
+- background cybersecurity lebih kelihatan
+- kad putih untuk teks utama
+- teks hitam yang jelas
 - satu kotak input mesej sahaja
 - keputusan analisis keseluruhan
 - analisis lakuan pertuturan
