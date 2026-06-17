@@ -1,11 +1,11 @@
-# ScamAlert Selangor Streamlit v0.6 Shield Background
+# ScamAlert Selangor Streamlit v0.7 Plain Clean
 
-Versi ini menggunakan latar cerah dengan watermark shield yang lebih jelas sebagai elemen cybersecurity utama. Kad putih dan teks hitam dikekalkan untuk memastikan kebolehbacaan.
+Versi ini membuang semua background cybersecurity supaya paparan lebih bersih, ringan dan profesional.
 
 Ciri utama:
-- background shield watermark
-- grid cybersecurity halus
-- kad putih untuk kandungan utama
+- tiada background design
+- latar putih lembut
+- kad putih
 - teks hitam yang jelas
 - satu kotak input mesej sahaja
 - keputusan analisis keseluruhan

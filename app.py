@@ -22,50 +22,7 @@ st.markdown("""
 html, body, [class*="css"] { font-family: "Inter", sans-serif; }
 .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
     background-color: var(--bg) !important;
-}
-.stApp::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image:
-        linear-gradient(rgba(185, 28, 28, 0.055) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(185, 28, 28, 0.055) 1px, transparent 1px),
-        radial-gradient(circle at 18% 15%, rgba(250, 204, 21, 0.12), transparent 18%),
-        radial-gradient(circle at 88% 78%, rgba(185, 28, 28, 0.10), transparent 24%);
-    background-size: 82px 82px, 82px 82px, 100% 100%, 100% 100%;
-    opacity: 0.82;
-}
-.stApp::after {
-    content: "";
-    position: fixed;
-    right: 62px;
-    top: 158px;
-    width: 330px;
-    height: 410px;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.22;
-    background:
-        linear-gradient(145deg, rgba(185, 28, 28, 0.42), rgba(250, 204, 21, 0.25));
-    clip-path: polygon(50% 0%, 86% 12%, 86% 48%, 78% 67%, 50% 100%, 22% 67%, 14% 48%, 14% 12%);
-    box-shadow:
-        inset 0 0 0 16px rgba(255, 255, 255, 0.55),
-        inset 0 0 0 34px rgba(185, 28, 28, 0.18),
-        0 18px 50px rgba(185, 28, 28, 0.14);
-}
-.shield-note {
-    position: fixed;
-    right: 118px;
-    top: 326px;
-    width: 220px;
-    height: 6px;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.18;
-    background: linear-gradient(90deg, transparent, rgba(185,28,28,0.65), rgba(250,204,21,0.65), transparent);
-    border-radius: 999px;
+    background-image: none !important;
 }
 .block-container {
     max-width: 980px;
@@ -76,8 +33,7 @@ html, body, [class*="css"] { font-family: "Inter", sans-serif; }
 }
 h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .hero-card, .panel-card {
-    background: rgba(255,255,255,0.96);
-    backdrop-filter: blur(4px);
+    background: #FFFFFF;
     border: 1px solid rgba(229, 231, 235, 0.95);
     border-radius: 22px;
     padding: 1.5rem 1.7rem;
@@ -154,6 +110,7 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     font-size: 1rem !important;
 }
 .stButton > button:hover { background: #991B1B !important; color: white !important; }
+.stButton > button * { color: #FFFFFF !important; }
 .subtle-note {
     background: #FCFCFD;
     border: 1px solid var(--line);
@@ -271,11 +228,9 @@ def analyse_text(message: str):
 st.markdown("""
 <div class="hero-card">
   <div class="title-main">ScamAlert Selangor</div>
-  <p class="subtitle-main">ScamAlert Selangor ialah prototaip aplikasi web amaran awal yang membantu pengguna menyemak mesej mencurigakan sebelum berkongsi maklumat peribadi, menekan pautan atau membuat bayaran.</p>
+  <p class="subtitle-main">ScamAlert Selangor ialah prototaip aplikasi web amaran awal yang membantu pengguna menyemak mesej mencurigakan sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.</p>
 </div>
 """, unsafe_allow_html=True)
-
-st.markdown('<div class="shield-note"></div>', unsafe_allow_html=True)
 
 st.markdown('<div class="panel-card">', unsafe_allow_html=True)
 st.markdown("## Semak Mesej Mencurigakan")

@@ -1,13 +1,12 @@
 # SPECIFICATION
 
 Nama aplikasi: ScamAlert Selangor
-Versi: v0.6 Shield Background
+Versi: v0.7 Plain Clean
 Jenis: Prototaip aplikasi web amaran awal
 
 ## Reka bentuk
+- tiada background cybersecurity
 - latar putih lembut (#F8F7F4)
-- watermark shield besar di bahagian kanan
-- grid cybersecurity halus
 - kad putih untuk kandungan utama
 - teks utama hitam lembut (#111827)
 - aksen merah (#B91C1C)
