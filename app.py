@@ -33,13 +33,14 @@ html, body, [class*="css"] { font-family: "Inter", sans-serif; }
 }
 h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .hero-card, .panel-card {
-    background: #FFFFFF;
-    border: 1px solid rgba(229, 231, 235, 0.95);
-    border-radius: 22px;
-    padding: 1.5rem 1.7rem;
-    box-shadow: 0 12px 28px rgba(17,24,39,0.055);
+    background: transparent;
+    border: none;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    padding: 1.25rem 0 1.1rem 0;
+    box-shadow: none;
 }
-.hero-card { border-left: 6px solid var(--red); margin-bottom: 1.25rem; }
+.hero-card { border-top: 3px solid var(--red); margin-bottom: 1.1rem; }
 .title-main {
     font-size: 2.85rem;
     font-weight: 850;
@@ -56,10 +57,11 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .helper-text { color: var(--muted); font-size: 1rem; margin-top: -0.3rem; margin-bottom: 0.8rem; }
 .result-card {
     background: #FFFFFF;
-    border: 1px solid var(--line);
-    border-radius: 18px;
+    border: 1px solid #EEF0F3;
+    border-radius: 14px;
     padding: 1rem;
     height: 100%;
+    box-shadow: none;
 }
 .result-label { font-size: 0.9rem; color: var(--muted); font-weight: 750; margin-bottom: 0.35rem; }
 .result-value { font-size: 1.95rem; font-weight: 850; color: var(--ink); line-height: 1.15; }
@@ -94,12 +96,17 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .stTextArea textarea {
     background: #FFFFFF !important;
     color: var(--ink) !important;
-    border: 1px solid #D1D5DB !important;
-    border-radius: 16px !important;
+    border: 1px solid #E5E7EB !important;
+    border-radius: 12px !important;
     min-height: 180px !important;
     font-size: 1rem !important;
 }
 .stTextArea textarea::placeholder { color: #9CA3AF !important; }
+.stTextArea textarea:focus {
+    border: 1px solid var(--red) !important;
+    box-shadow: 0 0 0 1px rgba(185, 28, 28, 0.08) !important;
+    outline: none !important;
+}
 .stButton > button {
     background: var(--red) !important;
     color: white !important;
@@ -113,12 +120,52 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .stButton > button * { color: #FFFFFF !important; }
 .subtle-note {
     background: #FCFCFD;
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 1rem 1.15rem;
+    border: none;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    padding: 1rem 0 0 0;
     color: var(--muted);
     line-height: 1.55;
 }
+
+.meter-wrap { margin-top: 0.2rem; }
+.meter-score {
+    font-size: 1.85rem;
+    font-weight: 850;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 0.55rem;
+}
+.meter-zones {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    border-radius: 999px;
+    background: linear-gradient(90deg,
+        #15803D 0%, #15803D 24%,
+        #CA8A04 24%, #CA8A04 49%,
+        #DC2626 49%, #DC2626 74%,
+        #7F1D1D 74%, #7F1D1D 100%);
+    opacity: 0.92;
+}
+.meter-pointer {
+    position: absolute;
+    top: -5px;
+    width: 7px;
+    height: 20px;
+    border-radius: 999px;
+    background: #111827;
+    box-shadow: 0 0 0 2px #FFFFFF;
+    transform: translateX(-50%);
+}
+.meter-scale {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 0.72rem;
+    margin-top: 0.35rem;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -129,18 +176,18 @@ DIRECT_PATTERNS = {
     r"pindahkan wang|transfer wang": (35, "arahan pindahan wang"),
     r"daftar sekarang": (15, "arahan segera mendaftar"),
     r"klik pautan|tekan pautan": (20, "arahan menekan pautan"),
-    r"akaun dibekukan": (25, "ancaman akaun dibekukan"),
+    r"akaun.*dibekukan|akaun dibekukan": (35, "ancaman akaun dibekukan"),
 }
 INDIRECT_PATTERNS = {
-    r"jika gagal": (15, "ancaman tersirat"),
+    r"jika gagal|kalau gagal": (18, "ancaman tersirat"),
     r"segera|sekarang": (10, "desakan masa"),
-    r"24 jam|hari ini|sebelum jam": (12, "had masa"),
+    r"24 jam|hari ini|sebelum jam|dalam 24 jam": (15, "had masa"),
     r"slot terhad|tinggal \d+|terhad": (15, "kelangkaan palsu"),
     r"risiko rendah|jamin|dijamin": (15, "jaminan tidak realistik"),
     r"pulangan tinggi|untung besar|modal.*jadi": (18, "janji keuntungan"),
 }
 EMOTION_PATTERNS = {
-    "Ketakutan": [r"akaun dibekukan", r"disenarai hitam", r"aktiviti luar biasa", r"tindakan undang-undang", r"polis"],
+    "Ketakutan": [r"akaun.*dibekukan", r"akaun dibekukan", r"disenarai hitam", r"aktiviti luar biasa", r"tindakan undang-undang", r"polis"],
     "Kecemasan": [r"segera", r"sekarang", r"24 jam", r"hari ini", r"sebelum jam"],
     "Harapan": [r"untung", r"ganjaran", r"bonus", r"pulangan", r"diluluskan", r"hadiah"],
     "Kepercayaan": [r"bank", r"pegawai", r"rasmi", r"syarikat berdaftar", r"invois"],
@@ -165,6 +212,16 @@ def risk_level(score: int) -> str:
 
 def badge_class(level: str) -> str:
     return {"Rendah":"badge-low", "Sederhana":"badge-medium", "Tinggi":"badge-high", "Sangat Tinggi":"badge-vhigh"}.get(level, "badge-medium")
+
+def risk_meter(score: int) -> str:
+    score = max(0, min(100, int(score)))
+    return f"""
+    <div class="meter-wrap">
+        <div class="meter-score">{score}/100</div>
+        <div class="meter-zones"><span class="meter-pointer" style="left:{score}%;"></span></div>
+        <div class="meter-scale"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+    </div>
+    """
 
 def find_matches(text: str, pattern_dict: dict):
     labels, score = [], 0
@@ -199,6 +256,28 @@ def analyse_text(message: str):
     emotion_score, emotions = analyse_emotions(text)
     speech_score = max(0, min(100, direct_score + indirect_score - control_score))
     overall_score = int(min(100, round(speech_score * 0.6 + emotion_score * 0.4)))
+
+    # Peraturan kritikal prototaip:
+    # OTP / kata laluan + tekanan masa + ancaman akaun perlu dikategorikan
+    # sebagai Risiko Sangat Tinggi kerana pengguna didesak berkongsi data sensitif.
+    has_otp = bool(re.search(r"otp|kata laluan|password|pin", text, flags=re.I))
+    has_account_threat = bool(re.search(r"akaun.*dibekukan|akaun.*disekat|akaun.*ditutup", text, flags=re.I))
+    has_time_pressure = bool(re.search(r"segera|sekarang|24 jam|15 minit|5 minit|jika gagal|kalau gagal", text, flags=re.I))
+    has_money_request = bool(re.search(r"bayar|caj proses|yuran pendaftaran|deposit|transfer|pindahan", text, flags=re.I))
+    has_unrealistic_gain = bool(re.search(r"modal.*jadi|untung|pulangan tinggi|dijamin|bonus|hadiah", text, flags=re.I))
+
+    if has_otp and has_account_threat and has_time_pressure:
+        speech_score = max(speech_score, 90)
+        emotion_score = max(emotion_score, 78)
+        overall_score = max(overall_score, 92)
+    elif has_otp and has_time_pressure:
+        speech_score = max(speech_score, 82)
+        overall_score = max(overall_score, 85)
+    elif has_money_request and has_time_pressure and has_unrealistic_gain:
+        overall_score = max(overall_score, 82)
+    elif has_money_request and has_account_threat:
+        overall_score = max(overall_score, 82)
+
     if direct_labels and indirect_labels:
         speech_type = "Gabungan Lakuan Pertuturan Langsung dan Tidak Langsung"
     elif direct_labels:
@@ -245,7 +324,7 @@ if check and message.strip():
     st.markdown("## Keputusan Analisis")
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.markdown(f'<div class="result-card"><div class="result-label">Skor Risiko Keseluruhan</div><div class="result-value">{result["overall_score"]}/100</div><div class="result-note">Gabungan analisis lakuan pertuturan dan analisis emosi</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="result-card"><div class="result-label">Skor Risiko Keseluruhan</div>{risk_meter(result["overall_score"])}<div class="result-note">Gabungan analisis lakuan pertuturan dan analisis emosi</div></div>', unsafe_allow_html=True)
     with c2:
         level = result["overall_level"]
         st.markdown(f'<div class="result-card"><div class="result-label">Tahap Risiko Keseluruhan</div><div class="badge {badge_class(level)}">{level}</div><div class="result-note">Keputusan keseluruhan sistem</div></div>', unsafe_allow_html=True)
@@ -256,9 +335,9 @@ if check and message.strip():
         st.markdown(f'<div class="result-card"><div class="result-label">Pencetus Emosi Dikesan</div><div class="result-note" style="color:#111827;font-weight:750;">{emo_text}</div></div>', unsafe_allow_html=True)
     c5, c6 = st.columns(2)
     with c5:
-        st.markdown(f'<div class="result-card"><div class="result-label">Analisis Lakuan Pertuturan</div><div class="result-value">{result["speech_score"]}/100</div><div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div><div class="result-note">{result["speech_type"]}</div><div class="result-note">{result["speech_match"]}</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="result-card"><div class="result-label">Analisis Lakuan Pertuturan</div>{risk_meter(result["speech_score"])}<div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div><div class="result-note">{result["speech_type"]}</div><div class="result-note">{result["speech_match"]}</div></div>', unsafe_allow_html=True)
     with c6:
-        st.markdown(f'<div class="result-card"><div class="result-label">Analisis Emosi</div><div class="result-value">{result["emotion_score"]}/100</div><div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div><div class="result-note">{result["emotion_match"]}</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="result-card"><div class="result-label">Analisis Emosi</div>{risk_meter(result["emotion_score"])}<div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div><div class="result-note">{result["emotion_match"]}</div></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)

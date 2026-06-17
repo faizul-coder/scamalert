@@ -1,18 +1,10 @@
-# ScamAlert Selangor Streamlit v0.7 Plain Clean
+# ScamAlert Selangor Streamlit v0.7.3 Plain Clean
 
-Versi ini membuang semua background cybersecurity supaya paparan lebih bersih, ringan dan profesional.
-
-Ciri utama:
-- tiada background design
-- latar putih lembut
-- kad putih
-- teks hitam yang jelas
-- satu kotak input mesej sahaja
-- keputusan analisis keseluruhan
-- analisis lakuan pertuturan
-- analisis emosi
-- frasa dikesan
-- cadangan tindakan selamat
+Pembetulan v0.7.3:
+- Skor risiko dipaparkan dalam bentuk meter.
+- Border kad diringkaskan supaya tidak terlalu tebal.
+- Kad utama menggunakan garis lurus ringkas, bukan border berat.
+- Kotak input menggunakan border halus.
 
 ## Cara jalankan
 
