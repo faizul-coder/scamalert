@@ -275,13 +275,13 @@ def badge_class(level: str) -> str:
 
 def risk_meter(score: int) -> str:
     score = max(0, min(100, int(score)))
-    return f"""
-    <div class="meter-wrap">
-        <div class="meter-score">{score}/100</div>
-        <div class="meter-zones"><span class="meter-pointer" style="left:{score}%;"></span></div>
-        <div class="meter-scale"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
-    </div>
-    """
+    return (
+        f'<div class="meter-wrap">'
+        f'<div class="meter-score">{score}/100</div>'
+        f'<div class="meter-zones"><span class="meter-pointer" style="left:{score}%;"></span></div>'
+        f'<div class="meter-scale"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>'
+        f'</div>'
+    )
 
 def find_matches(text: str, pattern_dict: dict):
     labels, score = [], 0
@@ -451,7 +451,7 @@ def analyse_text(message: str):
 st.markdown("""
 <div class="hero-card">
   <div class="title-main">ScamAlert Selangor</div>
-  <p class="subtitle-main">ScamAlert Selangor ialah sistem amaran awal penipuan siber berasaskan AI yang menganalisis corak bahasa, manipulasi emosi dan strategi pujukan dalam mesej digital untuk membantu rakyat Malaysia mengenal pasti risiko penipuan sebelum kerugian berlaku.</p>
+  <p class="subtitle-main">ScamAlert Selangor ialah sistem amaran awal penipuan siber berasaskan Kecerdasan Buatan (AI) yang menganalisis corak bahasa, manipulasi emosi dan strategi pujukan dalam mesej digital untuk membantu rakyat Malaysia mengenal pasti risiko penipuan sebelum kerugian berlaku.</p>
 </div>
 """, unsafe_allow_html=True)
 

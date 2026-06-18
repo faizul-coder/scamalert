@@ -38,3 +38,9 @@ streamlit run app.py
 - Keputusan Analisis masih menggunakan CSS grid tetapi tanpa indentation HTML yang menyebabkan kod terpapar.
 - Enjin skor v0.8.2 dikekalkan.
 - Ayat “Sila bayar RM100 caj pemprosesan sebelum pengeluaran wang dibuat” disahkan sebagai Sangat Tinggi.
+
+
+## v0.8.5 Meter Header Fix
+- Membaiki kotak meter supaya HTML tidak dipaparkan sebagai kod.
+- Menukar ayat header daripada “AI” kepada “Kecerdasan Buatan (AI)”.
+- Enjin skor v0.8.2 dikekalkan.
