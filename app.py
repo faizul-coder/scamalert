@@ -469,47 +469,42 @@ if check and message.strip():
     level = result["overall_level"]
     emo_text = ", ".join(result["emotions"]) if result["emotions"] else "Tiada pencetus emosi yang ketara"
 
-    st.markdown(
-        f"""
-        <div class="result-grid-top">
-            <div class="result-card">
-                <div class="result-label">Skor Risiko Keseluruhan</div>
-                {risk_meter(result["overall_score"])}
-                <div class="result-note">Gabungan analisis lakuan pertuturan dan analisis emosi</div>
-            </div>
-            <div class="result-card">
-                <div class="result-label">Tahap Risiko Keseluruhan</div>
-                <div class="badge {badge_class(level)}">{level}</div>
-                <div class="result-note">Keputusan keseluruhan sistem</div>
-            </div>
-            <div class="result-card">
-                <div class="result-label">Padanan Data Keseluruhan</div>
-                <div class="result-note" style="color:#111827;font-weight:750;">{result["overall_match"]}</div>
-            </div>
-            <div class="result-card">
-                <div class="result-label">Pencetus Emosi Dikesan</div>
-                <div class="result-note" style="color:#111827;font-weight:750;">{emo_text}</div>
-            </div>
-        </div>
-
-        <div class="result-grid-bottom">
-            <div class="result-card result-tall">
-                <div class="result-label">Analisis Lakuan Pertuturan</div>
-                {risk_meter(result["speech_score"])}
-                <div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div>
-                <div class="result-note">{result["speech_type"]}</div>
-                <div class="result-note">{result["speech_match"]}</div>
-            </div>
-            <div class="result-card result-tall">
-                <div class="result-label">Analisis Emosi</div>
-                {risk_meter(result["emotion_score"])}
-                <div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div>
-                <div class="result-note">{result["emotion_match"]}</div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    result_html = f"""<div class="result-grid-top">
+<div class="result-card">
+<div class="result-label">Skor Risiko Keseluruhan</div>
+{risk_meter(result["overall_score"])}
+<div class="result-note">Gabungan analisis lakuan pertuturan dan analisis emosi</div>
+</div>
+<div class="result-card">
+<div class="result-label">Tahap Risiko Keseluruhan</div>
+<div class="badge {badge_class(level)}">{level}</div>
+<div class="result-note">Keputusan keseluruhan sistem</div>
+</div>
+<div class="result-card">
+<div class="result-label">Padanan Data Keseluruhan</div>
+<div class="result-note" style="color:#111827;font-weight:750;">{result["overall_match"]}</div>
+</div>
+<div class="result-card">
+<div class="result-label">Pencetus Emosi Dikesan</div>
+<div class="result-note" style="color:#111827;font-weight:750;">{emo_text}</div>
+</div>
+</div>
+<div class="result-grid-bottom">
+<div class="result-card result-tall">
+<div class="result-label">Analisis Lakuan Pertuturan</div>
+{risk_meter(result["speech_score"])}
+<div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div>
+<div class="result-note">{result["speech_type"]}</div>
+<div class="result-note">{result["speech_match"]}</div>
+</div>
+<div class="result-card result-tall">
+<div class="result-label">Analisis Emosi</div>
+{risk_meter(result["emotion_score"])}
+<div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div>
+<div class="result-note">{result["emotion_match"]}</div>
+</div>
+</div>"""
+    st.markdown(result_html, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)

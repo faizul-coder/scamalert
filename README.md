@@ -31,3 +31,10 @@ streamlit run app.py
 ## v0.8.3 No Overlap
 - Bahagian Keputusan Analisis ditukar kepada CSS grid supaya kotak skor risiko tidak bertindih dengan kotak Analisis Lakuan Pertuturan.
 - Logik skor v0.8.2 dikekalkan.
+
+
+## v0.8.4 Clean Grid
+- Membetulkan paparan HTML yang sebelum ini keluar seperti kotak kod.
+- Keputusan Analisis masih menggunakan CSS grid tetapi tanpa indentation HTML yang menyebabkan kod terpapar.
+- Enjin skor v0.8.2 dikekalkan.
+- Ayat “Sila bayar RM100 caj pemprosesan sebelum pengeluaran wang dibuat” disahkan sebagai Sangat Tinggi.
