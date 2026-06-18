@@ -10,7 +10,7 @@ st.markdown("""
     --card: #FFFFFF;
     --ink: #111827;
     --muted: #4B5563;
-    --line: #E5E7EB;
+    --line: #111827;
     --red: #B91C1C;
     --red-dark: #7F1D1D;
     --red-soft: #FEE2E2;
@@ -32,15 +32,23 @@ html, body, [class*="css"] { font-family: "Inter", sans-serif; }
     z-index: 1;
 }
 h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
-.hero-card, .panel-card {
+.hero-card {
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-left: 7px solid var(--red);
+    border-radius: 18px;
+    padding: 1.55rem 1.8rem;
+    margin-bottom: 1.3rem;
+    box-shadow: none;
+}
+.panel-card {
     background: transparent;
     border: none;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(17,24,39,0.16);
     border-radius: 0;
     padding: 1.25rem 0 1.1rem 0;
     box-shadow: none;
 }
-.hero-card { border-top: 3px solid var(--red); margin-bottom: 1.1rem; }
 .title-main {
     font-size: 2.85rem;
     font-weight: 850;
@@ -57,7 +65,7 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .helper-text { color: var(--muted); font-size: 1rem; margin-top: -0.3rem; margin-bottom: 0.8rem; }
 .result-card {
     background: #FFFFFF;
-    border: 1px solid #EEF0F3;
+    border: 1px solid var(--line);
     border-radius: 14px;
     padding: 1rem;
     height: 100%;
@@ -96,7 +104,7 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .stTextArea textarea {
     background: #FFFFFF !important;
     color: var(--ink) !important;
-    border: 1px solid #E5E7EB !important;
+    border: 1px solid var(--line) !important;
     border-radius: 12px !important;
     min-height: 180px !important;
     font-size: 1rem !important;
@@ -119,11 +127,10 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .stButton > button:hover { background: #991B1B !important; color: white !important; }
 .stButton > button * { color: #FFFFFF !important; }
 .subtle-note {
-    background: #FCFCFD;
-    border: none;
-    border-top: 1px solid var(--line);
-    border-radius: 0;
-    padding: 1rem 0 0 0;
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
     color: var(--muted);
     line-height: 1.55;
 }
@@ -171,9 +178,9 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 
 DIRECT_PATTERNS = {
     r"berikan otp|masukkan otp|kongsi otp": (35, "permintaan OTP"),
-    r"bayar caj proses|caj proses": (30, "bayar caj proses"),
+    r"bayar caj proses|caj proses|bayar.*caj|bayar.*pemprosesan|caj pemprosesan|yuran pemprosesan|bayaran pendahuluan": (42, "bayaran/caj pemprosesan"),
     r"bayar yuran|yuran pendaftaran": (25, "bayaran pendahuluan"),
-    r"pindahkan wang|transfer wang": (35, "arahan pindahan wang"),
+    r"pindahkan wang|transfer wang|pengeluaran wang|wang dilepaskan|dana dilepaskan|dana dikreditkan": (35, "arahan berkaitan pengeluaran wang"),
     r"daftar sekarang": (15, "arahan segera mendaftar"),
     r"klik pautan|tekan pautan": (20, "arahan menekan pautan"),
     r"akaun.*dibekukan|akaun dibekukan": (35, "ancaman akaun dibekukan"),
@@ -185,11 +192,12 @@ INDIRECT_PATTERNS = {
     r"slot terhad|tinggal \d+|terhad": (15, "kelangkaan palsu"),
     r"risiko rendah|jamin|dijamin": (15, "jaminan tidak realistik"),
     r"pulangan tinggi|untung besar|modal.*jadi": (18, "janji keuntungan"),
+    r"sebelum.*pengeluaran wang|sebelum.*wang.*dilepaskan|sebelum.*dana.*dilepaskan|sebelum.*dana.*dikreditkan|pengeluaran wang.*dilakukan": (38, "syarat sebelum pengeluaran wang"),
 }
 EMOTION_PATTERNS = {
     "Ketakutan": [r"akaun.*dibekukan", r"akaun dibekukan", r"disenarai hitam", r"aktiviti luar biasa", r"tindakan undang-undang", r"polis"],
     "Kecemasan": [r"segera", r"sekarang", r"24 jam", r"hari ini", r"sebelum jam"],
-    "Harapan": [r"untung", r"ganjaran", r"bonus", r"pulangan", r"diluluskan", r"hadiah"],
+    "Harapan": [r"untung", r"ganjaran", r"bonus", r"pulangan", r"diluluskan", r"hadiah", r"pengeluaran wang", r"wang dilepaskan", r"dana dikreditkan"],
     "Kepercayaan": [r"bank", r"pegawai", r"rasmi", r"syarikat berdaftar", r"invois"],
     "Simpati": [r"bantu", r"sumbangan", r"anak sakit", r"kesusahan"],
     "Rasa Bersalah": [r"jika anda tidak", r"anda punca", r"tolong saya", r"jangan kecewakan"],
@@ -263,13 +271,20 @@ def analyse_text(message: str):
     has_otp = bool(re.search(r"otp|kata laluan|password|pin", text, flags=re.I))
     has_account_threat = bool(re.search(r"akaun.*dibekukan|akaun.*disekat|akaun.*ditutup", text, flags=re.I))
     has_time_pressure = bool(re.search(r"segera|sekarang|24 jam|15 minit|5 minit|jika gagal|kalau gagal", text, flags=re.I))
-    has_money_request = bool(re.search(r"bayar|caj proses|yuran pendaftaran|deposit|transfer|pindahan", text, flags=re.I))
+    has_money_request = bool(re.search(r"bayar|caj proses|caj pemprosesan|pemprosesan|yuran pendaftaran|yuran pemprosesan|deposit|transfer|pindahan|rm\s?\d+", text, flags=re.I))
     has_unrealistic_gain = bool(re.search(r"modal.*jadi|untung|pulangan tinggi|dijamin|bonus|hadiah", text, flags=re.I))
+    has_processing_fee = bool(re.search(r"caj pemprosesan|caj proses|caj|pemprosesan|yuran pemprosesan|bayaran pendahuluan", text, flags=re.I))
+    has_release_condition = bool(re.search(r"sebelum.*pengeluaran wang|sebelum.*wang.*dilepaskan|sebelum.*dana.*dilepaskan|sebelum.*dana.*dikreditkan|pengeluaran wang.*dilakukan|wang.*dilepaskan", text, flags=re.I))
+    has_advance_fee_pattern = bool(has_money_request and has_processing_fee and has_release_condition)
 
     if has_otp and has_account_threat and has_time_pressure:
         speech_score = max(speech_score, 90)
         emotion_score = max(emotion_score, 78)
         overall_score = max(overall_score, 92)
+    elif has_advance_fee_pattern:
+        speech_score = max(speech_score, 88)
+        emotion_score = max(emotion_score, 58)
+        overall_score = max(overall_score, 82)
     elif has_otp and has_time_pressure:
         speech_score = max(speech_score, 82)
         overall_score = max(overall_score, 85)
@@ -307,7 +322,7 @@ def analyse_text(message: str):
 st.markdown("""
 <div class="hero-card">
   <div class="title-main">ScamAlert Selangor</div>
-  <p class="subtitle-main">ScamAlert Selangor ialah prototaip aplikasi web amaran awal yang membantu pengguna menyemak mesej mencurigakan sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.</p>
+  <p class="subtitle-main">ScamAlert Selangor ialah sistem amaran awal penipuan siber berasaskan AI yang menganalisis corak bahasa, manipulasi emosi dan strategi pujukan dalam mesej digital untuk membantu rakyat Malaysia mengenal pasti risiko penipuan sebelum kerugian berlaku.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -357,7 +372,7 @@ if check and message.strip():
         "Rendah": "Risiko rendah dikesan. Namun begitu, pengguna masih digalakkan menyemak kesahihan mesej melalui saluran rasmi.",
         "Sederhana": "Terdapat beberapa ciri mencurigakan. Semak sumber mesej dan elakkan membuat bayaran atau menekan pautan sebelum pengesahan lanjut.",
         "Tinggi": "Mesej menunjukkan ciri manipulatif yang kuat. Jangan berkongsi maklumat peribadi, jangan membuat bayaran dan semak melalui saluran rasmi.",
-        "Sangat Tinggi": "Mesej ini menunjukkan risiko yang sangat tinggi. Jangan kongsi kata laluan, jangan tekan pautan, jangan buat bayaran dan segera semak dengan pihak rasmi.",
+        "Sangat Tinggi": "Mesej ini menunjukkan risiko yang sangat tinggi. Jangan kongsi kata laluan, jangan tekan pautan, jangan buat sebarang transaksi kewangan dan segera semak dengan pihak rasmi.",
     }
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
     st.markdown("## Cadangan Tindakan Selamat")

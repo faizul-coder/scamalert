@@ -13,8 +13,9 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Nota Data
-Fail ini mengekalkan paparan dan meter asal. Perubahan hanya pada ayat header.
-Dataset yang disertakan:
-- data/scamspeech_dataset.xlsx
-- data/scamemotion_dataset.xlsx
+
+## Patch v0.7.9
+- Header ber-outline dengan ayat baharu.
+- Cadangan Tindakan Selamat dan Penafian ber-outline.
+- Logik advance-fee scam ditambah.
+- Meter skor dan susun atur utama dikekalkan.
