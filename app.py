@@ -63,13 +63,38 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     margin: 0;
 }
 .helper-text { color: var(--muted); font-size: 1rem; margin-top: -0.3rem; margin-bottom: 0.8rem; }
+.result-grid-top {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    align-items: stretch;
+    margin-top: 0.7rem;
+    margin-bottom: 22px;
+}
+.result-grid-bottom {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: stretch;
+    margin-top: 8px;
+}
 .result-card {
     background: #FFFFFF;
     border: 1px solid var(--line);
     border-radius: 14px;
     padding: 1rem;
-    height: 100%;
+    min-height: 158px;
+    box-sizing: border-box;
     box-shadow: none;
+}
+.result-card.result-tall {
+    min-height: 210px;
+}
+@media (max-width: 900px) {
+    .result-grid-top,
+    .result-grid-bottom {
+        grid-template-columns: 1fr;
+    }
 }
 .result-label { font-size: 0.9rem; color: var(--muted); font-weight: 750; margin-bottom: 0.35rem; }
 .result-value { font-size: 1.95rem; font-weight: 850; color: var(--ink); line-height: 1.15; }
@@ -177,39 +202,66 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 """, unsafe_allow_html=True)
 
 DIRECT_PATTERNS = {
-    r"berikan otp|masukkan otp|kongsi otp": (35, "permintaan OTP"),
-    r"bayar caj proses|caj proses|bayar.*caj|bayar.*pemprosesan|caj pemprosesan|yuran pemprosesan|bayaran pendahuluan": (42, "bayaran/caj pemprosesan"),
-    r"bayar yuran|yuran pendaftaran": (25, "bayaran pendahuluan"),
-    r"pindahkan wang|transfer wang|pengeluaran wang|wang dilepaskan|dana dilepaskan|dana dikreditkan": (35, "arahan berkaitan pengeluaran wang"),
-    r"daftar sekarang": (15, "arahan segera mendaftar"),
-    r"klik pautan|tekan pautan": (20, "arahan menekan pautan"),
-    r"akaun.*dibekukan|akaun dibekukan": (35, "ancaman akaun dibekukan"),
+    r"\botp\b|kod keselamatan|tac|pin\b|kata laluan|password": (45, "permintaan OTP/kata laluan"),
+    r"\bbayar\b|buat bayaran|bayaran|rm\s?\d+|ringgit": (25, "arahan bayaran"),
+    r"caj.*(proses|pemprosesan)|caj pemprosesan|yuran.*(pendaftaran|pemprosesan)|bayaran pendahuluan|deposit": (35, "caj/yuran pendahuluan"),
+    r"klik pautan|tekan pautan|link\b|pautan": (25, "arahan menekan pautan"),
+    r"daftar sekarang|mohon sekarang|hubungi segera|whatsapp segera": (18, "arahan segera"),
+    r"masukkan|sahkan|kemas kini|kemaskini|isi borang|lengkapkan maklumat": (18, "arahan pengesahan/maklumat"),
+    r"pindahkan wang|transfer wang|pengeluaran wang|wang dilepaskan|dana dilepaskan|dana dikreditkan|duit dilepaskan": (30, "arahan berkaitan wang"),
 }
+
 INDIRECT_PATTERNS = {
-    r"jika gagal|kalau gagal": (18, "ancaman tersirat"),
-    r"segera|sekarang": (10, "desakan masa"),
-    r"24 jam|hari ini|sebelum jam|dalam 24 jam": (15, "had masa"),
-    r"slot terhad|tinggal \d+|terhad": (15, "kelangkaan palsu"),
-    r"risiko rendah|jamin|dijamin": (15, "jaminan tidak realistik"),
-    r"pulangan tinggi|untung besar|modal.*jadi": (18, "janji keuntungan"),
-    r"sebelum.*pengeluaran wang|sebelum.*wang.*dilepaskan|sebelum.*dana.*dilepaskan|sebelum.*dana.*dikreditkan|pengeluaran wang.*dilakukan": (38, "syarat sebelum pengeluaran wang"),
+    r"jika gagal|kalau gagal|sekiranya gagal": (18, "ancaman tersirat"),
+    r"segera|sekarang|24 jam|15 minit|5 minit|hari ini|sebelum jam": (18, "desakan masa"),
+    r"slot terhad|tinggal \d+|peluang terhad|tawaran terhad|tempat terhad": (16, "kelangkaan palsu"),
+    r"risiko rendah|jamin|dijamin|confirm|pasti lulus": (18, "jaminan tidak realistik"),
+    r"pulangan tinggi|untung besar|modal.*jadi|keuntungan berganda|wang berganda": (24, "janji keuntungan tidak realistik"),
+    r"akaun.*dibekukan|akaun.*disekat|akaun.*ditutup|aktiviti luar biasa": (30, "ancaman akaun"),
+    r"sebelum.*pengeluaran wang|sebelum.*wang.*dilepaskan|sebelum.*duit.*dilepaskan|sebelum.*dana.*dilepaskan|sebelum.*dana.*dikreditkan|pengeluaran wang.*dilakukan|pengeluaran wang.*dibuat": (40, "syarat sebelum pengeluaran wang"),
+    r"pinjaman.*diluluskan|bantuan.*diluluskan|permohonan.*lulus": (24, "kelulusan kewangan mencurigakan"),
+    r"kerja mudah|kerja dari rumah|bayaran harian|komisen harian": (20, "kerja mudah mencurigakan"),
+    r"anda terpilih|menang hadiah|hadiah tunai|ganjaran tunai": (22, "hadiah/ganjaran mencurigakan"),
 }
+
 EMOTION_PATTERNS = {
-    "Ketakutan": [r"akaun.*dibekukan", r"akaun dibekukan", r"disenarai hitam", r"aktiviti luar biasa", r"tindakan undang-undang", r"polis"],
-    "Kecemasan": [r"segera", r"sekarang", r"24 jam", r"hari ini", r"sebelum jam"],
-    "Harapan": [r"untung", r"ganjaran", r"bonus", r"pulangan", r"diluluskan", r"hadiah", r"pengeluaran wang", r"wang dilepaskan", r"dana dikreditkan"],
-    "Kepercayaan": [r"bank", r"pegawai", r"rasmi", r"syarikat berdaftar", r"invois"],
-    "Simpati": [r"bantu", r"sumbangan", r"anak sakit", r"kesusahan"],
-    "Rasa Bersalah": [r"jika anda tidak", r"anda punca", r"tolong saya", r"jangan kecewakan"],
+    "Ketakutan": [
+        r"akaun.*dibekukan", r"akaun.*disekat", r"akaun.*ditutup",
+        r"jika gagal", r"aktiviti luar biasa", r"tindakan undang-undang",
+        r"disenarai hitam", r"polis"
+    ],
+    "Kecemasan": [
+        r"segera", r"sekarang", r"24 jam", r"hari ini", r"sebelum jam",
+        r"slot terhad", r"tawaran terhad"
+    ],
+    "Harapan": [
+        r"untung", r"ganjaran", r"bonus", r"pulangan", r"diluluskan",
+        r"hadiah", r"pengeluaran wang", r"wang dilepaskan", r"dana dikreditkan",
+        r"duit dilepaskan", r"modal.*jadi"
+    ],
+    "Kepercayaan": [
+        r"bank", r"pegawai", r"rasmi", r"syarikat berdaftar",
+        r"invois", r"jabatan", r"pihak berkuasa"
+    ],
+    "Simpati": [
+        r"bantu", r"sumbangan", r"anak sakit", r"kesusahan", r"kecemasan keluarga"
+    ],
+    "Rasa Bersalah": [
+        r"jika anda tidak", r"anda punca", r"tolong saya", r"jangan kecewakan",
+        r"tanggungjawab"
+    ],
 }
+
 CONTROL_PATTERNS = {
     r"melalui aplikasi rasmi": "saluran rasmi",
     r"tertakluk pada terma dan syarat": "terma dan syarat",
-    r"jangan kongsi otp": "peringatan keselamatan",
+    r"jangan kongsi otp|jangan berkongsi otp|tidak berkongsi otp": "peringatan keselamatan",
+    r"jangan kongsi kata laluan|tidak berkongsi kata laluan": "peringatan keselamatan",
     r"hubungi emel rasmi": "emel rasmi",
     r"akaun syarikat berdaftar": "akaun syarikat berdaftar",
     r"invois rasmi|invois yang dilampirkan": "invois rasmi",
-    r"saluran rasmi": "saluran rasmi",
+    r"saluran rasmi|laman rasmi|portal rasmi": "saluran rasmi",
+    r"semak kesahihan|semak maklumat|maklumat lanjut": "semakan rasmi",
 }
 
 def risk_level(score: int) -> str:
@@ -252,46 +304,122 @@ def analyse_emotions(text: str):
     return min(score, 100), emotions
 
 def match_phrase(score: int, has_control: bool):
-    if score >= 60: return "Lebih hampir kepada data penipuan siber"
-    if has_control and score <= 35: return "Lebih hampir kepada data kawalan sepadan"
+    if score >= 60:
+        return "Lebih hampir kepada data penipuan siber"
+    if has_control and score <= 35:
+        return "Lebih hampir kepada data kawalan sepadan"
     return "Memerlukan semakan lanjut"
 
 def analyse_text(message: str):
     text = message.strip().lower()
+
     direct_score, direct_labels = find_matches(text, DIRECT_PATTERNS)
     indirect_score, indirect_labels = find_matches(text, INDIRECT_PATTERNS)
     control_score, control_labels = find_matches(text, {k: (8, v) for k, v in CONTROL_PATTERNS.items()})
     emotion_score, emotions = analyse_emotions(text)
-    speech_score = max(0, min(100, direct_score + indirect_score - control_score))
+
+    has_control = bool(control_labels)
+
+    # Core pattern indicators
+    has_sensitive_data = bool(re.search(r"\botp\b|kod keselamatan|tac|pin\b|kata laluan|password|nombor kad|maklumat peribadi", text, flags=re.I))
+    has_authority = bool(re.search(r"pihak bank|bank|pegawai|jabatan|pihak berkuasa|rasmi", text, flags=re.I))
+    has_account_threat = bool(re.search(r"akaun.*dibekukan|akaun.*disekat|akaun.*ditutup|aktiviti luar biasa|jika gagal|kalau gagal", text, flags=re.I))
+    has_time_pressure = bool(re.search(r"segera|sekarang|24 jam|15 minit|5 minit|hari ini|slot terhad|tawaran terhad", text, flags=re.I))
+
+    has_money_request = bool(re.search(r"\bbayar\b|buat bayaran|bayaran|rm\s?\d+|ringgit|deposit|transfer|pindahan", text, flags=re.I))
+    has_processing_fee = bool(re.search(r"caj pemprosesan|caj proses|caj|pemprosesan|yuran pemprosesan|yuran pendaftaran|bayaran pendahuluan", text, flags=re.I))
+    has_release_condition = bool(re.search(r"sebelum.*pengeluaran wang|sebelum.*wang.*dilepaskan|sebelum.*duit.*dilepaskan|sebelum.*dana.*dilepaskan|sebelum.*dana.*dikreditkan|pengeluaran wang.*dilakukan|pengeluaran wang.*dibuat|wang.*dilepaskan|duit.*dilepaskan", text, flags=re.I))
+
+    has_loan = bool(re.search(r"pinjaman|bantuan|wang diluluskan|permohonan.*lulus|telah diluluskan", text, flags=re.I))
+    has_unrealistic_gain = bool(re.search(r"modal.*jadi|untung|pulangan tinggi|keuntungan berganda|dijamin|bonus|hadiah|ganjaran", text, flags=re.I))
+    has_job_scam = bool(re.search(r"kerja mudah|kerja dari rumah|bayaran harian|komisen harian|like dan follow|tugasan mudah", text, flags=re.I))
+    has_prize = bool(re.search(r"anda terpilih|menang hadiah|hadiah tunai|ganjaran tunai|tahniah", text, flags=re.I))
+    has_link_or_form = bool(re.search(r"klik pautan|tekan pautan|link\b|isi borang|lengkapkan maklumat|sahkan maklumat", text, flags=re.I))
+
+    has_safety_warning = bool(re.search(r"jangan.*(otp|kata laluan|password)|tidak berkongsi|jangan berkongsi|saluran rasmi|laman rasmi|aplikasi rasmi|terma dan syarat|invois rasmi", text, flags=re.I))
+
+    # Base score
+    speech_score = max(0, min(100, direct_score + indirect_score))
+    if has_safety_warning and not (has_money_request and has_processing_fee):
+        # Safety reminders should not be penalized merely because they mention OTP or password.
+        speech_score = max(0, speech_score - control_score - 25)
+        emotion_score = max(0, emotion_score - 10)
+    else:
+        speech_score = max(0, speech_score - control_score)
+
     overall_score = int(min(100, round(speech_score * 0.6 + emotion_score * 0.4)))
 
-    # Peraturan kritikal prototaip:
-    # OTP / kata laluan + tekanan masa + ancaman akaun perlu dikategorikan
-    # sebagai Risiko Sangat Tinggi kerana pengguna didesak berkongsi data sensitif.
-    has_otp = bool(re.search(r"otp|kata laluan|password|pin", text, flags=re.I))
-    has_account_threat = bool(re.search(r"akaun.*dibekukan|akaun.*disekat|akaun.*ditutup", text, flags=re.I))
-    has_time_pressure = bool(re.search(r"segera|sekarang|24 jam|15 minit|5 minit|jika gagal|kalau gagal", text, flags=re.I))
-    has_money_request = bool(re.search(r"bayar|caj proses|caj pemprosesan|pemprosesan|yuran pendaftaran|yuran pemprosesan|deposit|transfer|pindahan|rm\s?\d+", text, flags=re.I))
-    has_unrealistic_gain = bool(re.search(r"modal.*jadi|untung|pulangan tinggi|dijamin|bonus|hadiah", text, flags=re.I))
-    has_processing_fee = bool(re.search(r"caj pemprosesan|caj proses|caj|pemprosesan|yuran pemprosesan|bayaran pendahuluan", text, flags=re.I))
-    has_release_condition = bool(re.search(r"sebelum.*pengeluaran wang|sebelum.*wang.*dilepaskan|sebelum.*dana.*dilepaskan|sebelum.*dana.*dikreditkan|pengeluaran wang.*dilakukan|wang.*dilepaskan", text, flags=re.I))
-    has_advance_fee_pattern = bool(has_money_request and has_processing_fee and has_release_condition)
-
-    if has_otp and has_account_threat and has_time_pressure:
+    # Pattern-based minimum risk rules.
+    # These prevent clearly risky messages from being classified as low merely because wording varies.
+    if has_sensitive_data and has_account_threat and has_time_pressure:
+        direct_labels += ["permintaan data sensitif"]
+        indirect_labels += ["ancaman akaun", "desakan masa"]
         speech_score = max(speech_score, 90)
         emotion_score = max(emotion_score, 78)
         overall_score = max(overall_score, 92)
-    elif has_advance_fee_pattern:
+
+    elif has_money_request and has_processing_fee and has_release_condition:
+        direct_labels += ["arahan bayaran"]
+        indirect_labels += ["syarat sebelum pengeluaran wang"]
+        if "Harapan" not in emotions:
+            emotions.append("Harapan")
+            emotion_score = min(100, emotion_score + 18)
         speech_score = max(speech_score, 88)
         emotion_score = max(emotion_score, 58)
-        overall_score = max(overall_score, 82)
-    elif has_otp and has_time_pressure:
+        overall_score = max(overall_score, 84)
+
+    elif has_loan and has_money_request and has_processing_fee:
+        direct_labels += ["arahan bayaran"]
+        indirect_labels += ["kelulusan kewangan mencurigakan"]
+        if "Harapan" not in emotions:
+            emotions.append("Harapan")
+            emotion_score = min(100, emotion_score + 18)
         speech_score = max(speech_score, 82)
-        overall_score = max(overall_score, 85)
-    elif has_money_request and has_time_pressure and has_unrealistic_gain:
-        overall_score = max(overall_score, 82)
-    elif has_money_request and has_account_threat:
-        overall_score = max(overall_score, 82)
+        emotion_score = max(emotion_score, 54)
+        overall_score = max(overall_score, 80)
+
+    elif has_unrealistic_gain and (has_time_pressure or has_money_request):
+        indirect_labels += ["janji keuntungan tidak realistik"]
+        if "Harapan" not in emotions:
+            emotions.append("Harapan")
+            emotion_score = min(100, emotion_score + 18)
+        speech_score = max(speech_score, 76)
+        emotion_score = max(emotion_score, 54)
+        overall_score = max(overall_score, 76)
+
+    elif has_job_scam and (has_processing_fee or has_money_request):
+        direct_labels += ["arahan bayaran"]
+        indirect_labels += ["kerja mudah mencurigakan"]
+        speech_score = max(speech_score, 76)
+        overall_score = max(overall_score, 76)
+
+    elif has_prize and (has_link_or_form or has_sensitive_data):
+        direct_labels += ["arahan pengesahan/maklumat"]
+        indirect_labels += ["hadiah/ganjaran mencurigakan"]
+        speech_score = max(speech_score, 82)
+        emotion_score = max(emotion_score, 56)
+        overall_score = max(overall_score, 80)
+
+    elif has_authority and (has_sensitive_data or has_link_or_form):
+        direct_labels += ["arahan pengesahan/maklumat"]
+        indirect_labels += ["penyamaran autoriti"]
+        speech_score = max(speech_score, 78)
+        overall_score = max(overall_score, 78)
+
+    elif has_money_request and has_processing_fee:
+        direct_labels += ["arahan bayaran"]
+        speech_score = max(speech_score, 68)
+        overall_score = max(overall_score, 68)
+
+    if has_safety_warning and not (has_money_request and has_processing_fee) and overall_score < 50:
+        overall_score = min(overall_score, 20)
+        speech_score = min(speech_score, 20)
+        emotion_score = min(emotion_score, 15)
+
+    direct_labels = list(dict.fromkeys(direct_labels))
+    indirect_labels = list(dict.fromkeys(indirect_labels))
+    emotions = list(dict.fromkeys(emotions))
+    control_labels = list(dict.fromkeys(control_labels))
 
     if direct_labels and indirect_labels:
         speech_type = "Gabungan Lakuan Pertuturan Langsung dan Tidak Langsung"
@@ -301,6 +429,7 @@ def analyse_text(message: str):
         speech_type = "Lakuan Pertuturan Tidak Langsung"
     else:
         speech_type = "Tiada pola lakuan yang ketara"
+
     return {
         "overall_score": overall_score,
         "overall_level": risk_level(overall_score),
@@ -337,22 +466,50 @@ if check and message.strip():
     result = analyse_text(message)
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
     st.markdown("## Keputusan Analisis")
-    c1, c2, c3, c4 = st.columns(4)
-    with c1:
-        st.markdown(f'<div class="result-card"><div class="result-label">Skor Risiko Keseluruhan</div>{risk_meter(result["overall_score"])}<div class="result-note">Gabungan analisis lakuan pertuturan dan analisis emosi</div></div>', unsafe_allow_html=True)
-    with c2:
-        level = result["overall_level"]
-        st.markdown(f'<div class="result-card"><div class="result-label">Tahap Risiko Keseluruhan</div><div class="badge {badge_class(level)}">{level}</div><div class="result-note">Keputusan keseluruhan sistem</div></div>', unsafe_allow_html=True)
-    with c3:
-        st.markdown(f'<div class="result-card"><div class="result-label">Padanan Data Keseluruhan</div><div class="result-note" style="color:#111827;font-weight:750;">{result["overall_match"]}</div></div>', unsafe_allow_html=True)
-    with c4:
-        emo_text = ", ".join(result["emotions"]) if result["emotions"] else "Tiada pencetus emosi yang ketara"
-        st.markdown(f'<div class="result-card"><div class="result-label">Pencetus Emosi Dikesan</div><div class="result-note" style="color:#111827;font-weight:750;">{emo_text}</div></div>', unsafe_allow_html=True)
-    c5, c6 = st.columns(2)
-    with c5:
-        st.markdown(f'<div class="result-card"><div class="result-label">Analisis Lakuan Pertuturan</div>{risk_meter(result["speech_score"])}<div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div><div class="result-note">{result["speech_type"]}</div><div class="result-note">{result["speech_match"]}</div></div>', unsafe_allow_html=True)
-    with c6:
-        st.markdown(f'<div class="result-card"><div class="result-label">Analisis Emosi</div>{risk_meter(result["emotion_score"])}<div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div><div class="result-note">{result["emotion_match"]}</div></div>', unsafe_allow_html=True)
+    level = result["overall_level"]
+    emo_text = ", ".join(result["emotions"]) if result["emotions"] else "Tiada pencetus emosi yang ketara"
+
+    st.markdown(
+        f"""
+        <div class="result-grid-top">
+            <div class="result-card">
+                <div class="result-label">Skor Risiko Keseluruhan</div>
+                {risk_meter(result["overall_score"])}
+                <div class="result-note">Gabungan analisis lakuan pertuturan dan analisis emosi</div>
+            </div>
+            <div class="result-card">
+                <div class="result-label">Tahap Risiko Keseluruhan</div>
+                <div class="badge {badge_class(level)}">{level}</div>
+                <div class="result-note">Keputusan keseluruhan sistem</div>
+            </div>
+            <div class="result-card">
+                <div class="result-label">Padanan Data Keseluruhan</div>
+                <div class="result-note" style="color:#111827;font-weight:750;">{result["overall_match"]}</div>
+            </div>
+            <div class="result-card">
+                <div class="result-label">Pencetus Emosi Dikesan</div>
+                <div class="result-note" style="color:#111827;font-weight:750;">{emo_text}</div>
+            </div>
+        </div>
+
+        <div class="result-grid-bottom">
+            <div class="result-card result-tall">
+                <div class="result-label">Analisis Lakuan Pertuturan</div>
+                {risk_meter(result["speech_score"])}
+                <div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div>
+                <div class="result-note">{result["speech_type"]}</div>
+                <div class="result-note">{result["speech_match"]}</div>
+            </div>
+            <div class="result-card result-tall">
+                <div class="result-label">Analisis Emosi</div>
+                {risk_meter(result["emotion_score"])}
+                <div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div>
+                <div class="result-note">{result["emotion_match"]}</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
