@@ -34,12 +34,12 @@ html, body, [class*="css"] { font-family: "Inter", sans-serif; }
 h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .hero-card {
     background: #FFFFFF;
-    border: 1px solid var(--line);
-    border-left: 7px solid var(--red);
+    border: 2px solid var(--line);
+    border-left: 8px solid var(--red);
     border-radius: 18px;
     padding: 1.55rem 1.8rem;
     margin-bottom: 1.3rem;
-    box-shadow: none;
+    box-shadow: 0 0 0 1px rgba(17,24,39,0.02);
 }
 .panel-card {
     background: transparent;
