@@ -44,3 +44,10 @@ streamlit run app.py
 - Membaiki kotak meter supaya HTML tidak dipaparkan sebagai kod.
 - Menukar ayat header daripada “AI” kepada “Kecerdasan Buatan (AI)”.
 - Enjin skor v0.8.2 dikekalkan.
+
+
+## v0.8.6 Colloquial Withdrawal Fee
+- Menambah rule bahasa harian seperti “bayar dahulu sebelum keluarkan duit”.
+- Menambah variasi: “bayar dulu baru duit boleh keluar”, “sebelum keluar duit”, “duit keluar”, “withdraw duit”.
+- Peringatan keselamatan rasmi seperti “jangan berkongsi OTP” kekal rendah.
+- UI/meter/layout dikekalkan daripada versi sebelumnya.

@@ -326,9 +326,9 @@ def analyse_text(message: str):
     has_account_threat = bool(re.search(r"akaun.*dibekukan|akaun.*disekat|akaun.*ditutup|aktiviti luar biasa|jika gagal|kalau gagal", text, flags=re.I))
     has_time_pressure = bool(re.search(r"segera|sekarang|24 jam|15 minit|5 minit|hari ini|slot terhad|tawaran terhad", text, flags=re.I))
 
-    has_money_request = bool(re.search(r"\bbayar\b|buat bayaran|bayaran|rm\s?\d+|ringgit|deposit|transfer|pindahan", text, flags=re.I))
-    has_processing_fee = bool(re.search(r"caj pemprosesan|caj proses|caj|pemprosesan|yuran pemprosesan|yuran pendaftaran|bayaran pendahuluan", text, flags=re.I))
-    has_release_condition = bool(re.search(r"sebelum.*pengeluaran wang|sebelum.*wang.*dilepaskan|sebelum.*duit.*dilepaskan|sebelum.*dana.*dilepaskan|sebelum.*dana.*dikreditkan|pengeluaran wang.*dilakukan|pengeluaran wang.*dibuat|wang.*dilepaskan|duit.*dilepaskan", text, flags=re.I))
+    has_money_request = bool(re.search(r"\bbayar\b|bayar dulu|bayar dahulu|kena bayar|buat bayaran|bayaran|rm\s?\d+|ringgit|deposit|transfer|pindahan", text, flags=re.I))
+    has_processing_fee = bool(re.search(r"caj pemprosesan|caj proses|caj|pemprosesan|yuran pemprosesan|yuran pendaftaran|bayaran pendahuluan|caj pelepasan|caj pengeluaran|fee", text, flags=re.I))
+    has_release_condition = bool(re.search(r"sebelum.*pengeluaran wang|sebelum.*keluarkan duit|sebelum.*keluar duit|sebelum.*ambil duit|sebelum.*wang.*dilepaskan|sebelum.*duit.*dilepaskan|sebelum.*dana.*dilepaskan|sebelum.*dana.*dikreditkan|pengeluaran wang.*dilakukan|pengeluaran wang.*dibuat|wang.*dilepaskan|duit.*dilepaskan|duit.*keluar|wang.*keluar|baru.*duit.*keluar|baru.*wang.*keluar|withdraw.*duit|withdraw.*wang", text, flags=re.I))
 
     has_loan = bool(re.search(r"pinjaman|bantuan|wang diluluskan|permohonan.*lulus|telah diluluskan", text, flags=re.I))
     has_unrealistic_gain = bool(re.search(r"modal.*jadi|untung|pulangan tinggi|keuntungan berganda|dijamin|bonus|hadiah|ganjaran", text, flags=re.I))
@@ -351,7 +351,32 @@ def analyse_text(message: str):
 
     # Pattern-based minimum risk rules.
     # These prevent clearly risky messages from being classified as low merely because wording varies.
-    if has_sensitive_data and has_account_threat and has_time_pressure:
+    has_colloquial_withdraw_fee = bool(re.search(r"bayar.*(dulu|dahulu)?.*(sebelum|baru).*?(keluarkan duit|keluar duit|ambil duit|duit.*keluar|wang.*keluar|withdraw)", text, flags=re.I))
+    has_direct_otp_request = bool(re.search(r"masukkan\s+otp|berikan\s+otp|kongsi\s+otp|sahkan.*otp|hantar.*otp", text, flags=re.I))
+    has_direct_sensitive_request = bool(re.search(r"masukkan\s+(kata laluan|password|pin)|berikan\s+(kata laluan|password|pin)|kongsi\s+(kata laluan|password|pin)", text, flags=re.I))
+    has_direct_link_request = bool(re.search(r"klik pautan|tekan pautan|buka pautan", text, flags=re.I))
+    safety_control_only = bool(has_safety_warning and not has_money_request and not has_direct_otp_request and not has_direct_sensitive_request and not has_direct_link_request)
+
+    if safety_control_only:
+        speech_score = min(speech_score, 18)
+        emotion_score = min(emotion_score, 10)
+        overall_score = min(overall_score, 18)
+        direct_labels = []
+        indirect_labels = []
+        emotions = []
+        control_labels = control_labels or ["peringatan keselamatan"]
+
+    elif has_colloquial_withdraw_fee:
+        direct_labels += ["arahan bayaran"]
+        indirect_labels += ["syarat sebelum pengeluaran wang"]
+        if "Harapan" not in emotions:
+            emotions.append("Harapan")
+            emotion_score = min(100, emotion_score + 18)
+        speech_score = max(speech_score, 88)
+        emotion_score = max(emotion_score, 58)
+        overall_score = max(overall_score, 84)
+
+    elif has_sensitive_data and has_account_threat and has_time_pressure:
         direct_labels += ["permintaan data sensitif"]
         indirect_labels += ["ancaman akaun", "desakan masa"]
         speech_score = max(speech_score, 90)

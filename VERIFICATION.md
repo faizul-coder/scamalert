@@ -1,12 +1,13 @@
-# Verification v0.8.5
+# Verification v0.8.6
 
-Header:
-ScamAlert Selangor ialah sistem amaran awal penipuan siber berasaskan Kecerdasan Buatan (AI) yang menganalisis corak bahasa, manipulasi emosi dan strategi pujukan dalam mesej digital untuk membantu rakyat Malaysia mengenal pasti risiko penipuan sebelum kerugian berlaku.
+Input: Sila bayar RM100 caj pemprosesan sebelum pengeluaran wang dibuat
+Output: 84/100 — Sangat Tinggi
 
-Sample:
-Sila bayar RM100 caj pemprosesan sebelum pengeluaran wang dibuat
+Input: bayar dahulu sebelum keluarkan duit
+Output: 84/100 — Sangat Tinggi
 
-Expected: Sangat Tinggi
-Actual overall score: 84/100
-Actual level: Sangat Tinggi
-Actual match: Lebih hampir kepada data penipuan siber
+Input: kena bayar dulu baru duit boleh keluar
+Output: 84/100 — Sangat Tinggi
+
+Input: Pihak bank mengingatkan pelanggan supaya tidak berkongsi OTP atau kata laluan dengan sesiapa. Semak maklumat melalui saluran rasmi sahaja.
+Output: 78/100 — Sangat Tinggi
