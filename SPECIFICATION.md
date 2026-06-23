@@ -1,21 +1,14 @@
 # SPECIFICATION
 
 Nama aplikasi: ScamAlert  
-Versi: v0.8.5 Susun Atur Input Diperkemas  
+Versi: 8.6  
 Jenis: Prototaip aplikasi web amaran awal
 
-## Fokus utama
-ScamAlert menganalisis mesej mencurigakan melalui tiga lapisan:
-1. **Makna tersurat dan makna tersirat**
-2. **Pencetus emosi**
-3. **Gerakan strategi penipuan**
-
-## Penambahbaikan v0.8.5
-- Teks bantuan input diringkaskan kepada penggunaan bahasa Melayu yang lebih jelas.
-- Kotak muat naik tangkapan layar diletakkan di bawah kotak mesej.
-- Kotak muat naik digayakan dengan latar putih dan garis luar gelap agar sepadan dengan komponen semakan mesej.
-- Butang utama kini menggunakan label **Semak Mesej**.
-- Pratonton tangkapan layar masih dipaparkan dalam bahagian boleh buka/tutup untuk memastikan antara muka kekal kemas.
+## Penambahbaikan 8.6
+- Butang utama **Semak Mesej** diletakkan lebih dekat dengan kotak mesej.
+- Kotak muat naik tangkapan layar diletakkan selepas butang semakan sebagai pilihan tambahan.
+- Susun atur input dikemas supaya aliran tindakan pengguna lebih jelas: masukkan mesej → semak mesej → muat naik tangkapan layar jika perlu.
+- Nama fail pakej menggunakan sistem nombor versi ringkas.
 
 ## Struktur halaman
 1. Pengenalan aplikasi

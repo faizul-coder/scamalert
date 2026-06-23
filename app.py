@@ -124,6 +124,10 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     box-shadow: 0 0 0 1px rgba(185, 28, 28, 0.08) !important;
     outline: none !important;
 }
+.stButton {
+    margin-top: 0.45rem !important;
+    margin-bottom: 1rem !important;
+}
 .stButton > button {
     background: var(--red) !important;
     color: white !important;
@@ -222,7 +226,7 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     line-height: 1.6;
 }
 
-.upload-note { color: var(--muted); font-size: 0.95rem; margin-top: 0.2rem; margin-bottom: 0.55rem; }
+.upload-note { color: var(--muted); font-size: 0.95rem; margin-top: 0.3rem; margin-bottom: 0.45rem; }
 [data-testid="stFileUploader"] {
     background: transparent !important;
     border: none !important;
@@ -613,6 +617,8 @@ st.markdown("## Semak Mesej Mencurigakan")
 st.markdown('<p class="helper-text">Masukkan mesej atau muat naik tangkapan layar untuk semakan awal.</p>', unsafe_allow_html=True)
 
 message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Masukkan mesej di sini…", key="message_input")
+check = st.button("Semak Mesej")
+
 st.markdown('<div class="upload-note">Pilihan tambahan: Muat naik tangkapan layar jika perlu.</div>', unsafe_allow_html=True)
 uploaded_image = st.file_uploader(
     "Muat naik tangkapan layar",
@@ -624,7 +630,6 @@ if uploaded_image is not None:
     with st.expander("Lihat tangkapan layar yang dimuat naik"):
         st.image(uploaded_image, caption="Tangkapan layar yang dimuat naik", use_container_width=True)
 
-check = st.button("Semak Mesej")
 st.markdown('</div>', unsafe_allow_html=True)
 
 
