@@ -186,12 +186,18 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     color: #111827 !important;
 }
 [data-testid="stFileUploaderDropzone"] button {
-    color: transparent !important;
     position: relative !important;
-    min-width: 110px !important;
+    min-width: 116px !important;
+    height: 42px !important;
     background: #FFFFFF !important;
     border: 1px solid #111827 !important;
     border-radius: 10px !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    box-shadow: none !important;
+}
+[data-testid="stFileUploaderDropzone"] button * {
+    display: none !important;
 }
 [data-testid="stFileUploaderDropzone"] button::after {
     content: "Muat Naik";
@@ -202,6 +208,7 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     align-items: center;
     justify-content: center;
     font-weight: 600;
+    font-size: 0.95rem;
 }
 
 </style>
