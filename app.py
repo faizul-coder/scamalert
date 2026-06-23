@@ -353,7 +353,7 @@ st.markdown('<div class="panel-card">', unsafe_allow_html=True)
 st.markdown("## Semak Mesej Mencurigakan")
 st.markdown('<p class="helper-text">Masukkan mesej yang diterima untuk semakan awal.</p>', unsafe_allow_html=True)
 message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Masukkan mesej di sini…", key="message_input")
-st.markdown('<p class="helper-text">atau muat naik gambar di bawah:</p>', unsafe_allow_html=True)
+st.markdown('<p class="helper-text">atau muat naik gambar di bawah.</p>', unsafe_allow_html=True)
 uploaded_image = st.file_uploader("Muat Naik", type=["png", "jpg", "jpeg"], label_visibility="collapsed")
 if uploaded_image is not None:
     st.image(uploaded_image, caption="Tangkapan layar yang dimuat naik", use_container_width=True)
