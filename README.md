@@ -1,10 +1,19 @@
-# ScamAlert Selangor Streamlit v0.7.3 Plain Clean
+# ScamAlert Streamlit v0.8.0 Integrated
 
-Pembetulan v0.7.3:
-- Skor risiko dipaparkan dalam bentuk meter.
-- Border kad diringkaskan supaya tidak terlalu tebal.
-- Kad utama menggunakan garis lurus ringkas, bukan border berat.
-- Kotak input menggunakan border halus.
+ScamAlert ialah prototaip aplikasi web amaran awal penipuan siber berasaskan Kecerdasan Buatan (AI). Versi ini menggabungkan tiga enjin analisis dalam satu paparan:
+
+1. **ScamSpeech** — mengesan lakuan pertuturan langsung dan tidak langsung.
+2. **ScamEmotion** — mengesan pencetus emosi 6E seperti ketakutan, kecemasan, harapan keuntungan dan kepercayaan palsu.
+3. **ScamMove** — memetakan gerakan strategi scam seperti bina kepercayaan, tawar peluang, janji ganjaran, tekanan masa, arahan bayaran/data dan penguncian mangsa.
+
+## Pembetulan v0.8.0
+
+- Semua rujukan nama lama telah diseragamkan kepada **ScamAlert**.
+- Keputusan keseluruhan kini menggabungkan ScamSpeech, ScamEmotion dan ScamMove.
+- Menambah paparan **ScamMove Mapper** dalam bentuk laluan gerakan beranak panah.
+- Menambah data prototaip ScamMove untuk padanan data penipuan dan data kawalan.
+- Menambah kategori ancaman dan padanan data kawalan sepadan.
+- Mengekalkan gaya visual putih, kemas, minimal dan profesional.
 
 ## Cara jalankan
 
@@ -13,41 +22,11 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+## Fail utama
 
-## Patch v0.7.9
-- Header ber-outline dengan ayat baharu.
-- Cadangan Tindakan Selamat dan Penafian ber-outline.
-- Logik advance-fee scam ditambah.
-- Meter skor dan susun atur utama dikekalkan.
-
-
-## v0.8.2 Scoring Engine
-- Enjin skor risiko diperkukuh supaya tidak terlalu bergantung pada kata kunci sempit.
-- Pola advance-fee scam, pinjaman palsu, pelaburan palsu, kerja palsu, hadiah palsu, OTP dan penyamaran autoriti diberi tahap risiko minimum.
-- Ayat seperti “Sila bayar RM100 caj pemprosesan sebelum pengeluaran wang dilakukan” tidak lagi jatuh sebagai risiko rendah.
-- UI/meter/layout dikekalkan daripada versi sebelumnya.
-
-
-## v0.8.3 No Overlap
-- Bahagian Keputusan Analisis ditukar kepada CSS grid supaya kotak skor risiko tidak bertindih dengan kotak Analisis Lakuan Pertuturan.
-- Logik skor v0.8.2 dikekalkan.
-
-
-## v0.8.4 Clean Grid
-- Membetulkan paparan HTML yang sebelum ini keluar seperti kotak kod.
-- Keputusan Analisis masih menggunakan CSS grid tetapi tanpa indentation HTML yang menyebabkan kod terpapar.
-- Enjin skor v0.8.2 dikekalkan.
-- Ayat “Sila bayar RM100 caj pemprosesan sebelum pengeluaran wang dibuat” disahkan sebagai Sangat Tinggi.
-
-
-## v0.8.5 Meter Header Fix
-- Membaiki kotak meter supaya HTML tidak dipaparkan sebagai kod.
-- Menukar ayat header daripada “AI” kepada “Kecerdasan Buatan (AI)”.
-- Enjin skor v0.8.2 dikekalkan.
-
-
-## v0.8.6 Colloquial Withdrawal Fee
-- Menambah rule bahasa harian seperti “bayar dahulu sebelum keluarkan duit”.
-- Menambah variasi: “bayar dulu baru duit boleh keluar”, “sebelum keluar duit”, “duit keluar”, “withdraw duit”.
-- Peringatan keselamatan rasmi seperti “jangan berkongsi OTP” kekal rendah.
-- UI/meter/layout dikekalkan daripada versi sebelumnya.
+- `app.py` — aplikasi Streamlit utama.
+- `requirements.txt` — keperluan Python minimum.
+- `SPECIFICATION.md` — spesifikasi struktur dan fungsi aplikasi.
+- `scamspeech_dataset.xlsx` — dataset sokongan ScamSpeech.
+- `scamemotion_dataset.xlsx` — dataset sokongan ScamEmotion.
+- `scammove_dataset.xlsx` — dataset sokongan ScamMove.
