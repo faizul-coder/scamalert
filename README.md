@@ -1,9 +1,10 @@
-# ScamAlert 8.8
+# ScamAlert 8.9
 
-## Perubahan 8.8
-- Butang **Semak Mesej** diletakkan di bawah komponen muat naik gambar.
-- Teks komponen muat naik ditetapkan kepada **Muat Naik**.
-- Tiada perubahan lain dibuat pada kandungan paparan utama.
+## Perubahan 8.9
+- Perkataan **"Tampal"** ditukar kepada **"Masukkan"**.
+- Selepas kotak mesej, ditambah frasa **"atau muat naik gambar di bawah:"**.
+- Kotak pilihan **Muat Naik** dikekalkan dengan latar putih dan garis luar hitam.
+- Butang **Semak Mesej** diletakkan selepas kotak muat naik.
 
 ## Cara jalankan
 

@@ -166,6 +166,24 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     margin-top: 0.35rem;
 }
 
+[data-testid="stFileUploader"] {
+    margin-top: 0.2rem !important;
+    margin-bottom: 1rem !important;
+}
+[data-testid="stFileUploader"] section {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+[data-testid="stFileUploaderDropzone"] {
+    background: #FFFFFF !important;
+    border: 1.5px solid #111827 !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+}
+[data-testid="stFileUploaderDropzone"] * {
+    color: #111827 !important;
+}
 
 /* Tukar teks butang muat naik kepada Bahasa Melayu */
 [data-testid="stFileUploaderDropzone"] button {
@@ -331,8 +349,8 @@ st.markdown("""
 
 st.markdown('<div class="panel-card">', unsafe_allow_html=True)
 st.markdown("## Semak Mesej Mencurigakan")
-st.markdown('<p class="helper-text">Tampal mesej yang diterima untuk semakan awal.</p>', unsafe_allow_html=True)
-message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Tampal mesej di sini…", key="message_input")
+st.markdown('<p class="helper-text">Masukkan mesej yang diterima untuk semakan awal.</p>', unsafe_allow_html=True)
+message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Masukkan mesej di sini…", key="message_input")
 uploaded_image = st.file_uploader("Muat Naik", type=["png", "jpg", "jpeg"])
 if uploaded_image is not None:
     st.success("Tangkapan layar berjaya dimuat naik.")
