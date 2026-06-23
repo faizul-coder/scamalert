@@ -1,19 +1,16 @@
-# ScamAlert Streamlit v0.8.0 Integrated
+# ScamAlert Streamlit v0.8.1 Integrated
 
-ScamAlert ialah prototaip aplikasi web amaran awal penipuan siber berasaskan Kecerdasan Buatan (AI). Versi ini menggabungkan tiga enjin analisis dalam satu paparan:
+Versi ini menggabungkan tiga enjin analisis dalam satu halaman:
+- **Makna tersurat dan makna tersirat** (berasaskan ScamSpeech)
+- **Pencetus emosi** (berasaskan ScamEmotion)
+- **Gerakan strategi penipuan** (berasaskan ScamMove)
 
-1. **ScamSpeech** — mengesan lakuan pertuturan langsung dan tidak langsung.
-2. **ScamEmotion** — mengesan pencetus emosi 6E seperti ketakutan, kecemasan, harapan keuntungan dan kepercayaan palsu.
-3. **ScamMove** — memetakan gerakan strategi scam seperti bina kepercayaan, tawar peluang, janji ganjaran, tekanan masa, arahan bayaran/data dan penguncian mangsa.
-
-## Pembetulan v0.8.0
-
-- Semua rujukan nama lama telah diseragamkan kepada **ScamAlert**.
-- Keputusan keseluruhan kini menggabungkan ScamSpeech, ScamEmotion dan ScamMove.
-- Menambah paparan **ScamMove Mapper** dalam bentuk laluan gerakan beranak panah.
-- Menambah data prototaip ScamMove untuk padanan data penipuan dan data kawalan.
-- Menambah kategori ancaman dan padanan data kawalan sepadan.
-- Mengekalkan gaya visual putih, kemas, minimal dan profesional.
+## Penambahbaikan v0.8.1
+- Nama aplikasi diseragamkan kepada **ScamAlert**.
+- Label teknikal seperti `ScamSpeech`, `ScamEmotion` dan `ScamMove` ditukar kepada bahasa yang lebih mesra pengguna.
+- Ditambah logik pengesanan untuk pola **bayaran sebelum pengeluaran wang**, contohnya: `bayar dulu sebelum keluarkan duit`.
+- Ditambah paparan **Peta Gerakan Penipuan** bagi menunjukkan urutan strategi scam.
+- Paparan kad analisis diringkaskan dan dibersihkan untuk mengelakkan paparan HTML mentah.
 
 ## Cara jalankan
 
@@ -21,12 +18,3 @@ ScamAlert ialah prototaip aplikasi web amaran awal penipuan siber berasaskan Kec
 pip install -r requirements.txt
 streamlit run app.py
 ```
-
-## Fail utama
-
-- `app.py` — aplikasi Streamlit utama.
-- `requirements.txt` — keperluan Python minimum.
-- `SPECIFICATION.md` — spesifikasi struktur dan fungsi aplikasi.
-- `scamspeech_dataset.xlsx` — dataset sokongan ScamSpeech.
-- `scamemotion_dataset.xlsx` — dataset sokongan ScamEmotion.
-- `scammove_dataset.xlsx` — dataset sokongan ScamMove.
