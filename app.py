@@ -227,15 +227,16 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 )
 
 # -----------------------------------------------------------------------------
-# Dataset prototaip berbentuk pola: dibina daripada data ScamSpeech, ScamEmotion
-# dan tambahan data ScamMove supaya aplikasi mempunyai tiga enjin analisis.
+# Dataset prototaip berbentuk pola: dibina daripada data analisis bahasa dan emosi
+# dan tambahan data Gerakan Strategi Penipuan supaya aplikasi mempunyai tiga enjin analisis.
 # -----------------------------------------------------------------------------
 DIRECT_PATTERNS: Dict[str, Tuple[int, str]] = {
     r"berikan otp|masukkan otp|kongsi otp|hantar otp|kod otp": (35, "permintaan OTP"),
     r"kata laluan|password|pin keselamatan": (35, "permintaan kata laluan/PIN"),
     r"bayar caj proses|caj proses|bayar caj pengesahan|caj pengesahan": (30, "bayar caj proses/pengesahan"),
     r"bayar yuran|yuran pendaftaran|bayaran deposit|deposit rm": (28, "bayaran pendahuluan"),
-    r"pindahkan wang|transfer wang|transfer rm|buat bayaran|bayar rm": (35, "arahan pindahan wang"),
+    r"bayar dulu sebelum keluarkan duit|bayar dahulu sebelum keluarkan duit|bayar dulu untuk keluarkan duit|bayar dahulu untuk keluarkan duit|caj pengeluaran|bayaran pengeluaran|aktifkan pengeluaran": (45, "bayaran sebelum pengeluaran wang"),
+    r"pindahkan wang|transfer wang|transfer rm|buat bayaran|bayar rm|bayar dulu|bayar dahulu": (35, "arahan pindahan wang"),
     r"daftar sekarang|aktifkan akaun|sahkan akaun": (20, "arahan segera mendaftar/mengesahkan"),
     r"klik pautan|tekan pautan|buka pautan|link di bawah": (22, "arahan menekan pautan"),
     r"hantar kad pengenalan|nombor akaun|maklumat bank": (35, "permintaan data peribadi/kewangan"),
@@ -248,7 +249,7 @@ INDIRECT_PATTERNS: Dict[str, Tuple[int, str]] = {
     r"24 jam|15 minit|30 minit|hari ini|sebelum jam|pukul \d+": (17, "had masa"),
     r"slot terhad|tinggal \d+|kuota terhad|tempat terhad": (18, "kelangkaan palsu"),
     r"risiko rendah|jamin|dijamin|tanpa risiko": (18, "jaminan tidak realistik"),
-    r"pulangan tinggi|untung besar|modal.*jadi|wang.*dilepaskan|keuntungan harian": (22, "janji keuntungan"),
+    r"pulangan tinggi|untung besar|modal.*jadi|wang.*dilepaskan|keluarkan duit|pengeluaran wang|keuntungan harian": (22, "janji/pelepasan wang"),
     r"terpilih|layak menerima|permohonan.*diluluskan|peluang khas": (15, "peluang eksklusif"),
 }
 
@@ -309,14 +310,14 @@ SCAMMOVE_PATTERNS = [
         "code": "M5",
         "name": "Arahan Bayaran/Data",
         "function": "Menggerakkan pengguna untuk membayar, menekan pautan atau menyerahkan data sensitif.",
-        "patterns": [r"\bbayar\b", r"buat bayaran", r"bayaran deposit", r"bayaran pengesahan", r"caj proses", r"caj pengesahan", r"deposit", r"transfer", r"pindahan", r"otp", r"kata laluan", r"kad pengenalan", r"nombor akaun", r"klik pautan", r"tekan pautan"],
+        "patterns": [r"\bbayar\b", r"buat bayaran", r"bayaran deposit", r"bayaran pengesahan", r"caj proses", r"caj pengesahan", r"deposit", r"transfer", r"pindahan", r"otp", r"kata laluan", r"kad pengenalan", r"nombor akaun", r"klik pautan", r"tekan pautan", r"bayar dulu sebelum keluarkan duit", r"bayar dahulu sebelum keluarkan duit", r"caj pengeluaran", r"bayaran pengeluaran", r"aktifkan pengeluaran"],
         "weight": 26,
     },
     {
         "code": "M6",
         "name": "Penguncian Mangsa",
         "function": "Menghalang mangsa daripada berundur melalui ancaman, kerahsiaan atau risiko kehilangan peluang.",
-        "patterns": [r"jangan batalkan", r"jangan beritahu", r"rahsia", r"sulit", r"akaun.*dibekukan", r"akaun.*disekat", r"disenarai hitam", r"tindakan undang-undang", r"terlepas peluang"],
+        "patterns": [r"jangan batalkan", r"jangan beritahu", r"rahsia", r"sulit", r"akaun.*dibekukan", r"akaun.*disekat", r"disenarai hitam", r"tindakan undang-undang", r"terlepas peluang", r"keluarkan duit", r"pengeluaran", r"aktifkan pengeluaran", r"caj pengeluaran"],
         "weight": 24,
     },
 ]
@@ -435,6 +436,8 @@ def match_phrase(score: int, has_control: bool) -> str:
 
 
 def classify_threat(text: str, result: dict) -> str:
+    if re.search(r"bayar.*keluar|bayar.*pengeluaran|caj pengeluaran|bayaran pengeluaran|aktifkan pengeluaran|keluarkan duit", text, flags=re.I):
+        return "Scam bayaran sebelum pengeluaran wang"
     if re.search(r"otp|kata laluan|password|pin|akaun.*dibekukan|akaun.*disekat", text, flags=re.I):
         return "Penyamaran autoriti / pengambilalihan akaun"
     if re.search(r"pelaburan|pulangan|untung|modal.*jadi|keuntungan", text, flags=re.I):
@@ -451,6 +454,8 @@ def classify_threat(text: str, result: dict) -> str:
 def control_message(category: str) -> str:
     if "pelaburan" in category.lower():
         return "Mesej pelaburan yang sah biasanya menyediakan maklumat syarikat, risiko, dokumen rasmi dan saluran semakan tanpa menjanjikan keuntungan segera."
+    if "pengeluaran" in category.lower():
+        return "Mesej yang sah tidak meminta pengguna membayar dahulu untuk membolehkan wang dikeluarkan. Semak transaksi melalui saluran rasmi sebelum membuat sebarang bayaran."
     if "pinjaman" in category.lower() or "bantuan" in category.lower():
         return "Mesej bantuan atau pinjaman yang sah tidak mendesak bayaran caj proses sebelum wang dilepaskan dan biasanya merujuk portal rasmi."
     if "akaun" in category.lower() or "autoriti" in category.lower():
@@ -491,6 +496,7 @@ def analyse_text(message: str):
     has_money_request = bool(re.search(r"bayar|caj proses|caj pengesahan|yuran pendaftaran|deposit|transfer|pindahan", text, flags=re.I))
     has_unrealistic_gain = bool(re.search(r"modal.*jadi|untung|pulangan tinggi|dijamin|bonus|hadiah|wang.*dilepaskan", text, flags=re.I))
     has_benefit_release = bool(re.search(r"wang.*dilepaskan|permohonan.*diluluskan|pinjaman|bantuan|dana", text, flags=re.I))
+    has_withdrawal_release = bool(re.search(r"keluarkan duit|pengeluaran|withdraw|release duit|aktifkan pengeluaran|caj pengeluaran|bayaran pengeluaran", text, flags=re.I))
 
     # Peraturan kritikal prototaip: kombinasi data sensitif, tekanan masa,
     # ancaman akaun, bayaran awal dan janji tidak realistik dikategorikan tinggi.
@@ -512,6 +518,11 @@ def analyse_text(message: str):
         speech_score = max(speech_score, 78)
         move_score = max(move_score, 84)
         overall_score = max(overall_score, 84)
+    elif has_money_request and has_withdrawal_release:
+        speech_score = max(speech_score, 78)
+        move_score = max(move_score, 84)
+        emotion_score = max(emotion_score, 45)
+        overall_score = max(overall_score, 82)
     elif has_money_request and has_benefit_release:
         speech_score = max(speech_score, 74)
         move_score = max(move_score, 76)
@@ -578,7 +589,7 @@ if check and message.strip():
     c1, c2, c3 = st.columns([1.1, 0.9, 1.2])
     with c1:
         st.markdown(
-            f'<div class="result-card"><div class="result-label">Skor Risiko Keseluruhan</div>{risk_meter(result["overall_score"])}<div class="result-note">Gabungan ScamSpeech, ScamEmotion dan ScamMove.</div></div>',
+            f'<div class="result-card"><div class="result-label">Skor Risiko Keseluruhan</div>{risk_meter(result["overall_score"])}<div class="result-note">Gabungan analisis bahasa, emosi dan gerakan strategi penipuan.</div></div>',
             unsafe_allow_html=True,
         )
     with c2:
@@ -599,51 +610,25 @@ if check and message.strip():
     s_col, e_col, m_col = st.columns(3)
     with s_col:
         st.markdown(
-            f"""
-            <div class="module-card">
-                <div class="module-title">ScamSpeech</div>
-                <div class="module-caption">Menganalisis lakuan pertuturan langsung dan tidak langsung.</div>
-                {risk_meter(result["speech_score"])}
-                <div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div>
-                <div class="result-note">{html.escape(result["speech_type"])}</div>
-                <div class="result-note">{html.escape(result["speech_match"])}</div>
-            </div>
-            """,
+            f'<div class="module-card"><div class="module-title">Makna Tersurat dan Makna Tersirat</div><div class="module-caption">Mengesan arahan jelas serta pujukan atau tekanan yang tersirat.</div>{risk_meter(result["speech_score"])}<div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div><div class="result-note">{html.escape(result["speech_type"])}</div><div class="result-note">{html.escape(result["speech_match"])}</div></div>',
             unsafe_allow_html=True,
         )
     with e_col:
         emo_text = ", ".join(result["emotions"]) if result["emotions"] else "Tiada pencetus emosi yang ketara"
         st.markdown(
-            f"""
-            <div class="module-card">
-                <div class="module-title">ScamEmotion</div>
-                <div class="module-caption">Mengesan pencetus emosi 6E yang digunakan untuk memujuk atau menekan pengguna.</div>
-                {risk_meter(result["emotion_score"])}
-                <div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div>
-                <div class="result-note">{html.escape(emo_text)}</div>
-                <div class="result-note">{html.escape(result["emotion_match"])}</div>
-            </div>
-            """,
+            f'<div class="module-card"><div class="module-title">Pencetus Emosi</div><div class="module-caption">Mengesan emosi yang digunakan untuk memujuk, menekan atau menakutkan pengguna.</div>{risk_meter(result["emotion_score"])}<div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div><div class="result-note">{html.escape(emo_text)}</div><div class="result-note">{html.escape(result["emotion_match"])}</div></div>',
             unsafe_allow_html=True,
         )
     with m_col:
         st.markdown(
-            f"""
-            <div class="module-card">
-                <div class="module-title">ScamMove</div>
-                <div class="module-caption">Memetakan gerakan strategi scam daripada bina kepercayaan kepada arahan tindakan.</div>
-                {risk_meter(result["move_score"])}
-                <div class="badge {badge_class(result["move_level"])}">{result["move_level"]}</div>
-                <div class="result-note">{html.escape(result["move_match"])}</div>
-            </div>
-            """,
+            f'<div class="module-card"><div class="module-title">Gerakan Strategi Penipuan</div><div class="module-caption">Memetakan langkah mesej scam daripada pancingan awal hingga arahan tindakan.</div>{risk_meter(result["move_score"])}<div class="badge {badge_class(result["move_level"])}">{result["move_level"]}</div><div class="result-note">{html.escape(result["move_match"])}</div></div>',
             unsafe_allow_html=True,
         )
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
-    st.markdown("## ScamMove Mapper")
-    st.markdown('<p class="helper-text">Paparan ini menunjukkan laluan gerakan wacana yang membentuk strategi penipuan.</p>', unsafe_allow_html=True)
+    st.markdown("## Peta Gerakan Penipuan")
+    st.markdown('<p class="helper-text">Paparan ini menunjukkan langkah mesej scam bergerak daripada pancingan awal kepada arahan tindakan.</p>', unsafe_allow_html=True)
     st.markdown(move_pathway_html(result["moves"]), unsafe_allow_html=True)
     if result["moves"]:
         for move in result["moves"]:
@@ -661,10 +646,10 @@ if check and message.strip():
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
     st.markdown("## Frasa dan Petanda Dikesan")
     sections = [
-        ("ScamSpeech: Frasa Lakuan Langsung", result["direct_phrases"], "tag-red"),
-        ("ScamSpeech: Frasa Lakuan Tidak Langsung", result["indirect_phrases"], "tag-yellow"),
-        ("ScamEmotion: Pencetus Emosi", result["emotion_phrases"], "tag-blue"),
-        ("ScamMove: Gerakan Strategi", [m["name"] for m in result["moves"]], "tag-red"),
+        ("Arahan atau Makna Tersurat", result["direct_phrases"], "tag-red"),
+        ("Pujukan atau Makna Tersirat", result["indirect_phrases"], "tag-yellow"),
+        ("Pencetus Emosi", result["emotion_phrases"], "tag-blue"),
+        ("Gerakan Strategi Penipuan", [m["name"] for m in result["moves"]], "tag-red"),
         ("Data Kawalan / Isyarat Sah", result["control_phrases"], "tag-green"),
     ]
     for title, tags, cls in sections:
@@ -688,11 +673,11 @@ if check and message.strip():
     st.markdown(f'<div class="subtle-note">{html.escape(guidance[result["overall_level"]])}</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    with st.expander("Lihat asas data ScamMove prototaip"):
-        st.markdown("**Contoh data penipuan ScamMove**")
+    with st.expander("Lihat asas data Gerakan Strategi Penipuan"):
+        st.markdown("**Contoh data penipuan gerakan strategi**")
         for item in SCAMMOVE_SCAM_EXAMPLES:
             st.markdown(f"- {item}")
-        st.markdown("**Contoh data kawalan ScamMove**")
+        st.markdown("**Contoh data kawalan gerakan strategi**")
         for item in SCAMMOVE_CONTROL_EXAMPLES:
             st.markdown(f"- {item}")
 

@@ -1,16 +1,17 @@
-# ScamAlert Streamlit v0.8.1 Integrated
+# ScamAlert Streamlit v0.8.2
 
-Versi ini menggabungkan tiga enjin analisis dalam satu halaman:
-- **Makna tersurat dan makna tersirat** (berasaskan ScamSpeech)
-- **Pencetus emosi** (berasaskan ScamEmotion)
-- **Gerakan strategi penipuan** (berasaskan ScamMove)
+ScamAlert ialah prototaip aplikasi web amaran awal penipuan siber berasaskan Kecerdasan Buatan (AI).
 
-## Penambahbaikan v0.8.1
-- Nama aplikasi diseragamkan kepada **ScamAlert**.
-- Label teknikal seperti `ScamSpeech`, `ScamEmotion` dan `ScamMove` ditukar kepada bahasa yang lebih mesra pengguna.
-- Ditambah logik pengesanan untuk pola **bayaran sebelum pengeluaran wang**, contohnya: `bayar dulu sebelum keluarkan duit`.
-- Ditambah paparan **Peta Gerakan Penipuan** bagi menunjukkan urutan strategi scam.
-- Paparan kad analisis diringkaskan dan dibersihkan untuk mengelakkan paparan HTML mentah.
+## Pembetulan v0.8.2
+
+- Membetulkan isu skor rendah untuk input seperti **“bayar dulu sebelum keluarkan duit”**.
+- Menambah rule khusus untuk pola **bayaran sebelum pengeluaran wang**.
+- Menukar label teknikal pada tiga kad analisis kepada bahasa mesra pengguna:
+  - **Makna Tersurat dan Makna Tersirat**
+  - **Pencetus Emosi**
+  - **Gerakan Strategi Penipuan**
+- Menukar tajuk **ScamMove Mapper** kepada **Peta Gerakan Penipuan**.
+- Mengelakkan paparan HTML mentah dalam tiga kad analisis dengan struktur HTML satu baris yang lebih stabil untuk Streamlit.
 
 ## Cara jalankan
 
