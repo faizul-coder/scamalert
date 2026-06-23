@@ -1,7 +1,7 @@
 import re
 import streamlit as st
 
-st.set_page_config(page_title="ScamAlert Selangor", page_icon="🛡️", layout="wide")
+st.set_page_config(page_title="ScamAlert", page_icon="🛡️", layout="wide")
 
 st.markdown("""
 <style>
@@ -166,8 +166,9 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     margin-top: 0.35rem;
 }
 
+
 [data-testid="stFileUploader"] {
-    margin-top: 0.2rem !important;
+    margin-top: 0.25rem !important;
     margin-bottom: 1rem !important;
 }
 [data-testid="stFileUploader"] section {
@@ -184,12 +185,13 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 [data-testid="stFileUploaderDropzone"] * {
     color: #111827 !important;
 }
-
-/* Tukar teks butang muat naik kepada Bahasa Melayu */
 [data-testid="stFileUploaderDropzone"] button {
     color: transparent !important;
     position: relative !important;
-    min-width: 104px !important;
+    min-width: 110px !important;
+    background: #FFFFFF !important;
+    border: 1px solid #111827 !important;
+    border-radius: 10px !important;
 }
 [data-testid="stFileUploaderDropzone"] button::after {
     content: "Muat Naik";
@@ -342,8 +344,8 @@ def analyse_text(message: str):
 
 st.markdown("""
 <div class="hero-card">
-  <div class="title-main">ScamAlert Selangor</div>
-  <p class="subtitle-main">ScamAlert Selangor ialah prototaip aplikasi web amaran awal yang membantu pengguna menyemak mesej mencurigakan sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.</p>
+  <div class="title-main">ScamAlert</div>
+  <p class="subtitle-main">ScamAlert ialah sistem amaran awal penipuan siber berasaskan Kecerdasan Buatan (AI) yang menganalisis corak bahasa, manipulasi emosi dan gerakan strategi pujukan dalam mesej digital sebelum pengguna berkongsi maklumat peribadi, menekan pautan atau membuat transaksi kewangan.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -351,9 +353,10 @@ st.markdown('<div class="panel-card">', unsafe_allow_html=True)
 st.markdown("## Semak Mesej Mencurigakan")
 st.markdown('<p class="helper-text">Masukkan mesej yang diterima untuk semakan awal.</p>', unsafe_allow_html=True)
 message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Masukkan mesej di sini…", key="message_input")
-uploaded_image = st.file_uploader("Muat Naik", type=["png", "jpg", "jpeg"])
+st.markdown('<p class="helper-text">atau muat naik gambar di bawah:</p>', unsafe_allow_html=True)
+uploaded_image = st.file_uploader("Muat Naik", type=["png", "jpg", "jpeg"], label_visibility="collapsed")
 if uploaded_image is not None:
-    st.success("Tangkapan layar berjaya dimuat naik.")
+    st.image(uploaded_image, caption="Tangkapan layar yang dimuat naik", use_container_width=True)
 check = st.button("Semak Mesej")
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -405,7 +408,7 @@ if check and message.strip():
 
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
     st.markdown("## Penafian")
-    st.markdown('<div class="subtle-note">ScamAlert Selangor ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtle-note">ScamAlert ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 elif check and not message.strip():
     st.warning("Sila masukkan mesej terlebih dahulu.")
