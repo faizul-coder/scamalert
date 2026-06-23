@@ -1,16 +1,16 @@
-# ScamAlert Streamlit v0.8.4 Malay UI Refinement
+# ScamAlert Streamlit v0.8.5 Susun Atur Input Diperkemas
 
 Versi ini mengekalkan tiga enjin analisis utama dalam satu halaman:
 - **Makna tersurat dan makna tersirat**
 - **Pencetus emosi**
 - **Gerakan strategi penipuan**
 
-## Penambahbaikan v0.8.4
-- Ayat panduan di bahagian input ditukar kepada: **“Masukkan mesej yang mencurigakan untuk semakan awal. Pengguna juga boleh memuat naik tangkapan layar.”**
-- Kotak muat naik tangkapan layar dikemaskan supaya lebih serasi dengan bahagian **Semak Risiko**.
-- Label muat naik dipermudah kepada **Pilihan tambahan: Muat naik tangkapan layar jika perlu.**
-- Pratonton tangkapan layar dipaparkan dalam bahagian boleh buka/tutup supaya antara muka lebih kemas.
-- Placeholder input mesej ditukar kepada **“Masukkan mesej di sini…”**
+## Penambahbaikan v0.8.5
+- Ayat panduan input ditukar kepada: **“Masukkan mesej atau muat naik tangkapan layar untuk semakan awal.”**
+- Ayat pilihan tambahan dikekalkan sebagai: **“Pilihan tambahan: Muat naik tangkapan layar jika perlu.”**
+- Kotak muat naik tangkapan layar dipindahkan ke **bawah** kotak mesej.
+- Gaya kotak muat naik dikemas kini kepada **latar putih** dengan **garis luar gelap**, supaya selaras dengan kotak mesej.
+- Butang tindakan ditukar daripada **Semak Risiko** kepada **Semak Mesej**.
 
 ## Cara jalankan
 

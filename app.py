@@ -221,6 +221,40 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     padding: 1rem;
     line-height: 1.6;
 }
+
+.upload-note { color: var(--muted); font-size: 0.95rem; margin-top: 0.2rem; margin-bottom: 0.55rem; }
+[data-testid="stFileUploader"] {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-top: 0.65rem !important;
+    margin-bottom: 1rem !important;
+}
+[data-testid="stFileUploader"] section {
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+}
+[data-testid="stFileUploaderDropzone"] {
+    background: #FFFFFF !important;
+    border: 1.5px solid #111827 !important;
+    border-radius: 12px !important;
+    padding: 1rem 1rem !important;
+}
+[data-testid="stFileUploaderDropzone"] * {
+    color: var(--ink) !important;
+}
+[data-testid="stFileUploaderDropzone"] button {
+    background: #FFFFFF !important;
+    color: var(--ink) !important;
+    border: 1px solid #111827 !important;
+    border-radius: 10px !important;
+}
+[data-testid="stFileUploaderDropzoneInstructions"] small,
+[data-testid="stFileUploaderDropzoneInstructions"] span {
+    color: var(--muted) !important;
+}
+
 </style>
 """,
     unsafe_allow_html=True,
@@ -576,9 +610,10 @@ st.markdown(
 
 st.markdown('<div class="panel-card">', unsafe_allow_html=True)
 st.markdown("## Semak Mesej Mencurigakan")
-st.markdown('<p class="helper-text">Masukkan mesej yang mencurigakan untuk semakan awal. Pengguna juga boleh memuat naik tangkapan layar.</p>', unsafe_allow_html=True)
+st.markdown('<p class="helper-text">Masukkan mesej atau muat naik tangkapan layar untuk semakan awal.</p>', unsafe_allow_html=True)
 
-st.markdown('<div class="upload-note"><strong>Pilihan tambahan:</strong> Muat naik tangkapan layar jika perlu.</div>', unsafe_allow_html=True)
+message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Masukkan mesej di sini…", key="message_input")
+st.markdown('<div class="upload-note">Pilihan tambahan: Muat naik tangkapan layar jika perlu.</div>', unsafe_allow_html=True)
 uploaded_image = st.file_uploader(
     "Muat naik tangkapan layar",
     type=["png", "jpg", "jpeg"],
@@ -589,9 +624,9 @@ if uploaded_image is not None:
     with st.expander("Lihat tangkapan layar yang dimuat naik"):
         st.image(uploaded_image, caption="Tangkapan layar yang dimuat naik", use_container_width=True)
 
-message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Masukkan mesej di sini…", key="message_input")
-check = st.button("Semak Risiko")
+check = st.button("Semak Mesej")
 st.markdown('</div>', unsafe_allow_html=True)
+
 
 if check and message.strip():
     result = analyse_text(message)
