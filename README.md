@@ -1,9 +1,10 @@
-# ScamAlert 9.4
+# ScamAlert 9.3
 
-## Perubahan 9.4
-- Kotak butang **Muat naik gambar** dibesarkan.
-- Teks butang ditukar kepada **Muat naik gambar**.
+## Perubahan 9.3
+- Teks butang muat naik ditukar kepada **Muat Naik Gambar**.
+- Teks **Muat Naik Gambar** tidak ditebalkan.
 - Teks butang **Semak Mesej** ditebalkan.
+- Perubahan lain dikekalkan.
 
 ## Cara jalankan
 

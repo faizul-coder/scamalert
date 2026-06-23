@@ -180,15 +180,15 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     background: #FFFFFF !important;
     border: 1.5px solid #111827 !important;
     border-radius: 12px !important;
-    padding: 1rem !important;
+    padding: 1rem 1.15rem !important;
 }
 [data-testid="stFileUploaderDropzone"] * {
     color: #111827 !important;
 }
 [data-testid="stFileUploaderDropzone"] button {
     position: relative !important;
-    min-width: 170px !important;
-    height: 46px !important;
+    min-width: 190px !important;
+    height: 48px !important;
     background: #FFFFFF !important;
     border: 1px solid #111827 !important;
     border-radius: 10px !important;
@@ -200,7 +200,7 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     display: none !important;
 }
 [data-testid="stFileUploaderDropzone"] button::after {
-    content: "Muat naik gambar";
+    content: "Muat gambar di sini";
     color: #111827 !important;
     position: absolute;
     inset: 0;
@@ -361,7 +361,7 @@ st.markdown("## Semak Mesej Mencurigakan")
 st.markdown('<p class="helper-text">Masukkan mesej di bawah:</p>', unsafe_allow_html=True)
 message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Masukkan mesej di sini…", key="message_input")
 st.markdown('<p class="helper-text">atau muat naik gambar di bawah:</p>', unsafe_allow_html=True)
-uploaded_image = st.file_uploader("Muat Naik Gambar", type=["png", "jpg", "jpeg"], label_visibility="collapsed")
+uploaded_image = st.file_uploader("Muat gambar di sini", type=["png", "jpg", "jpeg"], label_visibility="collapsed")
 if uploaded_image is not None:
     st.image(uploaded_image, caption="Tangkapan layar yang dimuat naik", use_container_width=True)
 check = st.button("Semak Mesej")
