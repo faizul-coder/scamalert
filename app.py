@@ -576,18 +576,20 @@ st.markdown(
 
 st.markdown('<div class="panel-card">', unsafe_allow_html=True)
 st.markdown("## Semak Mesej Mencurigakan")
-st.markdown('<p class="helper-text">Tampal mesej WhatsApp, Telegram, SMS atau e-mel yang mencurigakan untuk semakan awal. Pengguna juga boleh memuat naik tangkapan layar perbualan dengan penipu sebagai rujukan visual.</p>', unsafe_allow_html=True)
+st.markdown('<p class="helper-text">Masukkan mesej yang mencurigakan untuk semakan awal. Pengguna juga boleh memuat naik tangkapan layar.</p>', unsafe_allow_html=True)
 
+st.markdown('<div class="upload-note"><strong>Pilihan tambahan:</strong> Muat naik tangkapan layar jika perlu.</div>', unsafe_allow_html=True)
 uploaded_image = st.file_uploader(
-    "Muat Naik Tangkapan Layar Perbualan",
+    "Muat naik tangkapan layar",
     type=["png", "jpg", "jpeg"],
-    help="Muat naik tangkapan layar perbualan dengan penipu. Untuk analisis teks, tampal semula mesej dalam kotak di bawah.",
+    label_visibility="collapsed",
 )
 if uploaded_image is not None:
-    st.image(uploaded_image, caption="Tangkapan layar perbualan yang dimuat naik", use_container_width=True)
-    st.info("Tangkapan layar berjaya dimuat naik. Untuk prototaip ini, sila tampal teks mesej dalam kotak input supaya analisis risiko boleh dijalankan.")
+    st.success("Tangkapan layar berjaya dimuat naik.")
+    with st.expander("Lihat tangkapan layar yang dimuat naik"):
+        st.image(uploaded_image, caption="Tangkapan layar yang dimuat naik", use_container_width=True)
 
-message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Tampal mesej di sini…", key="message_input")
+message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Masukkan mesej di sini…", key="message_input")
 check = st.button("Semak Risiko")
 st.markdown('</div>', unsafe_allow_html=True)
 

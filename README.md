@@ -1,22 +1,16 @@
-# ScamAlert v0.8.3
+# ScamAlert Streamlit v0.8.4 Malay UI Refinement
 
-ScamAlert ialah prototaip aplikasi web amaran awal penipuan siber berasaskan Kecerdasan Buatan (AI).
+Versi ini mengekalkan tiga enjin analisis utama dalam satu halaman:
+- **Makna tersurat dan makna tersirat**
+- **Pencetus emosi**
+- **Gerakan strategi penipuan**
 
-## Pembetulan v0.8.3
-
-- Menggunakan bahasa Melayu sepenuhnya dalam paparan pengguna.
-- Istilah teknikal berbahasa Inggeris digantikan dengan istilah mesra pengguna:
-  - penipuan siber / penipuan digital / penipuan
-  - penipu
-  - gerakan strategi penipuan
-- Menambah pilihan **Muat Naik Tangkapan Layar Perbualan**.
-- Tangkapan layar boleh dimuat naik sebagai rujukan visual.
-- Analisis risiko prototaip ini masih dijalankan berdasarkan teks mesej yang ditampal dalam kotak input.
-- Memastikan input seperti **“bayar dulu sebelum keluarkan duit”** diklasifikasikan sebagai risiko tinggi / sangat tinggi.
-- Tiga kad analisis menggunakan label mesra pengguna:
-  - **Makna Tersurat dan Makna Tersirat**
-  - **Pencetus Emosi**
-  - **Gerakan Strategi Penipuan**
+## Penambahbaikan v0.8.4
+- Ayat panduan di bahagian input ditukar kepada: **“Masukkan mesej yang mencurigakan untuk semakan awal. Pengguna juga boleh memuat naik tangkapan layar.”**
+- Kotak muat naik tangkapan layar dikemaskan supaya lebih serasi dengan bahagian **Semak Risiko**.
+- Label muat naik dipermudah kepada **Pilihan tambahan: Muat naik tangkapan layar jika perlu.**
+- Pratonton tangkapan layar dipaparkan dalam bahagian boleh buka/tutup supaya antara muka lebih kemas.
+- Placeholder input mesej ditukar kepada **“Masukkan mesej di sini…”**
 
 ## Cara jalankan
 
