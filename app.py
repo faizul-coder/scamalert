@@ -113,7 +113,7 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     border: none !important;
     border-radius: 14px !important;
     padding: 0.7rem 1.3rem !important;
-    font-weight: 850 !important;
+    font-weight: 900 !important;
     font-size: 1rem !important;
 }
 .stButton > button:hover { background: #991B1B !important; color: white !important; }
@@ -187,8 +187,8 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 }
 [data-testid="stFileUploaderDropzone"] button {
     position: relative !important;
-    min-width: 116px !important;
-    height: 42px !important;
+    min-width: 170px !important;
+    height: 46px !important;
     background: #FFFFFF !important;
     border: 1px solid #111827 !important;
     border-radius: 10px !important;
@@ -200,7 +200,7 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     display: none !important;
 }
 [data-testid="stFileUploaderDropzone"] button::after {
-    content: "Muat Naik Gambar";
+    content: "Muat naik gambar";
     color: #111827 !important;
     position: absolute;
     inset: 0;
