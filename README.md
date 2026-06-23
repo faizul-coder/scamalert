@@ -1,14 +1,15 @@
-# ScamAlert 8.6
+# ScamAlert 8.7
 
 Versi ini mengekalkan tiga enjin analisis utama dalam satu halaman:
 - **Makna tersurat dan makna tersirat**
 - **Pencetus emosi**
 - **Gerakan strategi penipuan**
 
-## Penambahbaikan 8.6
-- Butang **Semak Mesej** dipindahkan terus selepas kotak mesej supaya tidak terlalu jauh ke bawah.
-- Pilihan muat naik tangkapan layar dikekalkan di bawah butang sebagai pilihan tambahan.
-- Nama fail pakej menggunakan nombor versi ringkas: `ScamAlert_8.6.zip`.
+## Penambahbaikan 8.7
+- Butang **Semak Mesej** dipindahkan ke **bawah** bahagian muat naik tangkapan layar.
+- Teks pada komponen muat naik diseragamkan kepada **Muat Naik**.
+- Ayat panduan input dikekalkan sebagai: **“Masukkan mesej atau muat naik tangkapan layar untuk semakan awal.”**
+- Susun atur seksyen input dikemaskan supaya alirannya menjadi: kotak mesej → muat naik tangkapan layar → butang semakan.
 
 ## Cara jalankan
 
