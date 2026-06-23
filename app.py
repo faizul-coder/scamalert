@@ -437,7 +437,7 @@ def match_phrase(score: int, has_control: bool) -> str:
 
 def classify_threat(text: str, result: dict) -> str:
     if re.search(r"bayar.*keluar|bayar.*pengeluaran|caj pengeluaran|bayaran pengeluaran|aktifkan pengeluaran|keluarkan duit", text, flags=re.I):
-        return "Scam bayaran sebelum pengeluaran wang"
+        return "Penipuan bayaran sebelum pengeluaran wang"
     if re.search(r"otp|kata laluan|password|pin|akaun.*dibekukan|akaun.*disekat", text, flags=re.I):
         return "Penyamaran autoriti / pengambilalihan akaun"
     if re.search(r"pelaburan|pulangan|untung|modal.*jadi|keuntungan", text, flags=re.I):
@@ -465,7 +465,7 @@ def control_message(category: str) -> str:
 
 def move_pathway_html(moves: List[dict]) -> str:
     if not moves:
-        return '<div class="small-muted">Tiada urutan gerakan scam yang ketara.</div>'
+        return '<div class="small-muted">Tiada urutan gerakan penipuan digital yang ketara.</div>'
     chunks = []
     for i, move in enumerate(moves):
         if i > 0:
@@ -576,7 +576,17 @@ st.markdown(
 
 st.markdown('<div class="panel-card">', unsafe_allow_html=True)
 st.markdown("## Semak Mesej Mencurigakan")
-st.markdown('<p class="helper-text">Tampal mesej WhatsApp, Telegram, SMS atau e-mel yang mencurigakan untuk semakan awal.</p>', unsafe_allow_html=True)
+st.markdown('<p class="helper-text">Tampal mesej WhatsApp, Telegram, SMS atau e-mel yang mencurigakan untuk semakan awal. Pengguna juga boleh memuat naik tangkapan layar perbualan dengan penipu sebagai rujukan visual.</p>', unsafe_allow_html=True)
+
+uploaded_image = st.file_uploader(
+    "Muat Naik Tangkapan Layar Perbualan",
+    type=["png", "jpg", "jpeg"],
+    help="Muat naik tangkapan layar perbualan dengan penipu. Untuk analisis teks, tampal semula mesej dalam kotak di bawah.",
+)
+if uploaded_image is not None:
+    st.image(uploaded_image, caption="Tangkapan layar perbualan yang dimuat naik", use_container_width=True)
+    st.info("Tangkapan layar berjaya dimuat naik. Untuk prototaip ini, sila tampal teks mesej dalam kotak input supaya analisis risiko boleh dijalankan.")
+
 message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Tampal mesej di sini…", key="message_input")
 check = st.button("Semak Risiko")
 st.markdown('</div>', unsafe_allow_html=True)
@@ -621,14 +631,14 @@ if check and message.strip():
         )
     with m_col:
         st.markdown(
-            f'<div class="module-card"><div class="module-title">Gerakan Strategi Penipuan</div><div class="module-caption">Memetakan langkah mesej scam daripada pancingan awal hingga arahan tindakan.</div>{risk_meter(result["move_score"])}<div class="badge {badge_class(result["move_level"])}">{result["move_level"]}</div><div class="result-note">{html.escape(result["move_match"])}</div></div>',
+            f'<div class="module-card"><div class="module-title">Gerakan Strategi Penipuan</div><div class="module-caption">Memetakan langkah mesej penipuan digital daripada pancingan awal hingga arahan tindakan.</div>{risk_meter(result["move_score"])}<div class="badge {badge_class(result["move_level"])}">{result["move_level"]}</div><div class="result-note">{html.escape(result["move_match"])}</div></div>',
             unsafe_allow_html=True,
         )
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
     st.markdown("## Peta Gerakan Penipuan")
-    st.markdown('<p class="helper-text">Paparan ini menunjukkan langkah mesej scam bergerak daripada pancingan awal kepada arahan tindakan.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="helper-text">Paparan ini menunjukkan langkah mesej penipuan digital bergerak daripada pancingan awal kepada arahan tindakan.</p>', unsafe_allow_html=True)
     st.markdown(move_pathway_html(result["moves"]), unsafe_allow_html=True)
     if result["moves"]:
         for move in result["moves"]:
@@ -686,4 +696,4 @@ if check and message.strip():
     st.markdown('<div class="subtle-note">ScamAlert ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 elif check and not message.strip():
-    st.warning("Sila masukkan mesej terlebih dahulu.")
+    st.warning("Sila tampal teks mesej terlebih dahulu. Tangkapan layar boleh dimuat naik sebagai rujukan visual, tetapi analisis risiko prototaip ini dijalankan berdasarkan teks yang ditampal.")

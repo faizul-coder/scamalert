@@ -1,23 +1,39 @@
 # SPECIFICATION
 
 Nama aplikasi: ScamAlert  
-Versi: v0.8.2  
+Versi: v0.8.3  
 Jenis: Prototaip aplikasi web amaran awal penipuan siber
 
-## Struktur analisis pengguna
+## Keperluan bahasa
 
-1. **Makna Tersurat dan Makna Tersirat**  
-   Mengesan arahan jelas, permintaan bayaran, permintaan data serta pujukan tersirat.
+Paparan pengguna menggunakan bahasa Melayu sepenuhnya. Istilah yang digunakan ialah:
 
-2. **Pencetus Emosi**  
-   Mengesan emosi seperti ketakutan, kecemasan, harapan keuntungan dan kepercayaan palsu.
+- penipuan siber
+- penipuan digital
+- penipuan
+- penipu
+- gerakan strategi penipuan
 
-3. **Gerakan Strategi Penipuan**  
-   Memetakan langkah mesej scam daripada pancingan awal kepada arahan bayaran, data atau penguncian mangsa.
+## Fungsi utama
 
-## Rule baharu v0.8.2
+1. **Input teks mesej**  
+   Pengguna boleh menampal mesej WhatsApp, Telegram, SMS atau e-mel yang mencurigakan.
 
-Frasa seperti:
+2. **Muat naik tangkapan layar perbualan**  
+   Pengguna boleh memuat naik tangkapan layar perbualan dengan penipu sebagai rujukan visual.
+
+3. **Makna Tersurat dan Makna Tersirat**  
+   Sistem mengesan arahan jelas, permintaan bayaran, permintaan data serta pujukan tersirat.
+
+4. **Pencetus Emosi**  
+   Sistem mengesan emosi seperti ketakutan, kecemasan, harapan keuntungan dan kepercayaan palsu.
+
+5. **Gerakan Strategi Penipuan**  
+   Sistem memetakan langkah mesej penipuan digital daripada pancingan awal kepada arahan bayaran, data atau penguncian mangsa.
+
+## Rule risiko penting
+
+Frasa seperti berikut diklasifikasikan sebagai pola **bayaran sebelum pengeluaran wang**:
 
 - bayar dulu sebelum keluarkan duit
 - bayar dahulu sebelum keluarkan duit
@@ -26,16 +42,6 @@ Frasa seperti:
 - bayaran pengeluaran
 - aktifkan pengeluaran
 
-akan diklasifikasikan sebagai pola **bayaran sebelum pengeluaran wang** dan dinaikkan kepada kategori risiko tinggi / sangat tinggi.
+## Nota batasan prototaip
 
-## Struktur halaman
-
-1. Header utama
-2. Input mesej
-3. Keputusan keseluruhan
-4. Tiga Enjin Analisis
-5. Peta Gerakan Penipuan
-6. Frasa dan Petanda Dikesan
-7. Padanan Data Kawalan Sepadan
-8. Cadangan Tindakan Selamat
-9. Penafian
+Muat naik tangkapan layar disediakan sebagai rujukan visual. Untuk versi ini, analisis risiko dijalankan berdasarkan teks mesej yang ditampal oleh pengguna.
