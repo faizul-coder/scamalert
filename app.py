@@ -37,10 +37,16 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     border: none;
     border-top: 1px solid var(--line);
     border-radius: 0;
-    padding: 1.25rem 0 1.1rem 0;
     box-shadow: none;
 }
-.hero-card { border-top: 3px solid var(--red); margin-bottom: 1.1rem; }
+.hero-card {
+    border-top: 3px solid var(--red);
+    margin-bottom: 0.35rem;
+    padding: 1.0rem 0 0.45rem 0;
+}
+.panel-card {
+    padding: 0.75rem 0 1.0rem 0;
+}
 .title-main {
     font-size: 2.85rem;
     font-weight: 850;
