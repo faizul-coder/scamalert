@@ -166,6 +166,24 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     margin-top: 0.35rem;
 }
 
+
+/* Tukar teks butang muat naik kepada Bahasa Melayu */
+[data-testid="stFileUploaderDropzone"] button {
+    color: transparent !important;
+    position: relative !important;
+    min-width: 104px !important;
+}
+[data-testid="stFileUploaderDropzone"] button::after {
+    content: "Muat Naik";
+    color: #111827 !important;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -315,7 +333,10 @@ st.markdown('<div class="panel-card">', unsafe_allow_html=True)
 st.markdown("## Semak Mesej Mencurigakan")
 st.markdown('<p class="helper-text">Tampal mesej yang diterima untuk semakan awal.</p>', unsafe_allow_html=True)
 message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Tampal mesej di sini…", key="message_input")
-check = st.button("Semak Risiko")
+uploaded_image = st.file_uploader("Muat Naik", type=["png", "jpg", "jpeg"])
+if uploaded_image is not None:
+    st.success("Tangkapan layar berjaya dimuat naik.")
+check = st.button("Semak Mesej")
 st.markdown('</div>', unsafe_allow_html=True)
 
 if check and message.strip():
