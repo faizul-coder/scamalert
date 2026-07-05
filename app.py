@@ -661,8 +661,6 @@ if check and message.strip():
             '<div class="module-caption">Menganalisis lakuan pertuturan langsung dan tidak langsung.</div>'
             f'{risk_meter(result["speech_score"])}'
             f'<span class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</span>'
-            f'<div class="result-note">{html.escape(result["speech_type"])}</div>'
-            f'<div class="result-note">{html.escape(result["speech_match"])}</div>'
             '</div>'
         )
         st.markdown(speech_card, unsafe_allow_html=True)
@@ -675,8 +673,6 @@ if check and message.strip():
             '<div class="module-caption">Mengesan emosi yang digunakan untuk memujuk atau menekan pengguna.</div>'
             f'{risk_meter(result["emotion_score"])}'
             f'<span class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</span>'
-            f'<div class="result-note">{html.escape(emo_text)}</div>'
-            f'<div class="result-note">{html.escape(result["emotion_match"])}</div>'
             '</div>'
         )
         st.markdown(emotion_card, unsafe_allow_html=True)
@@ -688,7 +684,6 @@ if check and message.strip():
             '<div class="module-caption">Memetakan gerakan strategi penipuan daripada bina kepercayaan kepada arahan tindakan.</div>'
             f'{risk_meter(result["move_score"])}'
             f'<span class="badge {badge_class(result["move_level"])}">{result["move_level"]}</span>'
-            f'<div class="result-note">{html.escape(result["move_match"])}</div>'
             '</div>'
         )
         st.markdown(move_card, unsafe_allow_html=True)

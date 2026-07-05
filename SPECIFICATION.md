@@ -1,10 +1,8 @@
 # SPECIFICATION
 
-Nama aplikasi: ScamAlert  
-Versi: 11.0  
-Jenis: Prototaip aplikasi web amaran awal
+Nama aplikasi: ScamAlert
+Versi: 11.1
 
-## Perubahan 11.0
-1. Kotak muat naik gambar dikembalikan kepada warna putih.
-2. Outline kotak muat naik gambar dikekalkan berwarna hitam.
-3. Tiada perubahan lain dibuat.
+## Perubahan 11.1
+1. Kandungan yang ditandakan dalam tiga kad bahagian Tiga Enjin Analisis dibuang.
+2. Tiada perubahan lain dibuat.

@@ -1,12 +1,5 @@
-# ScamAlert 11.0
+# ScamAlert 11.1
 
-## Perubahan 11.0
-- Kotak muat naik gambar ditukar semula kepada latar putih dengan outline hitam.
+## Perubahan 11.1
+- Membuang teks tambahan dalam tiga kad di bahagian **Tiga Enjin Analisis** sahaja.
 - Tiada perubahan lain dibuat.
-
-## Cara jalankan
-
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
