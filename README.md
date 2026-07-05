@@ -1,9 +1,12 @@
-# ScamAlert 9.8
+# ScamAlert 10.2
 
-## Perubahan 9.8
-- Kotak **Cadangan Tindakan Selamat** dikemas kini dengan latar putih dan garis luar yang jelas.
-- Kotak **Penafian** juga dikemas kini dengan latar putih dan garis luar yang jelas.
-- Perubahan lain dikekalkan.
+## Perubahan 10.2
+- Label teknikal pada bahagian frasa dan petanda dikesan ditukar kepada istilah yang lebih mesra pengguna.
+- Paparan kini menggunakan:
+  - Frasa Lakuan Langsung
+  - Frasa Lakuan Tidak Langsung
+  - Pencetus Emosi
+  - Gerakan Strategi
 
 ## Cara jalankan
 

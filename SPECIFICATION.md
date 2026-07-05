@@ -1,10 +1,9 @@
 # SPECIFICATION
 
 Nama aplikasi: ScamAlert  
-Versi: 9.8  
+Versi: 10.2  
 Jenis: Prototaip aplikasi web amaran awal
 
-## Perubahan 9.8
-1. Kotak Cadangan Tindakan Selamat diubah kepada latar putih dengan outline yang jelas.
-2. Kotak Penafian diubah kepada latar putih dengan outline yang jelas.
-3. Tiada perubahan lain pada komponen utama.
+## Perubahan 10.2
+1. Label teknikal seperti ScamSpeech, ScamEmotion dan ScamMove dibuang daripada bahagian frasa dan petanda dikesan.
+2. Label baharu yang dipaparkan ialah Frasa Lakuan Langsung, Frasa Lakuan Tidak Langsung, Pencetus Emosi dan Gerakan Strategi.

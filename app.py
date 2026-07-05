@@ -136,13 +136,13 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .stButton > button:hover { background: #991B1B !important; color: white !important; }
 .stButton > button * { color: #FFFFFF !important; }
 .subtle-note {
-    background: #FFFFFF;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 1rem 1.05rem;
+    background: #FCFCFD;
+    border: none;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    padding: 1rem 0 0 0;
     color: var(--muted);
-    line-height: 1.6;
-    box-shadow: none;
+    line-height: 1.55;
 }
 .meter-wrap { margin-top: 0.2rem; }
 .meter-score {
@@ -253,15 +253,15 @@ INDIRECT_PATTERNS: Dict[str, Tuple[int, str]] = {
 }
 
 EMOTION_PATTERNS: Dict[str, List[str]] = {
-    "E1 Ketakutan": [
+    "Ketakutan": [
         r"akaun.*dibekukan", r"akaun.*disekat", r"disenarai hitam", r"aktiviti luar biasa",
         r"tindakan undang-undang", r"polis", r"pihak berkuasa", r"kehilangan akses",
     ],
-    "E2 Kecemasan": [r"segera", r"sekarang", r"24 jam", r"15 minit", r"30 minit", r"hari ini", r"sebelum jam"],
-    "E3 Harapan Keuntungan": [r"untung", r"ganjaran", r"bonus", r"pulangan", r"diluluskan", r"hadiah", r"wang.*dilepaskan"],
-    "E4 Kepercayaan Palsu": [r"bank", r"pegawai", r"rasmi", r"syarikat berdaftar", r"lesen", r"invois", r"suruhanjaya"],
-    "E5 Simpati": [r"bantu", r"sumbangan", r"anak sakit", r"kesusahan", r"derma", r"kecemasan keluarga"],
-    "E6 Rasa Bersalah": [r"jika anda tidak", r"anda punca", r"tolong saya", r"jangan kecewakan", r"harap kerjasama"],
+    "Kecemasan": [r"segera", r"sekarang", r"24 jam", r"15 minit", r"30 minit", r"hari ini", r"sebelum jam"],
+    "Harapan keuntungan": [r"untung", r"ganjaran", r"bonus", r"pulangan", r"diluluskan", r"hadiah", r"wang.*dilepaskan"],
+    "Kepercayaan palsu": [r"bank", r"pegawai", r"rasmi", r"syarikat berdaftar", r"lesen", r"invois", r"suruhanjaya"],
+    "Simpati": [r"bantu", r"sumbangan", r"anak sakit", r"kesusahan", r"derma", r"kecemasan keluarga"],
+    "Rasa bersalah": [r"jika anda tidak", r"anda punca", r"tolong saya", r"jangan kecewakan", r"harap kerjasama"],
 }
 
 CONTROL_PATTERNS: Dict[str, str] = {
@@ -341,6 +341,10 @@ SCAMMOVE_CONTROL_EXAMPLES = [
 ]
 
 
+
+def clean_public_label(label: str) -> str:
+    return re.sub(r"^E\d+\s+", "", str(label)).strip()
+
 def risk_level(score: int) -> str:
     if score <= 24:
         return "Rendah"
@@ -394,9 +398,9 @@ def analyse_emotions(text: str):
         if any(re.search(p, text, flags=re.I) for p in patterns):
             emotions.append(emotion)
             score += 18
-    if "E1 Ketakutan" in emotions and "E2 Kecemasan" in emotions:
+    if "Ketakutan" in emotions and "Kecemasan" in emotions:
         score += 12
-    if "E3 Harapan Keuntungan" in emotions and "E4 Kepercayaan Palsu" in emotions:
+    if "Harapan keuntungan" in emotions and "Kepercayaan palsu" in emotions:
         score += 8
     return min(score, 100), emotions
 
@@ -471,7 +475,7 @@ def move_pathway_html(moves: List[dict]) -> str:
 
 def tag_html(items: List[str], cls: str) -> str:
     safe_items = [html.escape(x) for x in (items or ["Tiada petanda yang ketara"])]
-    return '<div class="tag-wrap">' + ''.join([f'<span class="tag {cls}">{t}</span>' for t in safe_items]) + '</div>'
+    return '<div class="tag-wrap">' + ''.join([f'<span class="tag {cls}">{clean_public_label(t)}</span>' for t in safe_items]) + '</div>'
 
 
 def analyse_text(message: str):
@@ -661,10 +665,10 @@ if check and message.strip():
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
     st.markdown("## Frasa dan Petanda Dikesan")
     sections = [
-        ("ScamSpeech: Frasa Lakuan Langsung", result["direct_phrases"], "tag-red"),
-        ("ScamSpeech: Frasa Lakuan Tidak Langsung", result["indirect_phrases"], "tag-yellow"),
-        ("ScamEmotion: Pencetus Emosi", result["emotion_phrases"], "tag-blue"),
-        ("ScamMove: Gerakan Strategi", [m["name"] for m in result["moves"]], "tag-red"),
+        ("Frasa Lakuan Langsung", result["direct_phrases"], "tag-red"),
+        ("Frasa Lakuan Tidak Langsung", result["indirect_phrases"], "tag-yellow"),
+        ("Pencetus Emosi", result["emotion_phrases"], "tag-blue"),
+        ("Gerakan Strategi", [m["name"] for m in result["moves"]], "tag-red"),
         ("Data Kawalan / Isyarat Sah", result["control_phrases"], "tag-green"),
     ]
     for title, tags, cls in sections:
