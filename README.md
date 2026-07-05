@@ -1,12 +1,10 @@
-# ScamAlert 10.2
+# ScamAlert 10.3
 
-## Perubahan 10.2
-- Label teknikal pada bahagian frasa dan petanda dikesan ditukar kepada istilah yang lebih mesra pengguna.
-- Paparan kini menggunakan:
-  - Frasa Lakuan Langsung
-  - Frasa Lakuan Tidak Langsung
-  - Pencetus Emosi
-  - Gerakan Strategi
+## Perubahan 10.3
+- Bahagian **ScamMove Mapper** dibuang daripada paparan pengguna.
+- Bahagian **Lihat asas data ScamMove prototaip** dan contoh data penipuan/kawalan dibuang daripada paparan pengguna.
+- Kotak **Padanan Data Kawalan Sepadan**, **Cadangan Tindakan Selamat** dan **Penafian** dikemas kini kepada latar putih dengan garis luar yang jelas.
+- Label teknikal seperti ScamSpeech, ScamEmotion dan ScamMove pada bahagian paparan pengguna ditukar kepada label mesra pengguna.
 
 ## Cara jalankan
 

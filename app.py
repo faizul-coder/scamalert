@@ -136,13 +136,13 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .stButton > button:hover { background: #991B1B !important; color: white !important; }
 .stButton > button * { color: #FFFFFF !important; }
 .subtle-note {
-    background: #FCFCFD;
-    border: none;
-    border-top: 1px solid var(--line);
-    border-radius: 0;
-    padding: 1rem 0 0 0;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
     color: var(--muted);
-    line-height: 1.55;
+    line-height: 1.6;
+    box-shadow: none;
 }
 .meter-wrap { margin-top: 0.2rem; }
 .meter-score {
@@ -341,10 +341,6 @@ SCAMMOVE_CONTROL_EXAMPLES = [
 ]
 
 
-
-def clean_public_label(label: str) -> str:
-    return re.sub(r"^E\d+\s+", "", str(label)).strip()
-
 def risk_level(score: int) -> str:
     if score <= 24:
         return "Rendah"
@@ -475,7 +471,7 @@ def move_pathway_html(moves: List[dict]) -> str:
 
 def tag_html(items: List[str], cls: str) -> str:
     safe_items = [html.escape(x) for x in (items or ["Tiada petanda yang ketara"])]
-    return '<div class="tag-wrap">' + ''.join([f'<span class="tag {cls}">{clean_public_label(t)}</span>' for t in safe_items]) + '</div>'
+    return '<div class="tag-wrap">' + ''.join([f'<span class="tag {cls}">{t}</span>' for t in safe_items]) + '</div>'
 
 
 def analyse_text(message: str):
@@ -605,7 +601,7 @@ if check and message.strip():
         st.markdown(
             f"""
             <div class="module-card">
-                <div class="module-title">ScamSpeech</div>
+                <div class="module-title">Makna Tersurat dan Makna Tersirat</div>
                 <div class="module-caption">Menganalisis lakuan pertuturan langsung dan tidak langsung.</div>
                 {risk_meter(result["speech_score"])}
                 <div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div>
@@ -620,8 +616,8 @@ if check and message.strip():
         st.markdown(
             f"""
             <div class="module-card">
-                <div class="module-title">ScamEmotion</div>
-                <div class="module-caption">Mengesan pencetus emosi 6E yang digunakan untuk memujuk atau menekan pengguna.</div>
+                <div class="module-title">Pencetus Emosi</div>
+                <div class="module-caption">Mengesan emosi yang digunakan untuk memujuk atau menekan pengguna.</div>
                 {risk_meter(result["emotion_score"])}
                 <div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div>
                 <div class="result-note">{html.escape(emo_text)}</div>
@@ -634,8 +630,8 @@ if check and message.strip():
         st.markdown(
             f"""
             <div class="module-card">
-                <div class="module-title">ScamMove</div>
-                <div class="module-caption">Memetakan gerakan strategi scam daripada bina kepercayaan kepada arahan tindakan.</div>
+                <div class="module-title">Gerakan Strategi Penipuan</div>
+                <div class="module-caption">Memetakan gerakan strategi penipuan daripada bina kepercayaan kepada arahan tindakan.</div>
                 {risk_meter(result["move_score"])}
                 <div class="badge {badge_class(result["move_level"])}">{result["move_level"]}</div>
                 <div class="result-note">{html.escape(result["move_match"])}</div>
@@ -645,22 +641,6 @@ if check and message.strip():
         )
     st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="panel-card">', unsafe_allow_html=True)
-    st.markdown("## ScamMove Mapper")
-    st.markdown('<p class="helper-text">Paparan ini menunjukkan laluan gerakan wacana yang membentuk strategi penipuan.</p>', unsafe_allow_html=True)
-    st.markdown(move_pathway_html(result["moves"]), unsafe_allow_html=True)
-    if result["moves"]:
-        for move in result["moves"]:
-            st.markdown(
-                f"""
-                <div class="move-box">
-                    <div class="move-name">{html.escape(move["code"])} · {html.escape(move["name"])}</div>
-                    <div class="move-function">{html.escape(move["function"])}</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
     st.markdown("## Frasa dan Petanda Dikesan")
@@ -692,13 +672,6 @@ if check and message.strip():
     st.markdown(f'<div class="subtle-note">{html.escape(guidance[result["overall_level"]])}</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    with st.expander("Lihat asas data ScamMove prototaip"):
-        st.markdown("**Contoh data penipuan ScamMove**")
-        for item in SCAMMOVE_SCAM_EXAMPLES:
-            st.markdown(f"- {item}")
-        st.markdown("**Contoh data kawalan ScamMove**")
-        for item in SCAMMOVE_CONTROL_EXAMPLES:
-            st.markdown(f"- {item}")
 
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
     st.markdown("## Penafian")
