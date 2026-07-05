@@ -1,10 +1,10 @@
 # SPECIFICATION
 
 Nama aplikasi: ScamAlert  
-Versi: 10.6  
+Versi: 10.8  
+Jenis: Prototaip aplikasi web amaran awal
 
-## Perubahan 10.6
-1. Ayat bawah dalam kotak Skor Risiko Keseluruhan dibuang.
-2. Ayat bawah dalam kotak Tahap Risiko dibuang.
-3. Ayat bawah dalam kotak Kategori Ancaman dibuang.
-4. Tiada perubahan lain dibuat.
+## Perubahan 10.8
+1. Kotak hitam dalam bahagian Tiga Enjin Analisis dibuang sepenuhnya.
+2. Paparan bahagian tersebut ditukar kepada komponen Streamlit biasa untuk mengelakkan HTML mentah dipaparkan.
+3. Tiada perubahan lain dibuat.

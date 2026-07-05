@@ -599,49 +599,39 @@ if check and message.strip():
 
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
     st.markdown("## Tiga Enjin Analisis")
+
     s_col, e_col, m_col = st.columns(3)
+
     with s_col:
-        st.markdown(
-            f"""
-            <div class="module-card">
-                <div class="module-title">Makna Tersurat dan Makna Tersirat</div>
-                <div class="module-caption">Menganalisis lakuan pertuturan langsung dan tidak langsung.</div>
-                {risk_meter(result["speech_score"])}
-                <div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div>
-                <div class="result-note">{html.escape(result["speech_type"])}</div>
-                <div class="result-note">{html.escape(result["speech_match"])}</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown('<div class="module-card">', unsafe_allow_html=True)
+        st.markdown("### Makna Tersurat dan Makna Tersirat")
+        st.markdown("Menganalisis lakuan pertuturan langsung dan tidak langsung.")
+        st.markdown(risk_meter(result["speech_score"]), unsafe_allow_html=True)
+        st.markdown(f'<span class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</span>', unsafe_allow_html=True)
+        st.markdown(html.escape(result["speech_type"]))
+        st.markdown(html.escape(result["speech_match"]))
+        st.markdown('</div>', unsafe_allow_html=True)
+
     with e_col:
         emo_text = ", ".join(result["emotions"]) if result["emotions"] else "Tiada pencetus emosi yang ketara"
-        st.markdown(
-            f"""
-            <div class="module-card">
-                <div class="module-title">Pencetus Emosi</div>
-                <div class="module-caption">Mengesan emosi yang digunakan untuk memujuk atau menekan pengguna.</div>
-                {risk_meter(result["emotion_score"])}
-                <div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div>
-                <div class="result-note">{html.escape(emo_text)}</div>
-                <div class="result-note">{html.escape(result["emotion_match"])}</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown('<div class="module-card">', unsafe_allow_html=True)
+        st.markdown("### Pencetus Emosi")
+        st.markdown("Mengesan emosi yang digunakan untuk memujuk atau menekan pengguna.")
+        st.markdown(risk_meter(result["emotion_score"]), unsafe_allow_html=True)
+        st.markdown(f'<span class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</span>', unsafe_allow_html=True)
+        st.markdown(html.escape(emo_text))
+        st.markdown(html.escape(result["emotion_match"]))
+        st.markdown('</div>', unsafe_allow_html=True)
+
     with m_col:
-        st.markdown(
-            f"""
-            <div class="module-card">
-                <div class="module-title">Gerakan Strategi Penipuan</div>
-                <div class="module-caption">Memetakan gerakan strategi penipuan daripada bina kepercayaan kepada arahan tindakan.</div>
-                {risk_meter(result["move_score"])}
-                <div class="badge {badge_class(result["move_level"])}">{result["move_level"]}</div>
-                <div class="result-note">{html.escape(result["move_match"])}</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown('<div class="module-card">', unsafe_allow_html=True)
+        st.markdown("### Gerakan Strategi Penipuan")
+        st.markdown("Memetakan gerakan strategi penipuan daripada bina kepercayaan kepada arahan tindakan.")
+        st.markdown(risk_meter(result["move_score"]), unsafe_allow_html=True)
+        st.markdown(f'<span class="badge {badge_class(result["move_level"])}">{result["move_level"]}</span>', unsafe_allow_html=True)
+        st.markdown(html.escape(result["move_match"]))
+        st.markdown('</div>', unsafe_allow_html=True)
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 
