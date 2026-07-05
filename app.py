@@ -697,7 +697,6 @@ if check and message.strip():
         ("Frasa Lakuan Tidak Langsung", result["indirect_phrases"], "tag-yellow"),
         ("Pencetus Emosi", result["emotion_phrases"], "tag-blue"),
         ("Gerakan Strategi", [m["name"] for m in result["moves"]], "tag-red"),
-        ("Data Kawalan / Isyarat Sah", result["control_phrases"], "tag-green"),
     ]
     for title, tags, cls in sections:
         st.markdown(f"#### {title}")

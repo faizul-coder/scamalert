@@ -1,8 +1,9 @@
 # SPECIFICATION
 
-Nama aplikasi: ScamAlert
-Versi: 11.1
+Nama aplikasi: ScamAlert  
+Versi: 11.2  
+Jenis: Prototaip aplikasi web amaran awal
 
-## Perubahan 11.1
-1. Kandungan yang ditandakan dalam tiga kad bahagian Tiga Enjin Analisis dibuang.
-2. Tiada perubahan lain dibuat.
+## Perubahan 11.2
+1. Bahagian "Data Kawalan / Isyarat Sah" dalam paparan Frasa dan Petanda Dikesan dibuang.
+2. Bahagian lain dikekalkan.
