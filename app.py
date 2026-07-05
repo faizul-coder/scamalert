@@ -578,18 +578,21 @@ if check and message.strip():
     c1, c2, c3 = st.columns([1.1, 0.9, 1.2])
     with c1:
         st.markdown(
-            f'<div class="result-card"><div class="result-label">Skor Risiko Keseluruhan</div>{risk_meter(result["overall_score"])}<div class="result-note">Gabungan ScamSpeech, ScamEmotion dan ScamMove.</div></div>',
+            f'<div class="result-card"><div class="result-label">Skor Risiko Keseluruhan</div>{risk_meter(result["overall_score"])}'
+            '</div>',
             unsafe_allow_html=True,
         )
     with c2:
         level = result["overall_level"]
         st.markdown(
-            f'<div class="result-card"><div class="result-label">Tahap Risiko</div><div class="badge {badge_class(level)}">{level}</div><div class="result-note">{html.escape(result["overall_match"])}</div></div>',
+            f'<div class="result-card"><div class="result-label">Tahap Risiko</div><div class="badge {badge_class(level)}">{level}</div>'
+            '</div>',
             unsafe_allow_html=True,
         )
     with c3:
         st.markdown(
-            f'<div class="result-card"><div class="result-label">Kategori Ancaman</div><div class="result-note" style="color:#111827;font-weight:750;">{html.escape(result["threat_category"])}</div><div class="result-note">Keputusan ini ialah amaran awal, bukan pengesahan rasmi.</div></div>',
+            f'<div class="result-card"><div class="result-label">Kategori Ancaman</div><div class="result-note" style="color:#111827;font-weight:750;">{html.escape(result["threat_category"])}</div>'
+            '</div>',
             unsafe_allow_html=True,
         )
     st.markdown('</div>', unsafe_allow_html=True)
@@ -598,41 +601,47 @@ if check and message.strip():
     st.markdown("## Tiga Enjin Analisis")
     s_col, e_col, m_col = st.columns(3)
     with s_col:
-        speech_card = (
-            '<div class="module-card">'
-            '<div class="module-title">Makna Tersurat dan Makna Tersirat</div>'
-            '<div class="module-caption">Menganalisis lakuan pertuturan langsung dan tidak langsung.</div>'
-            f'{risk_meter(result["speech_score"])}'
-            f'<div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div>'
-            f'<div class="result-note">{html.escape(result["speech_type"])}</div>'
-            f'<div class="result-note">{html.escape(result["speech_match"])}</div>'
-            '</div>'
+        st.markdown(
+            f"""
+            <div class="module-card">
+                <div class="module-title">Makna Tersurat dan Makna Tersirat</div>
+                <div class="module-caption">Menganalisis lakuan pertuturan langsung dan tidak langsung.</div>
+                {risk_meter(result["speech_score"])}
+                <div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div>
+                <div class="result-note">{html.escape(result["speech_type"])}</div>
+                <div class="result-note">{html.escape(result["speech_match"])}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
-        st.markdown(speech_card, unsafe_allow_html=True)
     with e_col:
         emo_text = ", ".join(result["emotions"]) if result["emotions"] else "Tiada pencetus emosi yang ketara"
-        emotion_card = (
-            '<div class="module-card">'
-            '<div class="module-title">Pencetus Emosi</div>'
-            '<div class="module-caption">Mengesan emosi yang digunakan untuk memujuk atau menekan pengguna.</div>'
-            f'{risk_meter(result["emotion_score"])}'
-            f'<div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div>'
-            f'<div class="result-note">{html.escape(emo_text)}</div>'
-            f'<div class="result-note">{html.escape(result["emotion_match"])}</div>'
-            '</div>'
+        st.markdown(
+            f"""
+            <div class="module-card">
+                <div class="module-title">Pencetus Emosi</div>
+                <div class="module-caption">Mengesan emosi yang digunakan untuk memujuk atau menekan pengguna.</div>
+                {risk_meter(result["emotion_score"])}
+                <div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div>
+                <div class="result-note">{html.escape(emo_text)}</div>
+                <div class="result-note">{html.escape(result["emotion_match"])}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
-        st.markdown(emotion_card, unsafe_allow_html=True)
     with m_col:
-        move_card = (
-            '<div class="module-card">'
-            '<div class="module-title">Gerakan Strategi Penipuan</div>'
-            '<div class="module-caption">Memetakan gerakan strategi penipuan daripada bina kepercayaan kepada arahan tindakan.</div>'
-            f'{risk_meter(result["move_score"])}'
-            f'<div class="badge {badge_class(result["move_level"])}">{result["move_level"]}</div>'
-            f'<div class="result-note">{html.escape(result["move_match"])}</div>'
-            '</div>'
+        st.markdown(
+            f"""
+            <div class="module-card">
+                <div class="module-title">Gerakan Strategi Penipuan</div>
+                <div class="module-caption">Memetakan gerakan strategi penipuan daripada bina kepercayaan kepada arahan tindakan.</div>
+                {risk_meter(result["move_score"])}
+                <div class="badge {badge_class(result["move_level"])}">{result["move_level"]}</div>
+                <div class="result-note">{html.escape(result["move_match"])}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
-        st.markdown(move_card, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 

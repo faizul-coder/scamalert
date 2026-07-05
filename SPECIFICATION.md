@@ -1,9 +1,10 @@
 # SPECIFICATION
 
 Nama aplikasi: ScamAlert  
-Versi: 10.4  
-Jenis: Prototaip aplikasi web amaran awal
+Versi: 10.6  
 
-## Perubahan 10.4
-1. Paparan HTML yang tersilap muncul sebagai kotak hitam dalam bahagian Tiga Enjin Analisis telah dibetulkan.
-2. Bahagian lain dikekalkan.
+## Perubahan 10.6
+1. Ayat bawah dalam kotak Skor Risiko Keseluruhan dibuang.
+2. Ayat bawah dalam kotak Tahap Risiko dibuang.
+3. Ayat bawah dalam kotak Kategori Ancaman dibuang.
+4. Tiada perubahan lain dibuat.

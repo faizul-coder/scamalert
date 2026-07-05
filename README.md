@@ -1,12 +1,5 @@
-# ScamAlert 10.4
+# ScamAlert 10.6
 
-## Perubahan 10.4
-- Kotak hitam dalam bahagian **Tiga Enjin Analisis** dibuang.
-- Susun atur dan kandungan lain dikekalkan.
-
-## Cara jalankan
-
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
+## Perubahan 10.6
+- Ayat tambahan dalam tiga kotak di bahagian **Keputusan Keseluruhan** dibuang.
+- Tiada perubahan lain dibuat.
