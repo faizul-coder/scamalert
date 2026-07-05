@@ -483,7 +483,7 @@ def analyse_text(message: str):
     move_score, moves, move_control_labels = analyse_moves(text)
 
     speech_score = max(0, min(100, direct_score + indirect_score - control_score))
-    overall_score = int(min(100, round(speech_score * 0.35 + emotion_score * 0.30 + move_score * 0.35)))
+    overall_score = int(min(100, round((speech_score + emotion_score + move_score) / 3)))
 
     has_otp = bool(re.search(r"otp|kata laluan|password|pin", text, flags=re.I))
     has_account_threat = bool(re.search(r"akaun.*dibekukan|akaun.*disekat|akaun.*ditutup", text, flags=re.I))
@@ -565,9 +565,13 @@ st.markdown(
 
 st.markdown('<div class="panel-card">', unsafe_allow_html=True)
 st.markdown("## Semak Mesej Mencurigakan")
-st.markdown('<p class="helper-text">Tampal mesej WhatsApp, Telegram, SMS atau e-mel yang mencurigakan untuk semakan awal.</p>', unsafe_allow_html=True)
-message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Tampal mesej di sini…", key="message_input")
-check = st.button("Semak Risiko")
+st.markdown('<p class="helper-text">Masukkan mesej di bawah:</p>', unsafe_allow_html=True)
+message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Masukkan mesej di sini", key="message_input")
+st.markdown('<p class="helper-text">atau muat naik gambar di bawah:</p>', unsafe_allow_html=True)
+uploaded_image = st.file_uploader("Muat naik gambar di sini", type=["png", "jpg", "jpeg"], label_visibility="collapsed")
+if uploaded_image is not None:
+    st.image(uploaded_image, caption="Tangkapan layar yang dimuat naik", use_container_width=True)
+check = st.button("Semak Mesej")
 st.markdown('</div>', unsafe_allow_html=True)
 
 if check and message.strip():
@@ -599,41 +603,48 @@ if check and message.strip():
 
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
     st.markdown("## Tiga Enjin Analisis")
-
     s_col, e_col, m_col = st.columns(3)
 
     with s_col:
-        st.markdown('<div class="module-card">', unsafe_allow_html=True)
-        st.markdown("### Makna Tersurat dan Makna Tersirat")
-        st.markdown("Menganalisis lakuan pertuturan langsung dan tidak langsung.")
-        st.markdown(risk_meter(result["speech_score"]), unsafe_allow_html=True)
-        st.markdown(f'<span class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</span>', unsafe_allow_html=True)
-        st.markdown(html.escape(result["speech_type"]))
-        st.markdown(html.escape(result["speech_match"]))
-        st.markdown('</div>', unsafe_allow_html=True)
+        speech_card = (
+            '<div class="module-card">'
+            '<div class="module-title">Makna Tersurat dan Makna Tersirat</div>'
+            '<div class="module-caption">Menganalisis lakuan pertuturan langsung dan tidak langsung.</div>'
+            f'{risk_meter(result["speech_score"])}'
+            f'<span class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</span>'
+            f'<div class="result-note">{html.escape(result["speech_type"])}</div>'
+            f'<div class="result-note">{html.escape(result["speech_match"])}</div>'
+            '</div>'
+        )
+        st.markdown(speech_card, unsafe_allow_html=True)
 
     with e_col:
         emo_text = ", ".join(result["emotions"]) if result["emotions"] else "Tiada pencetus emosi yang ketara"
-        st.markdown('<div class="module-card">', unsafe_allow_html=True)
-        st.markdown("### Pencetus Emosi")
-        st.markdown("Mengesan emosi yang digunakan untuk memujuk atau menekan pengguna.")
-        st.markdown(risk_meter(result["emotion_score"]), unsafe_allow_html=True)
-        st.markdown(f'<span class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</span>', unsafe_allow_html=True)
-        st.markdown(html.escape(emo_text))
-        st.markdown(html.escape(result["emotion_match"]))
-        st.markdown('</div>', unsafe_allow_html=True)
+        emotion_card = (
+            '<div class="module-card">'
+            '<div class="module-title">Pencetus Emosi</div>'
+            '<div class="module-caption">Mengesan emosi yang digunakan untuk memujuk atau menekan pengguna.</div>'
+            f'{risk_meter(result["emotion_score"])}'
+            f'<span class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</span>'
+            f'<div class="result-note">{html.escape(emo_text)}</div>'
+            f'<div class="result-note">{html.escape(result["emotion_match"])}</div>'
+            '</div>'
+        )
+        st.markdown(emotion_card, unsafe_allow_html=True)
 
     with m_col:
-        st.markdown('<div class="module-card">', unsafe_allow_html=True)
-        st.markdown("### Gerakan Strategi Penipuan")
-        st.markdown("Memetakan gerakan strategi penipuan daripada bina kepercayaan kepada arahan tindakan.")
-        st.markdown(risk_meter(result["move_score"]), unsafe_allow_html=True)
-        st.markdown(f'<span class="badge {badge_class(result["move_level"])}">{result["move_level"]}</span>', unsafe_allow_html=True)
-        st.markdown(html.escape(result["move_match"]))
-        st.markdown('</div>', unsafe_allow_html=True)
+        move_card = (
+            '<div class="module-card">'
+            '<div class="module-title">Gerakan Strategi Penipuan</div>'
+            '<div class="module-caption">Memetakan gerakan strategi penipuan daripada bina kepercayaan kepada arahan tindakan.</div>'
+            f'{risk_meter(result["move_score"])}'
+            f'<span class="badge {badge_class(result["move_level"])}">{result["move_level"]}</span>'
+            f'<div class="result-note">{html.escape(result["move_match"])}</div>'
+            '</div>'
+        )
+        st.markdown(move_card, unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
-
 
     st.markdown('<div class="panel-card">', unsafe_allow_html=True)
     st.markdown("## Frasa dan Petanda Dikesan")

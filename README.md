@@ -1,9 +1,9 @@
-# ScamAlert 10.8
+# ScamAlert 10.9
 
-## Perubahan 10.8
-- Kotak hitam dalam bahagian Tiga Enjin Analisis dibuang sepenuhnya.
-- Bahagian Tiga Enjin Analisis kini dipaparkan menggunakan komponen Streamlit biasa, bukan blok HTML panjang.
-- Tiada perubahan lain dibuat.
+## Perubahan 10.9
+- Fungsi muat naik gambar dipulihkan pada bahagian input.
+- Kotak putih kosong di atas meter dalam bahagian Tiga Enjin Analisis dibuang.
+- Tetapan lain dikekalkan.
 
 ## Cara jalankan
 
