@@ -221,6 +221,55 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
     padding: 1rem;
     line-height: 1.6;
 }
+
+/* Kotak muat naik gambar: putih dengan outline hitam */
+[data-testid="stFileUploader"] {
+    margin-top: 0.25rem !important;
+    margin-bottom: 1rem !important;
+}
+[data-testid="stFileUploader"] section,
+[data-testid="stFileUploaderDropzone"] {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    border: 1.5px solid #111827 !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    box-shadow: none !important;
+}
+[data-testid="stFileUploaderDropzone"] > div,
+[data-testid="stFileUploaderDropzone"] small,
+[data-testid="stFileUploaderDropzone"] span,
+[data-testid="stFileUploaderDropzone"] p {
+    background: transparent !important;
+    color: #111827 !important;
+}
+[data-testid="stFileUploaderDropzone"] button {
+    min-width: 245px !important;
+    height: 46px !important;
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    border: 1px solid #111827 !important;
+    border-radius: 10px !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    box-shadow: none !important;
+    position: relative !important;
+}
+[data-testid="stFileUploaderDropzone"] button * {
+    display: none !important;
+}
+[data-testid="stFileUploaderDropzone"] button::after {
+    content: "Muat naik gambar di sini";
+    color: #111827 !important;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 0.95rem;
+}
+
 </style>
 """,
     unsafe_allow_html=True,

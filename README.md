@@ -1,9 +1,8 @@
-# ScamAlert 10.9
+# ScamAlert 11.0
 
-## Perubahan 10.9
-- Fungsi muat naik gambar dipulihkan pada bahagian input.
-- Kotak putih kosong di atas meter dalam bahagian Tiga Enjin Analisis dibuang.
-- Tetapan lain dikekalkan.
+## Perubahan 11.0
+- Kotak muat naik gambar ditukar semula kepada latar putih dengan outline hitam.
+- Tiada perubahan lain dibuat.
 
 ## Cara jalankan
 
