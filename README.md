@@ -1,10 +1,9 @@
-# ScamAlert Selangor Streamlit v0.7.3 Plain Clean
+# ScamAlert 9.8
 
-Pembetulan v0.7.3:
-- Skor risiko dipaparkan dalam bentuk meter.
-- Border kad diringkaskan supaya tidak terlalu tebal.
-- Kad utama menggunakan garis lurus ringkas, bukan border berat.
-- Kotak input menggunakan border halus.
+## Perubahan 9.8
+- Kotak **Cadangan Tindakan Selamat** dikemas kini dengan latar putih dan garis luar yang jelas.
+- Kotak **Penafian** juga dikemas kini dengan latar putih dan garis luar yang jelas.
+- Perubahan lain dikekalkan.
 
 ## Cara jalankan
 
