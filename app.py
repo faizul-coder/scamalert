@@ -73,10 +73,12 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .stButton > button:hover { background:var(--red-dark) !important; color:#FFFFFF !important; }
 [data-testid="stFileUploaderDropzone"] { background:white !important; border:1px dashed #9CA3AF !important; border-radius:12px !important; }
 [data-testid="stFileUploaderDropzone"] button { background:white !important; color:var(--ink) !important; border:1px solid #CBD0D8 !important; }
-[data-testid="stFileUploaderDropzone"] button *, [data-testid="stFileUploaderDropzone"] button p { color:var(--ink) !important; }
 [data-testid="stFileUploaderDropzone"] button { font-size:0 !important; min-width:240px; }
-[data-testid="stFileUploaderDropzone"] button::after { content:"Muat naik gambar di sini"; font-size:1rem; color:var(--ink); font-weight:600; }
-[data-testid="stFileUploaderDropzone"] small { color:var(--muted) !important; }
+[data-testid="stFileUploaderDropzone"] button > * { display:none !important; }
+[data-testid="stFileUploaderDropzone"] button::after { content:"Muat naik gambar di sini"; display:block; font-size:1rem; line-height:1.25; color:var(--ink); font-weight:650; }
+[data-testid="stFileUploaderDropzoneInstructions"] span,
+[data-testid="stFileUploaderDropzoneInstructions"] small,
+[data-testid="stFileUploaderDropzone"] small { color:var(--muted) !important; opacity:1 !important; }
 div[data-baseweb="select"] > div { background:white !important; color:var(--ink) !important; }
 div[data-baseweb="select"] * { color:var(--ink) !important; }
 @media (max-width: 700px) {
@@ -269,8 +271,7 @@ if result:
             "perkhidmatan atau pihak berkuasa. OCR boleh tersalah membaca imej; semak "
             "teks sebelum membuat keputusan."
         )
-
-st.markdown(
-    '<div class="footer-note">Saringan awal sahaja. Jangan klik, bayar atau berkongsi OTP sebelum pengesahan melalui saluran rasmi.</div>',
-    unsafe_allow_html=True,
-)
+    st.markdown(
+        '<div class="footer-note">Saringan awal sahaja. Jangan klik, bayar atau berkongsi OTP sebelum pengesahan melalui saluran rasmi.</div>',
+        unsafe_allow_html=True,
+    )

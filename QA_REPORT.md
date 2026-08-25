@@ -16,6 +16,9 @@ Date: 2026-08-26
   button and one uploader in the main flow, with no initial expander.
 - Original ScamAlert product description: restored verbatim and verified.
 - Light-theme and input contrast configuration: active.
+- Uploader button exposes one Malay label only; the default label is hidden.
+- Safety footer is absent from the initial task screen and appears only after
+  a result is produced.
 - Result runtime test: risk result, category, reasons and technical expanders
   rendered without exceptions.
 
