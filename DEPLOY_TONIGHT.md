@@ -1,14 +1,15 @@
-# Activate OCR on the live ScamAlert app tonight
+# Deploy ScamAlert 1.3 tonight
 
-The OCR code is active in this package. It becomes active on the public app
-only after version 1.2 is committed to the repository used by Streamlit
-Community Cloud and the app has rebuilt.
+Version 1.2 is already the live backup. Upload version 1.3 only after retaining
+that backup or its commit reference.
 
-## Deployment checklist
+## Upload to GitHub
 
-1. Back up the current repository or create a release tag for version 1.1.
-2. Put the contents of this package at the repository root. In particular,
-   verify that these files are not inside an extra ZIP folder:
+1. Open the root of `faizul-coder/scamalert` on branch `main`.
+2. Click **Add file** → **Upload files**.
+3. Drag every item inside this package into the upload page. Do not upload the
+   ZIP itself and do not place the files inside an extra folder.
+4. Confirm that these items will be replaced or added at repository root:
 
    - `app.py`
    - `scamalert_core.py`
@@ -18,36 +19,30 @@ Community Cloud and the app has rebuilt.
    - `packages.txt`
    - `.streamlit/config.toml`
    - `data/reference_data.json`
+   - `tests/test_open_messages_v13.py`
 
-3. Commit and push the changes.
-4. In Streamlit Community Cloud, confirm the entry point is `app.py`, then
-   reboot/redeploy the app if it has not started rebuilding automatically.
-5. Wait for system packages and Python dependencies to finish installing.
-6. Open the app in a private/incognito browser window. Do not present it until
-   both green messages appear:
+5. Enter commit message: `Aktifkan ScamAlert 1.3 untuk demo NICE 2026`.
+6. Click **Commit changes**.
+7. Wait for Streamlit Community Cloud to rebuild, then use **Manage app** →
+   **Reboot app** only if the new release does not appear automatically.
 
-   - **✓ Data rujukan aktif**
-   - **✓ OCR aktif**
+## Acceptance check before showing anyone
 
-## Five-minute acceptance test
+1. The page must open with **ScamAlert**, the original product description and
+   **Semak Mesej Mencurigakan**.
+2. The first task area should contain only the message box, **atau**, the image
+   uploader and the compact **Semak Mesej** button.
+3. Paste `Mak, telefon saya rosak. Ini nombor baharu. Tolong transfer RM1,850
+   sekarang ke akaun kawan, jangan telefon nombor lama.` Expected: **Tinggi**.
+4. Paste `Jangan kongsi OTP dengan sesiapa. Hubungi bank melalui nombor rasmi
+   jika anda menerima permintaan mencurigakan.` Expected: **Rendah**.
+5. Paste `Saya sedang membaca buku di perpustakaan.` Expected:
+   **Bukti Tidak Mencukupi**, not Rendah.
+6. Upload `demo_assets/01_risk_dark_chat.png`. OCR should run automatically;
+   review the populated text and click **Semak Mesej**. Expected: high warning.
+7. Confirm that the OCR success box, word count, raw index cards, move examples
+   and long disclaimer are absent from the main flow.
+8. Confirm that red buttons have white, legible text.
 
-1. Upload `demo_assets/01_risk_dark_chat.png` → extract → review → analyse.
-   Expected category: **Sangat Tinggi** (exact score can vary slightly with the
-   installed Tesseract version).
-2. Upload `demo_assets/02_safety_light.png` → extract → review → analyse.
-   Expected category: **Rendah**.
-3. Use the built-in **Laporan mangsa + caj berulang** example. Expected category:
-   **Sangat Tinggi**.
-4. Paste `Please transfer RM50 now for lunch.` Expected category:
-   **Sederhana**, not Tinggi.
-5. Replace one uploaded image with the other without extracting it. Untouched
-   OCR text from the first image should clear.
-
-## If OCR is red
-
-Do not continue an image demo. Use the built-in text examples; manual analysis
-remains available. Check the Streamlit build log for installation of
-`tesseract-ocr-msa` and verify that `packages.txt` is at the repository root.
-
-Official reference:
-https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/app-dependencies
+If OCR is unavailable, the app will show a warning. Continue the pitch by
+pasting the prepared text cases; text analysis remains available.

@@ -44,7 +44,204 @@ INDIRECT_PATTERNS: Dict[str, Tuple[int, str]] = {
     r"\b(?:risiko rendah|dijamin|tanpa risiko|jaminan untung|low risk|guaranteed|no risk|guaranteed profit)\b": (18, "jaminan tidak realistik"),
     r"\b(?:pulangan tinggi|untung besar|keuntungan harian|high returns?|big profits?|daily profits?|wang[^.!?;:]{0,25}dilepaskan|money[^.!?;:]{0,30}(?:released|unlocked)|keluarkan duit|pengeluaran wang|release (?:your )?(?:money|funds))\b|\bmodal[^.!?;:]{0,20}jadi\b": (22, "janji/pelepasan wang"),
     r"\b(?:terpilih|layak menerima|peluang khas|selected|eligible|special opportunity)\b|\b(?:permohonan|application)[^.!?;:]{0,30}(?:diluluskan|approved)\b": (15, "peluang eksklusif"),
+    r"\b(?:jangan beritahu sesiapa|rahsia antara kita|keep (?:this|it) secret|do not tell anyone|don't tell anyone)\b": (22, "arahan merahsiakan urusan"),
+    r"\b(?:nombor baru|telefon rosak|phone (?:is )?(?:broken|lost)|new (?:phone|number))\b": (18, "perubahan identiti atau nombor secara tiba-tiba"),
 }
+
+
+# Scenario signals extend the linguistic layer beyond the small controlled
+# reference set.  A scenario is only elevated when several independent cues
+# co-occur (for example parcel + fee + link), not from one keyword alone.
+SCENARIO_PATTERNS: Dict[str, str] = {
+    "url": r"(?:https?://|hxxps?://|www\.|\b(?:bit\.ly|tinyurl\.com|t\.me)/\S+|\b[a-z0-9][a-z0-9-]{2,}\.(?:com|net|org|my|xyz|top|site|online|live|link)(?:/\S*)?)",
+    "click_or_login": r"\b(?:klik|tekan|buka|layari|log masuk|login|sign in|click|tap|open|visit|verify|sahkan|kemas kini|update)\b",
+    "money_request": r"\b(?:bayar|bayaran|buat bayaran|pindah(?:kan)?|transfer|bank in|duitnow|top ?up|reload|deposit|caj|yuran|fee|payment|pay|send money|pinjam(?:kan)? duit|bantu[^.!?;:]{0,20}(?:wang|duit))\b",
+    "fee": r"\b(?:caj|yuran|fee|tax|cukai|kastam|customs|clearance|insurans|insurance|processing|pengesahan|verification|penghantaran|delivery charge)\b",
+    "amount": r"(?:\b(?:rm|myr|usd|sgd)\s*\d|\$\s*\d|\b\d+(?:[.,]\d+)?\s*%|\b\d+\s*(?:kali|x|ganda)\b)",
+    "sensitive": r"\b(?:otp|tac|pin|kata laluan|password|nombor akaun|account number|maklumat bank|bank details|kad pengenalan|ic|identity card|cvv|butiran kad|card details)\b",
+    "sensitive_request": r"\b(?:berikan|beri|masukkan|kongsi|hantar|dedahkan|isi|provide|enter|share|send|reveal|submit)[^.!?;:]{0,45}(?:otp|tac|pin|kata laluan|password|nombor akaun|account number|maklumat bank|bank details|kad pengenalan|identity card|cvv|butiran kad|card details)\b|\b(?:otp|tac|pin|kata laluan|password|nombor akaun|account number|maklumat bank|bank details|kad pengenalan|identity card|cvv|butiran kad|card details)[^.!?;:]{0,25}(?:diperlukan|diminta|required|requested)\b",
+    "account_threat": r"\b(?:akaun|account|emel|email|mailbox|wallet|dompet)[^.!?;:]{0,45}(?:dibekukan|disekat|ditutup|digantung|ditamatkan|frozen|blocked|suspended|closed|disabled|terminated)\b",
+    "consequence": r"\b(?:ditahan|tertahan|dibatalkan|disekat|gagal dihantar|dirampas|denda|saman|tangkap|waran|tindakan mahkamah|tindakan undang-undang|held|on hold|cancelled|blocked|failed delivery|seized|fine|arrest|warrant|court action|legal action)\b",
+    "urgency": r"\b(?:segera|sekarang|serta-merta|hari ini|urgent|urgently|now|immediately|today|dalam \d+ (?:minit|jam)|within \d+ (?:minutes?|hours?))\b",
+    "parcel": r"\b(?:parcel|bungkusan|pakej penghantaran|kurier|courier|delivery|penghantaran|pos malaysia|j&t|dhl|fedex|kastam|customs)\b",
+    "refund": r"\b(?:refund|bayaran balik|pemulangan wang|wang dikembalikan|rebat|lebihan bayaran|tax refund|pulangan cukai|tuntut semula|claim refund)\b",
+    "ewallet": r"\b(?:e-?wallet|dompet digital|touch\s*['n’]?\s*go|tng|boost|shopeepay|grabpay|bigpay|mae)\b",
+    "investment": r"\b(?:pelaburan|melabur|investment|invest|crypto|kripto|forex|trading|dagangan|saham|bitcoin|usdt|portfolio|pakej pelaburan)\b",
+    "gain": r"\b(?:dijamin|jaminan|tanpa risiko|guaranteed|no risk|untung|keuntungan|profit|pulangan|return|dividen|gandakan|double|pasif|passive income)\b",
+    "job": r"\b(?:kerja sambilan|part[ -]?time job|jawatan|job|tugasan|task|komisen|commission|like dan follow|like and follow|product boosting|merchant task)\b",
+    "family_identity": r"\b(?:mak|mama|ibu|ayah|abah|papa|adik|abang|kakak|anak|suami|isteri|family|mum|mom|dad|father|mother|brother|sister|son|daughter|wife|husband)\b",
+    "identity_change": r"\b(?:ini nombor baru|save nombor (?:baru|ini)|telefon (?:saya )?(?:rosak|hilang)|phone (?:is )?(?:broken|lost)|new (?:phone|number)|guna nombor kawan)\b",
+    "romance": r"\b(?:sayang|dear|darling|honey|love you|cinta|kekasih|tunang|fianc[eé]|pasangan|kenal (?:dalam talian|online)|online partner)\b",
+    "emergency": r"\b(?:kecemasan|emergency|hospital|kemalangan|accident|sakit|operation|pembedahan|visa|tiket|ticket|terkandas|stranded)\b",
+    "authority": r"\b(?:bank|bnm|bank negara|pdrm|polis|mahkamah|lhdn|hasil|mcmc|skmm|kwsp|epf|perkeso|socso|kastam|customs|pegawai|officer|mahkamah|court|kerajaan|government)\b",
+    "remote_access": r"\b(?:anydesk|teamviewer|quicksupport|remote access|screen sharing|kongsi skrin|perkongsian skrin)\b",
+    "secrecy": r"\b(?:jangan beritahu|jangan maklumkan|rahsia|sulit|secret|confidential|do not tell|don't tell|keep (?:this|it) secret)\b",
+    "victim_report": r"\b(?:dia|mereka|admin|ejen|agen|penjual|scammer|penipu|he|she|they|agent|seller)[^.!?]{0,55}(?:minta|meminta|suruh|menyuruh|desak|janji|ask|asked|asking|told|demand|promised)\b|\b(?:saya|kami|i|we)[^.!?]{0,50}(?:diminta|disuruh|didesak|was asked|were asked|was told|were told)\b",
+}
+
+
+def analyse_scenarios(text: str) -> dict:
+    """Identify multi-cue scam scenarios and return a conservative score floor."""
+
+    flags = {
+        name: bool(re.search(pattern, text, flags=re.I))
+        for name, pattern in SCENARIO_PATTERNS.items()
+    }
+    floor = 0
+    category = ""
+    reasons: List[str] = []
+
+    def elevate(score: int, label: str, *evidence: str) -> None:
+        nonlocal floor, category
+        if score > floor:
+            floor = score
+            category = label
+        reasons.extend(evidence)
+
+    dangerous_action = flags["money_request"] or flags["sensitive_request"] or flags["click_or_login"]
+
+    if flags["sensitive_request"] and (
+        flags["authority"] or flags["account_threat"] or flags["ewallet"]
+    ) and (flags["click_or_login"] or flags["url"] or flags["consequence"]):
+        elevate(
+            86,
+            "Risiko penyamaran dan pengambilalihan akaun",
+            "Permintaan data akses atau kewangan sensitif",
+            "Penyamaran institusi atau ancaman terhadap akaun",
+        )
+
+    if flags["authority"] and (flags["account_threat"] or flags["consequence"]) and dangerous_action:
+        elevate(
+            80,
+            "Risiko penyamaran autoriti",
+            "Nama institusi atau autoriti digunakan untuk membina kepercayaan",
+            "Ancaman atau akibat digunakan untuk mendesak tindakan",
+        )
+
+    if flags["parcel"] and flags["fee"] and (
+        flags["money_request"] or flags["url"] or flags["click_or_login"]
+    ):
+        elevate(
+            76,
+            "Risiko penghantaran atau bungkusan palsu",
+            "Dakwaan bungkusan disertai caj atau bayaran",
+            "Pengguna diarahkan bertindak melalui mesej",
+        )
+    elif flags["parcel"] and flags["url"] and flags["consequence"]:
+        elevate(
+            68,
+            "Risiko penghantaran atau bungkusan palsu",
+            "Dakwaan bungkusan bermasalah",
+            "Pautan tidak disahkan diberikan",
+        )
+
+    if flags["refund"] and (
+        flags["fee"] or flags["sensitive_request"] or flags["url"] or flags["click_or_login"]
+    ):
+        elevate(
+            74,
+            "Risiko bayaran balik atau tuntutan palsu",
+            "Janji bayaran balik atau tuntutan wang",
+            "Bayaran, pautan atau maklumat peribadi diminta",
+        )
+
+    if flags["ewallet"] and (
+        flags["sensitive_request"] or flags["account_threat"] or flags["url"]
+    ) and flags["click_or_login"]:
+        elevate(
+            78,
+            "Risiko e-dompet atau pengambilalihan akaun",
+            "Akaun e-dompet dijadikan sasaran",
+            "Pengesahan melalui pautan atau data akses diminta",
+        )
+
+    if flags["family_identity"] and flags["identity_change"] and (
+        flags["money_request"] or flags["amount"]
+    ):
+        elevate(
+            74,
+            "Risiko penyamaran ahli keluarga",
+            "Identiti keluarga dan nombor baharu digunakan",
+            "Permintaan wang dibuat tanpa pengesahan bebas",
+        )
+
+    if flags["romance"] and flags["emergency"] and flags["money_request"]:
+        elevate(
+            74,
+            "Risiko percintaan atau kecemasan palsu",
+            "Hubungan emosi digunakan untuk membina kepercayaan",
+            "Kecemasan disertai permintaan wang",
+        )
+
+    if flags["investment"] and flags["gain"] and (
+        flags["money_request"] or flags["amount"] or flags["urgency"]
+    ):
+        elevate(
+            74,
+            "Risiko pelaburan atau pulangan palsu",
+            "Janji keuntungan atau pulangan tidak realistik",
+            "Pelaburan dikaitkan dengan wang atau tindakan segera",
+        )
+
+    if flags["job"] and flags["money_request"]:
+        elevate(
+            70,
+            "Risiko kerja sambilan atau tugasan palsu",
+            "Tawaran kerja atau komisen digunakan",
+            "Bayaran, deposit atau tambah nilai diminta",
+        )
+
+    if flags["url"] and flags["click_or_login"] and (
+        flags["account_threat"] or flags["authority"] or flags["parcel"]
+        or flags["refund"] or flags["ewallet"]
+    ):
+        elevate(
+            76,
+            "Risiko pautan palsu atau pancingan data",
+            "Pautan atau log masuk diminta",
+            "Identiti perkhidmatan digunakan untuk meyakinkan pengguna",
+        )
+
+    if flags["remote_access"] and (flags["authority"] or flags["money_request"]):
+        elevate(
+            82,
+            "Risiko akses jauh kepada peranti",
+            "Aplikasi kawalan jauh diminta",
+            "Arahan dikaitkan dengan autoriti atau transaksi",
+        )
+
+    if flags["victim_report"] and (
+        flags["money_request"] or flags["sensitive_request"] or flags["remote_access"]
+    ):
+        elevate(
+            68,
+            category or "Risiko bayaran berulang atau permintaan tambahan",
+            "Mesej melaporkan permintaan daripada pihak lain",
+            "Permintaan berisiko kekal dikesan walaupun dituturkan oleh mangsa",
+        )
+
+    if flags["secrecy"] and dangerous_action:
+        elevate(
+            max(68, floor),
+            category or "Mesej berisiko dengan arahan merahsiakan urusan",
+            "Penerima diarahkan merahsiakan urusan",
+        )
+
+    # Generic evidence is useful to explain a result even when no named
+    # scenario reaches a high-risk floor.
+    if flags["money_request"]:
+        reasons.append("Permintaan bayaran atau pindahan wang")
+    if flags["sensitive_request"]:
+        reasons.append("OTP, kata laluan atau maklumat kewangan disebut")
+    if flags["url"] and flags["click_or_login"]:
+        reasons.append("Pautan atau log masuk diminta")
+
+    return {
+        "floor": min(100, floor),
+        "category": category,
+        "reasons": unique(reasons),
+        "flags": flags,
+    }
 
 
 EMOTION_PATTERNS: Dict[str, List[str]] = {
@@ -89,6 +286,7 @@ CONTROL_PATTERNS: Dict[str, str] = {
     r"\b(?:invois|resit) rasmi\b|\binvois syarikat berdaftar\b|\bofficial (?:invoice|receipt)\b|\b(?:registered company|company) invoice\b|\binvoice (?:from|for) (?:a |the )?registered company\b": "invois/resit rasmi",
     r"\b(?:semak dahulu|membuat semakan|semakan melalui|sahkan melalui)\b|\b(?:verify|check|confirm) (?:first|through|via)[^.!?;:]{0,25}(?:official|bank|provider)\b": "semakan rasmi",
     r"\b(?:tanpa|tiada|tidak perlu)[^.!?;:]{0,25}(?:bayaran|caj|deposit|yuran)\b|\b(?:no|without)[^.!?;:]{0,20}(?:payment|fee|deposit|charge)\b": "tiada bayaran awal",
+    r"\b(?:pelaburan|investment)[^.!?;:]{0,55}(?:risiko|kerugian|kehilangan modal|risk|loss|lose money)\b|\b(?:modal|nilai pelaburan|investment value)[^.!?;:]{0,45}(?:boleh turun|mungkin rugi|may fall|may decline|may be lost)\b": "pendedahan risiko pelaburan",
 }
 
 
@@ -100,6 +298,10 @@ SENSITIVE_ITEM = (
     r"bank details|identity card|account number|personal information)"
 )
 PREVENTIVE_PATTERNS: List[Tuple[str, str]] = [
+    (
+        rf"\b(?:tiada|tidak ada|tak ada|no)\s+(?:sebarang\s+|any\s+)?(?:nombor\s+|kod\s+)?{SENSITIVE_ITEM}\s+(?:diminta|diperlukan|required|requested)\b",
+        "penegasan bahawa data sensitif tidak diminta",
+    ),
     (
         rf"\b(?:jangan|usah|elakkan|hindari)\s+(?:sesekali\s+)?(?:kongsi|berkongsi|berikan|beri|masukkan|hantar|dedahkan)\s+(?:sebarang\s+)?(?:nombor\s+|kod\s+)?{SENSITIVE_ITEM}(?:\s*(?:atau|dan)\s*(?:nombor\s+|kod\s+)?{SENSITIVE_ITEM})*\b",
         "peringatan supaya tidak berkongsi data sensitif",
@@ -311,6 +513,20 @@ def match_phrase(score: int, has_control: bool) -> str:
 def classify_threat(text: str, score: int) -> str:
     if score < 25:
         return "Tiada kategori ancaman yang jelas"
+    if re.search(r"\b(?:parcel|bungkusan|kurier|courier|delivery|penghantaran|pos malaysia|j&t|dhl|fedex|kastam|customs)\b", text, flags=re.I):
+        return "Risiko penghantaran atau bungkusan palsu"
+    if re.search(r"\b(?:refund|bayaran balik|pemulangan wang|rebat|lebihan bayaran|tax refund|pulangan cukai)\b", text, flags=re.I):
+        return "Risiko bayaran balik atau tuntutan palsu"
+    if re.search(r"\b(?:e-?wallet|dompet digital|touch\s*['n’]?\s*go|tng|boost|shopeepay|grabpay|bigpay|mae)\b", text, flags=re.I):
+        return "Risiko e-dompet atau pengambilalihan akaun"
+    if re.search(r"\b(?:ini nombor baru|save nombor (?:baru|ini)|telefon (?:saya )?(?:rosak|hilang)|new (?:phone|number))\b", text, flags=re.I):
+        return "Risiko penyamaran ahli keluarga atau kenalan"
+    if re.search(r"\b(?:sayang|darling|honey|love you|kekasih|tunang|fianc[eé]|pasangan)\b", text, flags=re.I):
+        return "Risiko percintaan atau kecemasan palsu"
+    if re.search(r"\b(?:anydesk|teamviewer|quicksupport|remote access|kongsi skrin)\b", text, flags=re.I):
+        return "Risiko akses jauh kepada peranti"
+    if re.search(r"(?:https?://|www\.|\b[a-z0-9][a-z0-9-]{2,}\.(?:com|net|my|xyz|top|site|online|live|link))", text, flags=re.I) and re.search(r"\b(?:klik|tekan|buka|layari|log masuk|login|sign in|verify|sahkan)\b", text, flags=re.I):
+        return "Risiko pautan palsu atau pancingan data"
     if re.search(r"(?:bayar|pay)[^.!?;:]{0,45}(?:keluar|pengeluaran|withdraw|release)|caj pengeluaran|bayaran pengeluaran|withdrawal fee|release fee|aktifkan pengeluaran|activate (?:the )?withdrawal", text, flags=re.I):
         return "Risiko bayaran sebelum pengeluaran wang"
     if re.search(r"\b(?:bayar|pay|payment|deposit|transfer|pindahkan|pindahan)\b|caj proses|caj pengesahan|yuran pendaftaran|processing fee|verification fee|registration fee", text, flags=re.I):
@@ -411,6 +627,7 @@ def analyse_rules(message: str) -> dict:
     )
     emotion_score, emotions = analyse_emotions(risk_text)
     move_score, moves, move_control_labels = analyse_moves(risk_text, original_text)
+    scenario = analyse_scenarios(risk_text)
 
     speech_score = max(0, min(100, direct_score + indirect_score - control_score))
     overall_score = int(min(100, round(speech_score * 0.35 + emotion_score * 0.30 + move_score * 0.35)))
@@ -497,6 +714,17 @@ def analyse_rules(message: str) -> dict:
         critical_risk = True
         critical_floor = 68
 
+    # Named scenarios provide a conservative minimum only when several cues
+    # co-occur.  This catches paraphrases outside the small reference corpus
+    # without treating a lone word such as "parcel" or "bank" as proof.
+    scenario_floor = int(scenario["floor"])
+    if scenario_floor:
+        overall_score = max(overall_score, scenario_floor)
+        move_score = max(move_score, min(86, scenario_floor))
+        if scenario_floor >= 68:
+            critical_risk = True
+            critical_floor = max(critical_floor, scenario_floor)
+
     if direct_labels and indirect_labels:
         speech_type = "Gabungan lakuan pertuturan langsung dan tidak langsung"
     elif direct_labels:
@@ -526,11 +754,21 @@ def analyse_rules(message: str) -> dict:
         "indirect_phrases": indirect_labels,
         "emotion_phrases": emotions,
         "control_phrases": unique(control_labels + move_control_labels + preventive_labels),
+        "risk_reasons": unique(
+            scenario["reasons"]
+            + direct_labels
+            + indirect_labels
+            + [move["name"] for move in moves]
+        ),
+        "scenario_flags": scenario["flags"],
+        "scenario_category": scenario["category"],
         "critical_risk": critical_risk,
         "critical_floor": critical_floor,
         "risk_text": risk_text,
     }
-    result["threat_category"] = classify_threat(risk_text, result["rule_score"])
+    result["threat_category"] = scenario["category"] or classify_threat(
+        risk_text, result["rule_score"]
+    )
     result["control_message"] = control_message(result["threat_category"])
     return result
 
@@ -616,4 +854,43 @@ def analyse_text(message: str, bundle: Optional[dict] = REFERENCE_BUNDLE) -> dic
     result["overall_level"] = risk_level(result["overall_score"])
     result["overall_match"] = result["data_message"]
     result["control_message"] = control_message(result["threat_category"])
+
+    control_evidence = bool(result.get("control_phrases")) or (
+        result.get("data_reliability") in {"moderate", "strong"}
+        and float(result.get("control_signal", 0.0))
+        > float(result.get("risk_signal", 0.0)) + 0.04
+    )
+    score = result["overall_score"]
+    if score <= 24 and not control_evidence:
+        result["display_level"] = "Bukti Tidak Mencukupi"
+        result["decision_state"] = "insufficient"
+        result["decision_summary"] = (
+            "Mesej ini terlalu umum atau terlalu ringkas untuk diberikan label rendah dengan yakin."
+        )
+        result["risk_reasons"] = ["Konteks atau petanda linguistik belum mencukupi"]
+    elif score <= 24:
+        result["display_level"] = "Rendah"
+        result["decision_state"] = "low"
+        result["decision_summary"] = "Tiada petanda risiko ketara dalam konteks yang dianalisis."
+        result["risk_reasons"] = ["Isyarat keselamatan atau saluran rasmi dikesan"]
+    elif score <= 49:
+        result["display_level"] = "Perlu Berhati-hati"
+        result["decision_state"] = "caution"
+        result["decision_summary"] = "Beberapa petanda memerlukan pengesahan lanjut."
+    elif score <= 74:
+        result["display_level"] = "Tinggi"
+        result["decision_state"] = "high"
+        result["decision_summary"] = "Beberapa petanda penipuan yang kuat telah dikesan."
+    else:
+        result["display_level"] = "Sangat Tinggi"
+        result["decision_state"] = "very_high"
+        result["decision_summary"] = "Gabungan petanda penipuan yang sangat kuat telah dikesan."
+
+    result["recommended_action"] = {
+        "insufficient": "Dapatkan konteks penuh dan sahkan pengirim melalui saluran rasmi sebelum bertindak.",
+        "low": "Terus berwaspada jika mesej kemudian meminta wang, pautan atau maklumat peribadi.",
+        "caution": "Jangan klik pautan, membuat bayaran atau berkongsi maklumat sebelum pengesahan bebas.",
+        "high": "Hentikan tindakan dan hubungi organisasi berkaitan melalui nombor atau aplikasi rasmi.",
+        "very_high": "Jangan klik, bayar atau berkongsi OTP. Putuskan komunikasi dan buat pengesahan rasmi.",
+    }[result["decision_state"]]
     return result

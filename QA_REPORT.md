@@ -1,70 +1,57 @@
-# ScamAlert Demo 1.2 — QA report
+# ScamAlert Demo 1.3 — QA report
 
-Date: 2026-08-25
+Date: 2026-08-26
 
 ## Automated result
 
 - Python compile check: passed.
-- Core, similarity and OCR unit tests: 31/31 passed.
-- Pasted-text UI-path smoke test: passed.
-- Screenshot → editable text → analysis UI-path smoke test: passed.
-- Screenshot replacement / stale OCR-state smoke test: passed.
-- Reference metadata reconciliation: passed.
-- Runtime template connectivity: 90/90 templates returned themselves as the
-  nearest same-class reference.
-- Runtime exact-text connectivity: 164/164 globally unique source texts were
-  directionally aligned with their binary source class at the 50-point screening
-  boundary.
+- Unit/regression test methods: 34/34 passed.
+- Open scam paraphrases: 34/34 reached the high-risk boundary.
+- Control and ordinary messages: 20/20 remained below the high-risk boundary.
+- Unknown neutral messages: 3/3 returned **Bukti Tidak Mencukupi**.
+- Pasted-text UI smoke path: passed.
+- Screenshot → editable text → analysis path: passed.
+- Replacement screenshot automatically replaced stale OCR text: passed.
+- Streamlit runtime component test: no exceptions; one text area, one primary
+  button and one uploader in the main flow, with no initial expander.
+- Original ScamAlert product description: restored verbatim and verified.
+- Light-theme and input contrast configuration: active.
+- Result runtime test: risk result, category, reasons and technical expanders
+  rendered without exceptions.
 
-The two connectivity results use the same controlled references that build the
-index.  They prove that the data are loaded and influence runtime results; they
-are not independent accuracy, recall or precision estimates.
+## Scenario coverage exercised
 
-## Safety regressions passed
+- Parcel/delivery fee and redelivery-link scams.
+- Refund and tax-refund scams.
+- Family/known-contact impersonation using a new number.
+- Romance and emergency requests.
+- E-wallet and account takeover.
+- Bank/email phishing.
+- Guaranteed investment and crypto return claims.
+- Police, court, bank and tax-authority impersonation.
+- Job/task/top-up scams.
+- Remote-access software requests.
+- Victim reports containing repeated or relayed dangerous requests.
 
-- `pinjaman` does not trigger the word-boundary rule for `PIN`.
-- “Jangan kongsi OTP” remains low risk.
-- Safety warnings for bank details, identity cards and account numbers remain
-  low risk.
-- A safety opening clause does not mask a later payment or link command.
-- Repeated-payment narratives from a victim receive a high warning.
-- Out-of-domain text causes the data layer to abstain with zero weight.
-- Missing reference data raises a visible failure condition rather than a silent
-  data-backed claim.
+## False-escalation checks
 
-## OCR regressions passed
+- Official safety warnings remain low.
+- Legitimate parcel/refund messages with no fee remain below high.
+- Explicit investment-risk disclosures remain below high.
+- Lunch transfer, contracted rent deposit and registered-company invoice remain
+  below high.
+- Family, romance and parcel vocabulary alone do not create a high warning.
 
-- Clear Malay/English risk screenshot produces editable text and a high warning.
-- A victim report about repeated payment produces a high warning after OCR.
-- A dark-mode safety warning is inverted, read and remains low risk.
-- Invalid, tiny, blank and excessive-resolution images are rejected visibly.
-- Missing Tesseract, OCR runtime failure and OCR timeout do not produce a risk
-  score or disable manual input.
-- Mean OCR word confidence is kept separate from the ScamAlert risk index.
-- Dark screenshots with coloured chat bubbles are recovered through the binary
-  OCR candidate.
+## OCR checks
 
-## Bilingual and false-positive regressions passed
+- Light and dark screenshots are read.
+- Coloured chat bubbles use a binary candidate when needed.
+- Blank, invalid, tiny and excessive-resolution images fail visibly.
+- OCR never converts a processing failure into a low-risk decision.
+- OCR runs automatically once per new upload and populates editable text.
 
-- English bank/OTP scam, English loan/fee scam and Malay-English code-switching
-  all cross the high-risk boundary.
-- English and Malay victim reports with an explicit repeated-payment demand
-  cross the high-risk boundary.
-- English safety negations remain low.
-- Ordinary lunch transfer, rental deposit and bill-payment examples do not
-  cross the high-risk boundary solely because they contain money plus urgency.
-- A registered-company invoice payment remains below the high-risk boundary.
+## Interpretation boundary
 
-## Remaining validation gap
-
-No independent real-world test set is available.  External performance claims
-must wait for human-adjudicated data, held-out evaluation and error analysis.
-
-## Independent adversarial retest
-
-A separate code-review/test pass reproduced and verified the following after
-the final fixes: dark coloured chat bubbles 89/Sangat Tinggi; English scam
-93/Sangat Tinggi; code-switch 75/Sangat Tinggi; English safety warning 8/Rendah;
-five natural multi-sentence Malay/English victim reports 71–72/Tinggi; and a
-legitimate registered-company invoice request 45/Sederhana. These are targeted
-regression examples, not estimates of population accuracy.
+The open-message set was designed for regression testing and is not an
+independent prevalence-weighted evaluation sample. No validated accuracy,
+precision, recall or population-performance claim is made.

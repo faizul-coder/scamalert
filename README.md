@@ -1,9 +1,22 @@
-# ScamAlert NICE 2026 — OCR + Hybrid Data-Backed Demo 1.2
+# ScamAlert NICE 2026 — Demo 1.3
 
-This package corrects the central defect in the earlier prototype: the
-application now loads and uses reference data at runtime. It combines a
-deduplicated reference-similarity index with explainable linguistic rules and
-local screenshot OCR.
+ScamAlert ialah sistem amaran awal penipuan siber berasaskan Kecerdasan Buatan
+(AI) yang menganalisis corak bahasa, manipulasi emosi dan gerakan strategi
+pujukan dalam mesej digital sebelum pengguna berkongsi maklumat peribadi,
+menekan pautan atau membuat transaksi kewangan.
+
+Version 1.3 is the prospect-facing release. It keeps the existing local OCR,
+deduplicated reference data and explainable linguistic analysis, while making
+two major corrections:
+
+1. the public interface now presents the result and recommended action first;
+   technical evidence is collapsed by default; and
+2. the detector covers multi-cue paraphrases for parcel, refund, e-wallet,
+   family impersonation, romance, investment, authority, phishing, remote
+   access and task/job scams.
+
+Messages without enough evidence are labelled **Bukti Tidak Mencukupi** rather
+than being presented as confidently low risk.
 
 ## Run locally
 
@@ -12,79 +25,53 @@ python -m pip install -r requirements.txt
 streamlit run app.py
 ```
 
-OCR also requires the Tesseract executable and Malay/English language data. On
-Debian/Ubuntu:
+OCR requires Tesseract and Malay/English language data. Streamlit Community
+Cloud installs these from `packages.txt`.
 
-```bash
-sudo apt-get install tesseract-ocr tesseract-ocr-eng tesseract-ocr-msa tesseract-ocr-osd
-```
+## Public workflow
 
-Streamlit Community Cloud installs these automatically from `packages.txt`.
-The package does not send screenshots or extracted text to an external OCR API.
-For the exact live-release sequence, follow `DEPLOY_TONIGHT.md`.
+1. Paste a message, or upload one PNG/JPG/JPEG screenshot up to 8 MB.
+2. A new screenshot is read automatically and its text appears in the editable
+   message field.
+3. Review the text and click **Semak Mesej**.
+4. Read the screening level, three main reasons and recommended action.
+5. Open **Lihat butiran analisis** only when technical evidence is needed.
 
-## Screenshot workflow
+OCR word count and recognition confidence are not displayed in the main flow.
+They remain available inside the technical expander and are never presented as
+scam probability.
 
-1. Upload one PNG/JPG/JPEG screenshot, maximum 8 MB.
-2. Click **Ekstrak teks daripada gambar**.
-3. Review and, if needed, correct the extracted text in the editable message
-   box.
-4. Click **Semak Mesej** to run the same hybrid analysis used for pasted text.
+## Runtime evidence
 
-Two non-sensitive synthetic screenshots are included under `demo_assets/` for
-pre-event testing and the live demonstration.
+- 6,072 source rows audited.
+- 164 globally unique source texts: 116 risk and 48 control.
+- 90 normalized templates used at runtime: 57 risk and 33 control.
+- Repeated synthetic variants receive one template vote.
+- The source is controlled synthetic data, not independent real-world ground
+  truth.
 
-The average OCR word-confidence value measures text-recognition quality. It is not
-the ScamAlert risk score. OCR failure is shown explicitly and never converted
-into a low-risk result.
-
-## What the application really uses
-
-- 6,072 source rows audited across the three uploaded workbooks.
-- 164 globally unique texts: 116 risk and 48 control.
-- 90 normalized reference templates used at runtime: 57 risk and 33 control.
-- One vote per normalized template; repeated synthetic variants do not receive
-  additional weight.
-- 83 unique texts have inconsistent source risk-level labels.  Those levels are
-  retained for audit only and are not used as prediction targets.
-
-The data are controlled synthetic examples, not real-world ground truth.  The
-hybrid index is not a probability, a measured accuracy, or a legal conclusion.
-
-## Runtime method
-
-1. `data/reference_data.json` is opened when `scamalert_core.py` loads.
-2. The reference matcher creates word 1–2 gram and character 3–5 gram TF-IDF
-   representations in pure Python.
-3. The closest distinct risk and control templates are compared.
-4. Weak or ambiguous data evidence receives zero weight.
-5. A strong, unambiguous match may contribute at most 55% of the hybrid index.
-6. Linguistic rules provide separate, visible scores for speech acts, emotion
-   triggers and strategic moves.
+The application combines evidence-dependent reference similarity with
+linguistic rules. A strong, unambiguous reference may contribute at most 55%
+of the internal screening index. Multi-cue safety floors prevent a dangerous
+combination from being neutralised by superficial similarity to a control
+message.
 
 ## Verification
 
 ```bash
 python -m unittest discover -s tests -v
 python smoke_test.py
+python smoke_test_ocr_state.py
 python smoke_test_ocr_ui.py
 ```
 
-The tests verify runtime loading, all 90 template connections, safe negation,
-mixed safety-bait clauses, out-of-domain abstention, the `PIN`/`pinjaman`
-boundary, deterministic similarity, OCR light/dark screenshots (including
-coloured chat bubbles), victim and
-safety messages, OCR failures, both analysis UI paths and stale-upload state.
-Alignment with the
-same controlled references is a wiring/regression check, not independent model
-validation.
+The release suite contains 34 automated test methods, including 34 open scam
+paraphrases, 20 control/ordinary messages, abstention checks and OCR tests. The
+suite is a regression check, not a population accuracy estimate.
 
-## Important limitations
+## Important limitation
 
-- OCR quality varies with cropping, font size, blur and screenshot layout; users
-  must review the extracted text before analysis.
-- The Telegram corpus is not used for scoring because it has not been fully
-  human-adjudicated.
-- No claim of validated AI, population accuracy, recall or precision is made.
-- Real-world validation requires independently sampled, adjudicated messages
-  and a held-out evaluation design.
+ScamAlert remains an early-warning prototype. It does not legally identify a
+sender as a scammer and does not replace verification through a bank,
+service provider or authority. Formal accuracy, precision and recall require a
+separate, independently sampled and human-adjudicated held-out test set.

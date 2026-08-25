@@ -1,4 +1,4 @@
-# Data audit used by ScamAlert Demo 1.2 (data schema 1.1)
+# Data audit used by ScamAlert Demo 1.3 (data schema 1.1)
 
 ## Correct unit counts
 

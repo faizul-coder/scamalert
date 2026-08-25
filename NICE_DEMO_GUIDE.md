@@ -1,61 +1,48 @@
-# NICE 2026 demonstration guide
+# NICE 2026 — concise demonstration guide
 
-## 60-second story
+## 45-second demonstration
 
-“ScamAlert screens suspicious messages before a user pays, clicks or shares
-sensitive data.  This version is deliberately transparent: it shows the
-linguistic warning signs, the closest risk reference, the closest control
-reference and exactly how much the data influenced the final index.  Weak or
-conflicting data evidence is rejected rather than forced into a prediction.”
+1. Say: “ScamAlert gives an early warning before a user clicks, pays or shares
+   personal information.”
+2. Paste the prepared family-impersonation message and click **Semak Mesej**.
+3. Point only to the risk level, the three reasons and the recommended action.
+4. Upload the dark chat screenshot. Explain that OCR places editable text into
+   the same analysis flow automatically.
+5. If asked about method, open **Lihat butiran analisis** and explain that the
+   index combines linguistic patterns with deduplicated risk/control reference
+   texts.
 
-## Recommended live sequence
+## Recommended wording
 
-1. Open **Peringatan keselamatan sebenar**.  Point out the low score, the
-   closest control reference and the safety-negation handling.
-2. Upload `demo_assets/01_risk_dark_chat.png`, click
-   **Ekstrak teks daripada gambar**, show that the text is editable, then click
-   **Semak Mesej**. Point out that OCR confidence and scam risk are different.
-3. Open **Pinjaman + caj proses** from the menu as a text fallback. Point out the exact/near-exact risk
-   reference, high data similarity, dangerous phrases and move pathway.
-4. Open **Laporan mangsa + caj berulang**.  Explain that rules can still flag a
-   risky narrative even when similarity is too weak; the data layer abstains.
-5. Open **Ayat keselamatan palsu + arahan**.  Show that a safe opening clause no
-   longer hides the later payment command.
-6. Expand **Lihat audit data yang digunakan**.  State the honest counts: 6,072
-   source rows, 164 globally unique texts and 90 deduplicated templates.
+- “Explainable early-warning prototype.”
+- “It detects combinations of language, emotion, pressure and requested
+  action—not one suspicious word alone.”
+- “Unclear input is withheld as ‘insufficient evidence’ instead of being given
+  a falsely reassuring low label.”
+- “The funded next phase is independent real-world validation.”
 
-`demo_assets/02_safety_light.png` is provided as a second OCR check. Both images
-contain synthetic text only and are labelled as simulated data.
+## Avoid saying
 
-## Exact wording to use
-
-- “Hybrid reference-data and explainable-linguistic prototype.”
-- “Risk indicator index, not scam probability.”
-- “Controlled synthetic reference data; real-world validation is the funded
-  next phase.”
-- “The current demo reads 90 unique templates at runtime and displays the
-  nearest evidence.”
-- “OCR runs locally in the application; its confidence describes average word
-  recognition quality, not scam probability.”
-
-## Do not claim
-
-- “Validated AI model” or “90% accurate.”
-- “3,000 independent messages.”
+- “The application is 90% accurate.”
 - “The score is the probability of fraud.”
-- “Telegram messages are already validated training data.”
-- “OCR is perfectly accurate.”
-- “The app legally confirms a scammer.”
+- “The data contain 3,000 independent messages.”
+- “It can confirm that a person is a scammer.”
+- “OCR is always correct.”
 
-## Funding ask
+## If a prospect enters their own message
 
-The next funded phase should cover: real-world data partnerships, a formal
-annotation protocol with two coders and adjudication, held-out evaluation,
-Malay code-switching coverage, OCR benchmarking and multimodal analysis,
-privacy/security review, and monitored deployment.
+- Let the application analyse it.
+- If the result is **Tinggi/Sangat Tinggi**, explain the displayed combination
+  of cues.
+- If it is **Perlu Berhati-hati**, say that the message needs independent
+  verification.
+- If it is **Bukti Tidak Mencukupi**, explain that the system deliberately
+  refuses to claim safety when context is too weak.
 
-## Demo fallback
+## Funding narrative
 
-Before meeting a prospect, confirm the green **✓ OCR aktif** status. If it is
-not green, use the built-in text examples and state that the OCR dependency did
-not start; do not troubleshoot package installation during the pitch.
+The current value proposition is an explainable Malay/English screening layer
+with OCR and a safe abstention state. Funding enables real-world data
+partnerships, double coding and adjudication, held-out evaluation, broader
+Malay code-switching, multimodal signals, privacy/security review and monitored
+deployment.

@@ -63,6 +63,7 @@ streamlit.info = lambda *args, **kwargs: None
 streamlit.warning = lambda *args, **kwargs: None
 streamlit.error = lambda *args, **kwargs: None
 streamlit.success = lambda *args, **kwargs: None
+streamlit.toast = lambda *args, **kwargs: None
 streamlit.image = lambda *args, **kwargs: None
 streamlit.selectbox = lambda *args, **kwargs: args[1][0]
 streamlit.file_uploader = lambda *args, **kwargs: _Upload()

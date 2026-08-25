@@ -44,7 +44,7 @@ columns are `module`, `category`, `template_group`, and `source_count`.
    ```
 
 The reusable engine defaults to a maximum hybrid weight of 0.40.  ScamAlert
-Demo 1.2 explicitly configures the cap to 0.55 so that an exact, unambiguous
+Demo 1.3 explicitly configures the cap to 0.55 so that an exact, unambiguous
 reference can materially affect the hybrid index.  Weaker matches receive a
 proportionally smaller weight; ambiguous and insufficient matches receive zero.
 

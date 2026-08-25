@@ -1,59 +1,50 @@
-# ScamAlert Demo 1.2 — technical specification
+# ScamAlert Demo 1.3 — technical specification
 
-## Purpose
+## Public decision states
 
-Provide a prospect-facing, offline-capable early-warning demonstration for
-Malay/English digital messages while keeping every source of evidence visible.
+| State | Meaning |
+|---|---|
+| Sangat Tinggi | multiple strong risk cues co-occur |
+| Tinggi | strong risk combination detected |
+| Perlu Berhati-hati | some cues require independent verification |
+| Rendah | low internal score plus identifiable control/safety evidence |
+| Bukti Tidak Mencukupi | low score without enough evidence to claim low risk |
 
-## Components
+## Detection components
 
-| Component | Implementation | Output |
-|---|---|---|
-| Screenshot OCR | local Tesseract CLI, `msa+eng`, grayscale + binary Pillow preprocessing, PSM 6/11 candidates | editable extracted text, mean OCR word confidence and visible warnings |
-| Reference data | `data/reference_data.json` | 90 deduplicated binary templates plus audit metadata |
-| Similarity | word TF-IDF 1–2 grams + character TF-IDF 3–5 grams, cosine similarity | risk/control matches, similarity and data index |
-| Speech acts | transparent regular-expression rules | direct/indirect indicators and sub-score |
-| Emotion | selected linguistic triggers with interaction rules | emotion indicators and sub-score |
-| Strategic moves | M1–M6 ordered risk indicators | move path and sub-score |
-| Fusion | evidence-dependent weighted average with critical safety floors | hybrid risk-indicator index |
+| Component | Implementation |
+|---|---|
+| OCR | local Tesseract, Malay/English, grayscale/inversion/binary candidates |
+| Reference data | 90 deduplicated binary templates with audit metadata |
+| Similarity | word 1–2 gram and character 3–5 gram TF-IDF cosine similarity |
+| Linguistic layer | direct/indirect acts, emotion triggers and strategic moves |
+| Scenario layer | multi-cue rules for nine common scam families plus victim reports |
+| Fusion | evidence-dependent weighting with dangerous-combination floors |
+| Abstention | insufficient evidence is distinct from a low-risk decision |
 
-## Fusion contract
+## Public interface contract
 
-- The linguistic rule index is always available.
-- Reference data influence is zero when similarity is insufficient or when risk
-  and control signals are ambiguous.
-- Moderate/strong, non-ambiguous data evidence receives a continuous weight up
-  to 55%.
-- Moderate lexical similarity alone cannot move a non-critical rule result
-  across the 50-point high-risk boundary; this reduces false escalation from
-  ordinary payment wording in the small controlled reference set.
-- Critical dangerous combinations such as an OTP request plus an account threat
-  retain a documented minimum warning floor.
-- Every result exposes the rule index, data index, data weight, best similarity,
-  nearest risk references and nearest controls.
+- The main path contains one editable text area, one optional uploader and one
+  **Semak mesej** button.
+- A new screenshot triggers OCR automatically; the user reviews the editable
+  text before analysis.
+- The main result contains the screening state, category when available, three
+  reasons and one recommended action.
+- Scores, similarity, linguistic subscores, nearest references and OCR details
+  are collapsed under **Lihat butiran analisis**.
+- Full limitations are collapsed; a one-line safety notice remains visible.
 
-## Failure behaviour
+## Failure and privacy behaviour
 
-- Missing, corrupt or inconsistent reference data produces a visible warning
-  and rule-only mode; the failure is never silently presented as data-backed.
-- Missing Tesseract/language data, invalid files, oversized images, timeouts and
-  blank OCR results produce visible errors; manual text input remains available.
-- OCR never triggers risk analysis automatically. The user reviews the editable
-  text and explicitly clicks **Semak Mesej**.
-- Empty input is rejected in the interface.
-- Out-of-domain input causes the data layer to abstain.
-
-## Security and privacy scope
-
-- No message is transmitted by this code; analysis occurs within the running
-  Streamlit process.
-- Uploads are limited to 8 MB and 12 million decoded pixels. PNG and JPEG bytes
-  are verified with Pillow, EXIF orientation is corrected and temporary OCR
-  files are removed automatically.
-- The demo should not be used with real OTPs, account numbers or identity data.
-- Images and OCR text are not written to application logs or global caches.
+- Missing reference data produces a visible rule-only warning.
+- Missing OCR dependencies or invalid images produce a visible error; manual
+  input remains usable.
+- Uploads are limited to 8 MB and 12 million decoded pixels.
+- Images and text remain within the running Streamlit process and are not sent
+  to an external OCR API by this code.
+- Empty input is rejected.
 
 ## Validation status
 
-The automated suite is a regression and wiring suite.  It does not replace an
-independent, held-out validation study on adjudicated real-world messages.
+Automated tests establish reproducible wiring and regression behaviour. They
+do not replace independent validation using human-adjudicated real-world data.

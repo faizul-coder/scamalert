@@ -47,7 +47,6 @@ class _SessionState(dict):
 
 runtime = {
     "upload": _screenshot("Bayar caj proses RM300 sekarang.\nWang akan dilepaskan hari ini."),
-    "extract": True,
 }
 streamlit = types.ModuleType("streamlit")
 streamlit.session_state = _SessionState(message_input="")
@@ -58,12 +57,11 @@ streamlit.info = lambda *args, **kwargs: None
 streamlit.warning = lambda *args, **kwargs: None
 streamlit.error = lambda *args, **kwargs: None
 streamlit.success = lambda *args, **kwargs: None
+streamlit.toast = lambda *args, **kwargs: None
 streamlit.image = lambda *args, **kwargs: None
 streamlit.selectbox = lambda *args, **kwargs: args[1][0]
 streamlit.file_uploader = lambda *args, **kwargs: _Upload(runtime["upload"])
-streamlit.button = lambda label, *args, **kwargs: bool(
-    runtime["extract"] and label.startswith("Ekstrak teks")
-)
+streamlit.button = lambda *args, **kwargs: False
 streamlit.text_area = lambda *args, **kwargs: streamlit.session_state["message_input"]
 streamlit.columns = lambda spec, *args, **kwargs: [
     _Context() for _ in range(spec if isinstance(spec, int) else len(spec))
@@ -77,14 +75,15 @@ app = importlib.import_module("app")
 first_text = streamlit.session_state["message_input"]
 assert first_text and first_text == streamlit.session_state["ocr_result"]["text"]
 
-# Replace the screenshot but deliberately do not extract it. The untouched text
-# originating from image A must be cleared rather than being analysed as image B.
+# Replacing the screenshot must automatically replace OCR text from image A;
+# stale text must never be analysed as though it came from image B.
 runtime["upload"] = _screenshot(
     "Pihak bank tidak pernah meminta OTP.\nJangan kongsi OTP dengan sesiapa."
 )
-runtime["extract"] = False
 importlib.reload(app)
-assert streamlit.session_state["message_input"] == ""
-assert "ocr_result" not in streamlit.session_state
+second_text = streamlit.session_state["message_input"]
+assert second_text == streamlit.session_state["ocr_result"]["text"]
+assert second_text != first_text
+assert "jangan kongsi" in second_text.lower()
 
-print("OCR state smoke test passed: replacing an image cleared untouched stale OCR text.")
+print("OCR state smoke test passed: replacing an image replaced stale OCR text automatically.")
