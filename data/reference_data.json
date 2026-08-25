@@ -1,0 +1,5946 @@
+{
+  "schema_version": "1.1",
+  "generated_on": "2026-08-25",
+  "source_status": "synthetic_controlled_not_ground_truth",
+  "methodology_note": "All source rows were audited. Runtime matching uses one representative per normalized template so repeated synthetic variants do not receive extra weight.",
+  "statistics": {
+    "source_rows": 6072,
+    "exact_unique_messages": 164,
+    "exact_unique_by_label": {
+      "control": 48,
+      "risk": 116
+    },
+    "exact_level_conflicts": 83,
+    "normalized_templates": 90,
+    "templates_by_label": {
+      "control": 33,
+      "risk": 57
+    },
+    "system_tests": 12
+  },
+  "templates": [
+    {
+      "template_id": "T001",
+      "template_text": "deposit tempahan [angka] boleh dibuat selepas pelanggan menerima invois rasmi daripada kedai sila simpan resit pembayaran",
+      "representative_text": "Deposit tempahan RM250 boleh dibuat selepas pelanggan menerima invois rasmi daripada kedai. Sila simpan resit pembayaran.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T002",
+      "template_text": "hebahan keselamatan pihak rasmi tidak akan meminta kata laluan otp atau butiran bank melalui mesej peribadi",
+      "representative_text": "Hebahan keselamatan: pihak rasmi tidak akan meminta kata laluan, OTP atau butiran bank melalui mesej peribadi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Hebahan Rasmi / Keselamatan Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T003",
+      "template_text": "hubungi kaunter rasmi organisasi untuk pengesahan sebelum membuat sebarang transaksi",
+      "representative_text": "Hubungi kaunter rasmi organisasi untuk pengesahan sebelum membuat sebarang transaksi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Semakan Rasmi"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T004",
+      "template_text": "iklan kerja yang sah tidak mengenakan bayaran pendaftaran calon perlu menyemak maklumat syarikat sebelum menghantar permohonan",
+      "representative_text": "Iklan kerja yang sah tidak mengenakan bayaran pendaftaran. Calon perlu menyemak maklumat syarikat sebelum menghantar permohonan.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Pendidikan Kewangan / Kerjaya / Pelaburan Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T005",
+      "template_text": "jika ragu ragu jangan buat bayaran dan hubungi talian rasmi untuk nasihat lanjut",
+      "representative_text": "Jika ragu-ragu, jangan buat bayaran dan hubungi talian rasmi untuk nasihat lanjut.",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Peringatan Keselamatan"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T006",
+      "template_text": "kempen keselamatan digital menasihatkan pengguna menyemak sumber mesej sebelum membuat bayaran atau menekan pautan",
+      "representative_text": "Kempen keselamatan digital menasihatkan pengguna menyemak sumber mesej sebelum membuat bayaran atau menekan pautan.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Hebahan Rasmi / Keselamatan Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T007",
+      "template_text": "kempen keselamatan digital menasihatkan pengguna supaya tidak panik dan tidak menekan pautan tidak dikenali",
+      "representative_text": "Kempen keselamatan digital menasihatkan pengguna supaya tidak panik dan tidak menekan pautan tidak dikenali.",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion",
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA",
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah",
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Peringatan Keselamatan",
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 169,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T008",
+      "template_text": "makluman rasmi sebarang perubahan akaun perlu disahkan di kaunter cawangan atau aplikasi rasmi",
+      "representative_text": "Makluman rasmi: sebarang perubahan akaun perlu disahkan di kaunter cawangan atau aplikasi rasmi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Hebahan Rasmi / Keselamatan Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T009",
+      "template_text": "maklumat lanjut tentang skim pelaburan tersedia dalam dokumen rasmi termasuk penerangan risiko",
+      "representative_text": "Maklumat lanjut tentang skim pelaburan tersedia dalam dokumen rasmi termasuk penerangan risiko.",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Maklumat Rasmi"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T010",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "representative_text": "Nikmati promosi istimewa sehingga 5% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 16
+    },
+    {
+      "template_id": "T011",
+      "template_text": "notis perkhidmatan pelanggan diminta mengemas kini maklumat hanya melalui laman rasmi dan bukan melalui pautan tidak dikenali",
+      "representative_text": "Notis perkhidmatan: pelanggan diminta mengemas kini maklumat hanya melalui laman rasmi dan bukan melalui pautan tidak dikenali.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Hebahan Rasmi / Keselamatan Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T012",
+      "template_text": "organisasi tidak pernah meminta kata laluan pin atau otp melalui mesej peribadi",
+      "representative_text": "Organisasi tidak pernah meminta kata laluan, PIN atau OTP melalui mesej peribadi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Peringatan Keselamatan"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T013",
+      "template_text": "panduan pengguna menyarankan supaya setiap transaksi kewangan mempunyai resit invois rasmi dan maklumat syarikat yang boleh disahkan",
+      "representative_text": "Panduan pengguna menyarankan supaya setiap transaksi kewangan mempunyai resit, invois rasmi dan maklumat syarikat yang boleh disahkan.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Pendidikan Kewangan / Kerjaya / Pelaburan Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T014",
+      "template_text": "pegawai khidmat pelanggan memaklumkan bahawa pengguna boleh hadir ke cawangan untuk semakan lanjut",
+      "representative_text": "Pegawai khidmat pelanggan memaklumkan bahawa pengguna boleh hadir ke cawangan untuk semakan lanjut.",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 167,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T015",
+      "template_text": "pelanggan boleh menyemak status pesanan melalui laman rasmi atau kaunter cawangan tiada bayaran tambahan melalui mesej peribadi",
+      "representative_text": "Pelanggan boleh menyemak status pesanan melalui laman rasmi atau kaunter cawangan. Tiada bayaran tambahan melalui mesej peribadi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T016",
+      "template_text": "pelanggan diminta membaca terma dan syarat sebelum menyertai sebarang program promosi",
+      "representative_text": "Pelanggan diminta membaca terma dan syarat sebelum menyertai sebarang program promosi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Maklumat Rasmi"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T017",
+      "template_text": "pendidikan kewangan menasihatkan pengguna supaya membandingkan tawaran pinjaman berlesen dan tidak membuat bayaran awal kepada individu tidak dikenali",
+      "representative_text": "Pendidikan kewangan menasihatkan pengguna supaya membandingkan tawaran pinjaman berlesen dan tidak membuat bayaran awal kepada individu tidak dikenali.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Pendidikan Kewangan / Kerjaya / Pelaburan Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T018",
+      "template_text": "permohonan bantuan boleh disemak di portal rasmi tanpa bayaran pendahuluan",
+      "representative_text": "Permohonan bantuan boleh disemak di portal rasmi tanpa bayaran pendahuluan.",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Semakan Rasmi"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T019",
+      "template_text": "pihak bank mengingatkan pelanggan supaya tidak berkongsi nombor otp atau tac dengan sesiapa semakan hanya dibuat melalui saluran rasmi",
+      "representative_text": "Pihak bank mengingatkan pelanggan supaya tidak berkongsi nombor OTP atau TAC dengan sesiapa. Semakan hanya dibuat melalui saluran rasmi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Hebahan Rasmi / Keselamatan Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T020",
+      "template_text": "pihak bank mengingatkan pelanggan supaya tidak berkongsi otp atau kata laluan dengan sesiapa",
+      "representative_text": "Pihak bank mengingatkan pelanggan supaya tidak berkongsi OTP atau kata laluan dengan sesiapa.",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion",
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA",
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah",
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Peringatan Keselamatan",
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 170,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T021",
+      "template_text": "pihak penganjur mengingatkan peserta supaya membaca terma dan syarat sebelum membuat keputusan",
+      "representative_text": "Pihak penganjur mengingatkan peserta supaya membaca terma dan syarat sebelum membuat keputusan.",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 166,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T022",
+      "template_text": "program bantuan komuniti menyediakan maklumat kelayakan secara terbuka melalui laman rasmi",
+      "representative_text": "Program bantuan komuniti menyediakan maklumat kelayakan secara terbuka melalui laman rasmi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 166,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T023",
+      "template_text": "promosi bantuan pendidikan dibuka sehingga tarikh yang ditetapkan dan permohonan dibuat melalui portal rasmi",
+      "representative_text": "Promosi bantuan pendidikan dibuka sehingga tarikh yang ditetapkan dan permohonan dibuat melalui portal rasmi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 167,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T024",
+      "template_text": "promosi pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat",
+      "representative_text": "Promosi pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat.",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Maklumat Rasmi"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T025",
+      "template_text": "promosi tamat malam ini bayaran hanya dibuat melalui checkout rasmi dalam aplikasi dan tidak melibatkan akaun peribadi",
+      "representative_text": "Promosi tamat malam ini. Bayaran hanya dibuat melalui checkout rasmi dalam aplikasi dan tidak melibatkan akaun peribadi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T026",
+      "template_text": "sebelum menyertai pelaburan semak status syarikat melalui saluran rasmi dan baca dokumen risiko dengan teliti",
+      "representative_text": "Sebelum menyertai pelaburan, semak status syarikat melalui saluran rasmi dan baca dokumen risiko dengan teliti.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Pendidikan Kewangan / Kerjaya / Pelaburan Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T027",
+      "template_text": "sekiranya menerima mesej mencurigakan pengguna dinasihatkan membuat semakan melalui saluran rasmi",
+      "representative_text": "Sekiranya menerima mesej mencurigakan, pengguna dinasihatkan membuat semakan melalui saluran rasmi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion",
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA",
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah",
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Semakan Rasmi",
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 170,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T028",
+      "template_text": "semua bayaran program dibuat melalui akaun syarikat berdaftar dan resit rasmi akan diberikan",
+      "representative_text": "Semua bayaran program dibuat melalui akaun syarikat berdaftar dan resit rasmi akan diberikan.",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Dokumen Sah"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T029",
+      "template_text": "sila buat pembayaran seperti invois rasmi yang dilampirkan pembayaran ke akaun syarikat berdaftar dan resit akan dihantar melalui emel rasmi",
+      "representative_text": "Sila buat pembayaran seperti invois rasmi yang dilampirkan. Pembayaran ke akaun syarikat berdaftar dan resit akan dihantar melalui emel rasmi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T030",
+      "template_text": "sila buat pembayaran seperti invois rasmi yang dilampirkan resit akan dihantar melalui emel rasmi",
+      "representative_text": "Sila buat pembayaran seperti invois rasmi yang dilampirkan. Resit akan dihantar melalui emel rasmi.",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Dokumen Sah"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T031",
+      "template_text": "tawaran diskaun boleh ditebus melalui aplikasi rasmi tanpa sebarang bayaran pendahuluan kepada individu",
+      "representative_text": "Tawaran diskaun boleh ditebus melalui aplikasi rasmi tanpa sebarang bayaran pendahuluan kepada individu.",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 167,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T032",
+      "template_text": "terima kasih kerana menghubungi kami sila semak status permohonan melalui emel rasmi yang didaftarkan",
+      "representative_text": "Terima kasih kerana menghubungi kami. Sila semak status permohonan melalui emel rasmi yang didaftarkan.",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 167,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T033",
+      "template_text": "webinar keselamatan digital menerangkan bahawa keuntungan tinggi dalam masa singkat perlu disemak dengan pihak berwibawa",
+      "representative_text": "Webinar keselamatan digital menerangkan bahawa keuntungan tinggi dalam masa singkat perlu disemak dengan pihak berwibawa.",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Pendidikan Kewangan / Kerjaya / Pelaburan Sah"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T034",
+      "template_text": "akaun anda dikaitkan dengan siasatan kewangan sahkan butiran bank sekarang bagi mengelakkan tindakan lanjut",
+      "representative_text": "Akaun anda dikaitkan dengan siasatan kewangan. Sahkan butiran bank sekarang bagi mengelakkan tindakan lanjut.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T035",
+      "template_text": "akaun puan akan dibekukan dalam [angka] minit jika pengesahan tidak dibuat sekarang",
+      "representative_text": "Akaun puan akan dibekukan dalam 15 minit jika pengesahan tidak dibuat sekarang.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 4
+    },
+    {
+      "template_id": "T036",
+      "template_text": "anak saya sakit dan saya perlukan sedikit bayaran untuk selesaikan urusan ini",
+      "representative_text": "Anak saya sakit dan saya perlukan sedikit bayaran untuk selesaikan urusan ini.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Simpati dan Kasihan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T037",
+      "template_text": "anda layak menerima bantuan khas [angka] sahkan akaun dan bayar caj pengesahan [angka] hari ini",
+      "representative_text": "Anda layak menerima bantuan khas RM500. Sahkan akaun dan bayar caj pengesahan RM30 hari ini.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 6
+    },
+    {
+      "template_id": "T038",
+      "template_text": "anda terpilih menerima bantuan khas sahkan akaun dan transfer yuran pendaftaran sebelum pukul [angka] malam",
+      "representative_text": "Anda terpilih menerima bantuan khas. Sahkan akaun dan transfer yuran pendaftaran sebelum pukul 10 malam.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T039",
+      "template_text": "bantuan tunai [angka] sudah diluluskan transfer [angka] sebagai yuran pendaftaran sebelum pukul [angka] malam",
+      "representative_text": "Bantuan tunai RM500 sudah diluluskan. Transfer RM30 sebagai yuran pendaftaran sebelum pukul 3 malam.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 6
+    },
+    {
+      "template_id": "T040",
+      "template_text": "dana segera [angka] boleh dimasukkan hari ini bayaran deposit [angka] diperlukan untuk aktifkan pembayaran",
+      "representative_text": "Dana segera RM500 boleh dimasukkan hari ini. Bayaran deposit RM30 diperlukan untuk aktifkan pembayaran.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 6
+    },
+    {
+      "template_id": "T041",
+      "template_text": "dana segera boleh dimasukkan hari ini deposit kecil diperlukan untuk aktifkan pembayaran",
+      "representative_text": "Dana segera boleh dimasukkan hari ini. Deposit kecil diperlukan untuk aktifkan pembayaran.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T042",
+      "template_text": "jangan batalkan proses ini kerana akaun puan boleh disenarai hitam selesaikan bayaran pengesahan sekarang",
+      "representative_text": "Jangan batalkan proses ini kerana akaun puan boleh disenarai hitam. Selesaikan bayaran pengesahan sekarang.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penguncian Mangsa"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T043",
+      "template_text": "jangan malukan keluarga dengan membiarkan perkara ini tersebar",
+      "representative_text": "Jangan malukan keluarga dengan membiarkan perkara ini tersebar.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Malu, Bersalah dan Tanggungjawab Palsu"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T044",
+      "template_text": "jangan risau saya akan bantu puan selesaikan perkara ini dengan mudah",
+      "representative_text": "Jangan risau, saya akan bantu puan selesaikan perkara ini dengan mudah.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kepercayaan dan Keakraban"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T045",
+      "template_text": "jangan tangguh lagi kerana sistem hanya dibuka untuk masa yang terhad",
+      "representative_text": "Jangan tangguh lagi kerana sistem hanya dibuka untuk masa yang terhad.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T046",
+      "template_text": "jika maklumat tidak dihantar nama puan boleh disenarai hitam dalam sistem",
+      "representative_text": "Jika maklumat tidak dihantar, nama puan boleh disenarai hitam dalam sistem.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T047",
+      "template_text": "jika puan bantu sekarang saya boleh elakkan masalah yang lebih besar",
+      "representative_text": "Jika puan bantu sekarang, saya boleh elakkan masalah yang lebih besar.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Simpati dan Kasihan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T048",
+      "template_text": "jika tuan tidak bantu semua kerugian ini akan berpunca daripada tuan",
+      "representative_text": "Jika tuan tidak bantu, semua kerugian ini akan berpunca daripada tuan.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Malu, Bersalah dan Tanggungjawab Palsu"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T049",
+      "template_text": "kami pihak yang mengurus tuntutan ini dan proses puan akan dipermudahkan",
+      "representative_text": "Kami pihak yang mengurus tuntutan ini dan proses puan akan dipermudahkan.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kepercayaan dan Keakraban"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T050",
+      "template_text": "kami wakil syarikat berdaftar peluang pelaburan ini dijamin untung dan slot terakhir ditutup malam ini bayar deposit [angka] sekarang",
+      "representative_text": "Kami wakil syarikat berdaftar. Peluang pelaburan ini dijamin untung dan slot terakhir ditutup malam ini. Bayar deposit RM30 sekarang.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 3
+    },
+    {
+      "template_id": "T051",
+      "template_text": "kegagalan memberi kerjasama boleh menyebabkan tindakan undang undang diambil",
+      "representative_text": "Kegagalan memberi kerjasama boleh menyebabkan tindakan undang-undang diambil.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T052",
+      "template_text": "kerja sambilan komisen harian terbuka untuk [angka] orang sahaja bayar deposit latihan [angka] untuk aktifkan akaun",
+      "representative_text": "Kerja sambilan komisen harian terbuka untuk 20 orang sahaja. Bayar deposit latihan RM50 untuk aktifkan akaun.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T053",
+      "template_text": "kes ini akan dirujuk kepada pihak berkuasa jika bayaran tertunggak tidak dibuat segera",
+      "representative_text": "Kes ini akan dirujuk kepada pihak berkuasa jika bayaran tertunggak tidak dibuat segera.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Penguncian Mangsa"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T054",
+      "template_text": "kes ini boleh dirujuk kepada pihak berkuasa jika bayaran tertunggak tidak diselesaikan segera",
+      "representative_text": "Kes ini boleh dirujuk kepada pihak berkuasa jika bayaran tertunggak tidak diselesaikan segera.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T055",
+      "template_text": "kes ini sulit jangan beritahu orang lain kerana nama puan boleh terjejas",
+      "representative_text": "Kes ini sulit, jangan beritahu orang lain kerana nama puan boleh terjejas.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Malu, Bersalah dan Tanggungjawab Palsu"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T056",
+      "template_text": "keuntungan dijamin selepas akaun pelaburan diaktifkan dengan bayaran permulaan [angka]",
+      "representative_text": "Keuntungan dijamin selepas akaun pelaburan diaktifkan dengan bayaran permulaan RM50.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 4
+    },
+    {
+      "template_id": "T057",
+      "template_text": "klik pautan ini segera sebelum akaun disekat secara automatik",
+      "representative_text": "Klik pautan ini segera sebelum akaun disekat secara automatik.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T058",
+      "template_text": "maklumat anda perlu dihantar sekarang untuk elak akaun ditutup secara automatik",
+      "representative_text": "Maklumat anda perlu dihantar sekarang untuk elak akaun ditutup secara automatik.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penguncian Mangsa"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T059",
+      "template_text": "mentor kami sudah bantu ramai peserta gandakan modal bayar [angka] untuk aktifkan akaun pelaburan anda",
+      "representative_text": "Mentor kami sudah bantu ramai peserta gandakan modal. Bayar RM250 untuk aktifkan akaun pelaburan anda.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T060",
+      "template_text": "modal [angka] boleh jadi [angka] dalam [angka] jam slot vip tinggal [angka] sahaja daftar sekarang",
+      "representative_text": "Modal RM30 boleh jadi RM1000 dalam 24 jam. Slot VIP tinggal 1 sahaja. Daftar sekarang.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 9
+    },
+    {
+      "template_id": "T061",
+      "template_text": "modal kecil [angka] boleh memberi pulangan [angka] dalam masa singkat",
+      "representative_text": "Modal kecil RM50 boleh memberi pulangan RM800 dalam masa singkat.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 4
+    },
+    {
+      "template_id": "T062",
+      "template_text": "notis akhir akaun keselamatan anda perlu diaktifkan hantar kod otp sebelum tamat tempoh",
+      "representative_text": "Notis akhir: akaun keselamatan anda perlu diaktifkan. Hantar kod OTP sebelum tamat tempoh.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T063",
+      "template_text": "pakej pelaburan khas dibuka hari ini keuntungan harian dijamin dan peserta boleh withdraw setiap malam",
+      "representative_text": "Pakej pelaburan khas dibuka hari ini. Keuntungan harian dijamin dan peserta boleh withdraw setiap malam.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T064",
+      "template_text": "pegawai bank mengesan aktiviti luar biasa akaun tuan akan disekat dalam [angka] minit jika otp tidak diberikan sekarang",
+      "representative_text": "Pegawai bank mengesan aktiviti luar biasa. Akaun tuan akan disekat dalam 15 minit jika OTP tidak diberikan sekarang.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penguncian Mangsa"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T065",
+      "template_text": "pegawai keselamatan memerlukan pengesahan segera masukkan tac anda untuk mengelakkan sekatan akaun",
+      "representative_text": "Pegawai keselamatan memerlukan pengesahan segera. Masukkan TAC anda untuk mengelakkan sekatan akaun.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T066",
+      "template_text": "peluang pelaburan vip hanya untuk ahli terpilih modal kecil [angka] pulangan [angka] dijamin",
+      "representative_text": "Peluang pelaburan VIP hanya untuk ahli terpilih. Modal kecil RM80, pulangan RM1000 dijamin.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 9
+    },
+    {
+      "template_id": "T067",
+      "template_text": "peluang pendapatan harian [angka] dibuka khas untuk peserta terpilih",
+      "representative_text": "Peluang pendapatan harian RM2000 dibuka khas untuk peserta terpilih.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T068",
+      "template_text": "permohonan pinjaman anda telah diluluskan bayar caj proses [angka] dahulu sebelum wang [angka] dilepaskan",
+      "representative_text": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM30 dahulu sebelum wang RM500 dilepaskan.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 6
+    },
+    {
+      "template_id": "T069",
+      "template_text": "permohonan pinjaman anda telah diluluskan bayar caj proses [angka] sebelum wang [angka] dilepaskan hari ini",
+      "representative_text": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM30 sebelum wang RM500 dilepaskan hari ini.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 3
+    },
+    {
+      "template_id": "T070",
+      "template_text": "pihak bank telah mengesan aktiviti luar biasa sila berikan otp untuk sahkan identiti anda sekarang jika gagal akaun anda akan dibekukan dalam [angka] jam",
+      "representative_text": "Pihak bank telah mengesan aktiviti luar biasa. Sila berikan OTP untuk sahkan identiti anda sekarang. Jika gagal, akaun anda akan dibekukan dalam 3 jam.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 3
+    },
+    {
+      "template_id": "T071",
+      "template_text": "pinjaman tanpa slip gaji tersedia untuk anda hantar kad pengenalan dan nombor akaun sekarang untuk kelulusan segera",
+      "representative_text": "Pinjaman tanpa slip gaji tersedia untuk anda. Hantar kad pengenalan dan nombor akaun sekarang untuk kelulusan segera.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T072",
+      "template_text": "proses ini mesti diselesaikan hari ini sahaja sebelum peluang dibatalkan",
+      "representative_text": "Proses ini mesti diselesaikan hari ini sahaja sebelum peluang dibatalkan.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T073",
+      "template_text": "puan boleh percaya kepada saya kerana semua pelanggan melalui prosedur yang sama",
+      "representative_text": "Puan boleh percaya kepada saya kerana semua pelanggan melalui prosedur yang sama.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kepercayaan dan Keakraban"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T074",
+      "template_text": "puan perlu bertanggungjawab atas kelewatan ini dengan membuat bayaran pengesahan",
+      "representative_text": "Puan perlu bertanggungjawab atas kelewatan ini dengan membuat bayaran pengesahan.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Malu, Bersalah dan Tanggungjawab Palsu"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T075",
+      "template_text": "puan terpilih menerima bantuan khas [angka] sahkan akaun untuk tuntutan segera",
+      "representative_text": "Puan terpilih menerima bantuan khas RM500. Sahkan akaun untuk tuntutan segera.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T076",
+      "template_text": "puan yang menyebabkan proses ini tergendala jadi puan perlu selesaikan bayaran sekarang",
+      "representative_text": "Puan yang menyebabkan proses ini tergendala, jadi puan perlu selesaikan bayaran sekarang.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Malu, Bersalah dan Tanggungjawab Palsu"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T077",
+      "template_text": "ramai peserta sudah menerima keuntungan harian modal [angka] boleh menjadi [angka] minggu ini jika daftar sekarang",
+      "representative_text": "Ramai peserta sudah menerima keuntungan harian. Modal RM30 boleh menjadi RM300 minggu ini jika daftar sekarang.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Janji Ganjaran"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 3
+    },
+    {
+      "template_id": "T078",
+      "template_text": "saya faham keadaan puan dan akan pastikan bantuan ini cepat selesai",
+      "representative_text": "Saya faham keadaan puan dan akan pastikan bantuan ini cepat selesai.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kepercayaan dan Keakraban"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T079",
+      "template_text": "saya hanya mahu membantu sebelum perkara ini menjadi lebih sukar",
+      "representative_text": "Saya hanya mahu membantu sebelum perkara ini menjadi lebih sukar.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kepercayaan dan Keakraban"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T080",
+      "template_text": "saya malu meminta tetapi saya benar benar perlukan bantuan segera",
+      "representative_text": "Saya malu meminta, tetapi saya benar-benar perlukan bantuan segera.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Simpati dan Kasihan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T081",
+      "template_text": "saya tidak ada pilihan lain dan berharap puan dapat bantu sebelum malam ini",
+      "representative_text": "Saya tidak ada pilihan lain dan berharap puan dapat bantu sebelum malam ini.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Simpati dan Kasihan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T082",
+      "template_text": "screenshot keuntungan peserta sudah terbukti masuk kumpulan sekarang dan transfer modal sebelum slot penuh",
+      "representative_text": "Screenshot keuntungan peserta sudah terbukti. Masuk kumpulan sekarang dan transfer modal sebelum slot penuh.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T083",
+      "template_text": "selesaikan bayaran sebelum jam [angka] petang untuk mengelakkan proses gagal",
+      "representative_text": "Selesaikan bayaran sebelum jam 3 petang untuk mengelakkan proses gagal.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 4
+    },
+    {
+      "template_id": "T084",
+      "template_text": "sila bertindak sekarang kerana tawaran ini tamat dalam [angka] minit",
+      "representative_text": "Sila bertindak sekarang kerana tawaran ini tamat dalam 10 minit.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 4
+    },
+    {
+      "template_id": "T085",
+      "template_text": "syarikat kami mempunyai lesen sah pulangan [angka] dijamin setiap hari dan pendaftaran hanya dibuka sampai malam ini",
+      "representative_text": "Syarikat kami mempunyai lesen sah. Pulangan 30% dijamin setiap hari dan pendaftaran hanya dibuka sampai malam ini.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Janji Ganjaran"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T086",
+      "template_text": "tahniah nombor anda memenangi hadiah tunai klik pautan dan masukkan maklumat bank sebelum tuntutan tamat",
+      "representative_text": "Tahniah, nombor anda memenangi hadiah tunai. Klik pautan dan masukkan maklumat bank sebelum tuntutan tamat.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 3,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T087",
+      "template_text": "tahniah tuan layak mendapat hadiah tunai eksklusif hari ini",
+      "representative_text": "Tahniah, tuan layak mendapat hadiah tunai eksklusif hari ini.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T088",
+      "template_text": "tolong bantu saya sekali ini sahaja kerana saya benar benar terdesak",
+      "representative_text": "Tolong bantu saya sekali ini sahaja kerana saya benar-benar terdesak.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Simpati dan Kasihan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T089",
+      "template_text": "transaksi mencurigakan dikesan dan akaun tuan berisiko disekat hari ini",
+      "representative_text": "Transaksi mencurigakan dikesan dan akaun tuan berisiko disekat hari ini.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 50,
+      "exact_variant_count": 1
+    },
+    {
+      "template_id": "T090",
+      "template_text": "unit pengesahan mendapati rekod anda bermasalah klik pautan dan masukkan maklumat peribadi untuk pengesahan",
+      "representative_text": "Unit pengesahan mendapati rekod anda bermasalah. Klik pautan dan masukkan maklumat peribadi untuk pengesahan.",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 100,
+      "exact_variant_count": 1
+    }
+  ],
+  "exact_records": [
+    {
+      "record_id": "E001",
+      "text": "Deposit tempahan RM250 boleh dibuat selepas pelanggan menerima invois rasmi daripada kedai. Sila simpan resit pembayaran.",
+      "template_text": "deposit tempahan [angka] boleh dibuat selepas pelanggan menerima invois rasmi daripada kedai sila simpan resit pembayaran",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E002",
+      "text": "Hebahan keselamatan: pihak rasmi tidak akan meminta kata laluan, OTP atau butiran bank melalui mesej peribadi.",
+      "template_text": "hebahan keselamatan pihak rasmi tidak akan meminta kata laluan otp atau butiran bank melalui mesej peribadi",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Hebahan Rasmi / Keselamatan Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E003",
+      "text": "Hubungi kaunter rasmi organisasi untuk pengesahan sebelum membuat sebarang transaksi.",
+      "template_text": "hubungi kaunter rasmi organisasi untuk pengesahan sebelum membuat sebarang transaksi",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Semakan Rasmi"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E004",
+      "text": "Iklan kerja yang sah tidak mengenakan bayaran pendaftaran. Calon perlu menyemak maklumat syarikat sebelum menghantar permohonan.",
+      "template_text": "iklan kerja yang sah tidak mengenakan bayaran pendaftaran calon perlu menyemak maklumat syarikat sebelum menghantar permohonan",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Pendidikan Kewangan / Kerjaya / Pelaburan Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E005",
+      "text": "Jika ragu-ragu, jangan buat bayaran dan hubungi talian rasmi untuk nasihat lanjut.",
+      "template_text": "jika ragu ragu jangan buat bayaran dan hubungi talian rasmi untuk nasihat lanjut",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Peringatan Keselamatan"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E006",
+      "text": "Kempen keselamatan digital menasihatkan pengguna menyemak sumber mesej sebelum membuat bayaran atau menekan pautan.",
+      "template_text": "kempen keselamatan digital menasihatkan pengguna menyemak sumber mesej sebelum membuat bayaran atau menekan pautan",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Hebahan Rasmi / Keselamatan Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E007",
+      "text": "Kempen keselamatan digital menasihatkan pengguna supaya tidak panik dan tidak menekan pautan tidak dikenali.",
+      "template_text": "kempen keselamatan digital menasihatkan pengguna supaya tidak panik dan tidak menekan pautan tidak dikenali",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion",
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA",
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah",
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Peringatan Keselamatan",
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 169
+    },
+    {
+      "record_id": "E008",
+      "text": "Makluman rasmi: sebarang perubahan akaun perlu disahkan di kaunter cawangan atau aplikasi rasmi.",
+      "template_text": "makluman rasmi sebarang perubahan akaun perlu disahkan di kaunter cawangan atau aplikasi rasmi",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Hebahan Rasmi / Keselamatan Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E009",
+      "text": "Maklumat lanjut tentang skim pelaburan tersedia dalam dokumen rasmi termasuk penerangan risiko.",
+      "template_text": "maklumat lanjut tentang skim pelaburan tersedia dalam dokumen rasmi termasuk penerangan risiko",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Maklumat Rasmi"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E010",
+      "text": "Nikmati promosi istimewa sehingga 10% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E011",
+      "text": "Nikmati promosi istimewa sehingga 15% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E012",
+      "text": "Nikmati promosi istimewa sehingga 20% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E013",
+      "text": "Nikmati promosi istimewa sehingga 25% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E014",
+      "text": "Nikmati promosi istimewa sehingga 30% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 7
+    },
+    {
+      "record_id": "E015",
+      "text": "Nikmati promosi istimewa sehingga 35% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E016",
+      "text": "Nikmati promosi istimewa sehingga 40% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E017",
+      "text": "Nikmati promosi istimewa sehingga 45% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E018",
+      "text": "Nikmati promosi istimewa sehingga 5% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 7
+    },
+    {
+      "record_id": "E019",
+      "text": "Nikmati promosi istimewa sehingga 50% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E020",
+      "text": "Nikmati promosi istimewa sehingga 55% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 7
+    },
+    {
+      "record_id": "E021",
+      "text": "Nikmati promosi istimewa sehingga 60% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E022",
+      "text": "Nikmati promosi istimewa sehingga 65% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E023",
+      "text": "Nikmati promosi istimewa sehingga 70% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E024",
+      "text": "Nikmati promosi istimewa sehingga 75% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 6
+    },
+    {
+      "record_id": "E025",
+      "text": "Nikmati promosi istimewa sehingga 80% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "template_text": "nikmati promosi istimewa sehingga [angka] untuk pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat maklumat lanjut di laman rasmi kami",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 7
+    },
+    {
+      "record_id": "E026",
+      "text": "Notis perkhidmatan: pelanggan diminta mengemas kini maklumat hanya melalui laman rasmi dan bukan melalui pautan tidak dikenali.",
+      "template_text": "notis perkhidmatan pelanggan diminta mengemas kini maklumat hanya melalui laman rasmi dan bukan melalui pautan tidak dikenali",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Hebahan Rasmi / Keselamatan Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E027",
+      "text": "Organisasi tidak pernah meminta kata laluan, PIN atau OTP melalui mesej peribadi.",
+      "template_text": "organisasi tidak pernah meminta kata laluan pin atau otp melalui mesej peribadi",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Peringatan Keselamatan"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E028",
+      "text": "Panduan pengguna menyarankan supaya setiap transaksi kewangan mempunyai resit, invois rasmi dan maklumat syarikat yang boleh disahkan.",
+      "template_text": "panduan pengguna menyarankan supaya setiap transaksi kewangan mempunyai resit invois rasmi dan maklumat syarikat yang boleh disahkan",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Pendidikan Kewangan / Kerjaya / Pelaburan Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E029",
+      "text": "Pegawai khidmat pelanggan memaklumkan bahawa pengguna boleh hadir ke cawangan untuk semakan lanjut.",
+      "template_text": "pegawai khidmat pelanggan memaklumkan bahawa pengguna boleh hadir ke cawangan untuk semakan lanjut",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 167
+    },
+    {
+      "record_id": "E030",
+      "text": "Pelanggan boleh menyemak status pesanan melalui laman rasmi atau kaunter cawangan. Tiada bayaran tambahan melalui mesej peribadi.",
+      "template_text": "pelanggan boleh menyemak status pesanan melalui laman rasmi atau kaunter cawangan tiada bayaran tambahan melalui mesej peribadi",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E031",
+      "text": "Pelanggan diminta membaca terma dan syarat sebelum menyertai sebarang program promosi.",
+      "template_text": "pelanggan diminta membaca terma dan syarat sebelum menyertai sebarang program promosi",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Maklumat Rasmi"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E032",
+      "text": "Pendidikan kewangan menasihatkan pengguna supaya membandingkan tawaran pinjaman berlesen dan tidak membuat bayaran awal kepada individu tidak dikenali.",
+      "template_text": "pendidikan kewangan menasihatkan pengguna supaya membandingkan tawaran pinjaman berlesen dan tidak membuat bayaran awal kepada individu tidak dikenali",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Pendidikan Kewangan / Kerjaya / Pelaburan Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E033",
+      "text": "Permohonan bantuan boleh disemak di portal rasmi tanpa bayaran pendahuluan.",
+      "template_text": "permohonan bantuan boleh disemak di portal rasmi tanpa bayaran pendahuluan",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Semakan Rasmi"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E034",
+      "text": "Pihak bank mengingatkan pelanggan supaya tidak berkongsi nombor OTP atau TAC dengan sesiapa. Semakan hanya dibuat melalui saluran rasmi.",
+      "template_text": "pihak bank mengingatkan pelanggan supaya tidak berkongsi nombor otp atau tac dengan sesiapa semakan hanya dibuat melalui saluran rasmi",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Hebahan Rasmi / Keselamatan Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E035",
+      "text": "Pihak bank mengingatkan pelanggan supaya tidak berkongsi OTP atau kata laluan dengan sesiapa.",
+      "template_text": "pihak bank mengingatkan pelanggan supaya tidak berkongsi otp atau kata laluan dengan sesiapa",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion",
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA",
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah",
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Peringatan Keselamatan",
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 170
+    },
+    {
+      "record_id": "E036",
+      "text": "Pihak penganjur mengingatkan peserta supaya membaca terma dan syarat sebelum membuat keputusan.",
+      "template_text": "pihak penganjur mengingatkan peserta supaya membaca terma dan syarat sebelum membuat keputusan",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 166
+    },
+    {
+      "record_id": "E037",
+      "text": "Program bantuan komuniti menyediakan maklumat kelayakan secara terbuka melalui laman rasmi.",
+      "template_text": "program bantuan komuniti menyediakan maklumat kelayakan secara terbuka melalui laman rasmi",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 166
+    },
+    {
+      "record_id": "E038",
+      "text": "Promosi bantuan pendidikan dibuka sehingga tarikh yang ditetapkan dan permohonan dibuat melalui portal rasmi.",
+      "template_text": "promosi bantuan pendidikan dibuka sehingga tarikh yang ditetapkan dan permohonan dibuat melalui portal rasmi",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 167
+    },
+    {
+      "record_id": "E039",
+      "text": "Promosi pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat.",
+      "template_text": "promosi pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Maklumat Rasmi"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E040",
+      "text": "Promosi tamat malam ini. Bayaran hanya dibuat melalui checkout rasmi dalam aplikasi dan tidak melibatkan akaun peribadi.",
+      "template_text": "promosi tamat malam ini bayaran hanya dibuat melalui checkout rasmi dalam aplikasi dan tidak melibatkan akaun peribadi",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E041",
+      "text": "Sebelum menyertai pelaburan, semak status syarikat melalui saluran rasmi dan baca dokumen risiko dengan teliti.",
+      "template_text": "sebelum menyertai pelaburan semak status syarikat melalui saluran rasmi dan baca dokumen risiko dengan teliti",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Pendidikan Kewangan / Kerjaya / Pelaburan Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E042",
+      "text": "Sekiranya menerima mesej mencurigakan, pengguna dinasihatkan membuat semakan melalui saluran rasmi.",
+      "template_text": "sekiranya menerima mesej mencurigakan pengguna dinasihatkan membuat semakan melalui saluran rasmi",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion",
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA",
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah",
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Semakan Rasmi",
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 170
+    },
+    {
+      "record_id": "E043",
+      "text": "Semua bayaran program dibuat melalui akaun syarikat berdaftar dan resit rasmi akan diberikan.",
+      "template_text": "semua bayaran program dibuat melalui akaun syarikat berdaftar dan resit rasmi akan diberikan",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Dokumen Sah"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E044",
+      "text": "Sila buat pembayaran seperti invois rasmi yang dilampirkan. Pembayaran ke akaun syarikat berdaftar dan resit akan dihantar melalui emel rasmi.",
+      "template_text": "sila buat pembayaran seperti invois rasmi yang dilampirkan pembayaran ke akaun syarikat berdaftar dan resit akan dihantar melalui emel rasmi",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Promosi / Transaksi Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E045",
+      "text": "Sila buat pembayaran seperti invois rasmi yang dilampirkan. Resit akan dihantar melalui emel rasmi.",
+      "template_text": "sila buat pembayaran seperti invois rasmi yang dilampirkan resit akan dihantar melalui emel rasmi",
+      "binary_label": "control",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_KAWALAN"
+      ],
+      "original_labels": [
+        "Kawalan Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Dokumen Sah"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E046",
+      "text": "Tawaran diskaun boleh ditebus melalui aplikasi rasmi tanpa sebarang bayaran pendahuluan kepada individu.",
+      "template_text": "tawaran diskaun boleh ditebus melalui aplikasi rasmi tanpa sebarang bayaran pendahuluan kepada individu",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 167
+    },
+    {
+      "record_id": "E047",
+      "text": "Terima kasih kerana menghubungi kami. Sila semak status permohonan melalui emel rasmi yang didaftarkan.",
+      "template_text": "terima kasih kerana menghubungi kami sila semak status permohonan melalui emel rasmi yang didaftarkan",
+      "binary_label": "control",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Kawalan Emosi Sah"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Tiada pencetus emosi manipulatif"
+      ],
+      "source_occurrences": 167
+    },
+    {
+      "record_id": "E048",
+      "text": "Webinar keselamatan digital menerangkan bahawa keuntungan tinggi dalam masa singkat perlu disemak dengan pihak berwibawa.",
+      "template_text": "webinar keselamatan digital menerangkan bahawa keuntungan tinggi dalam masa singkat perlu disemak dengan pihak berwibawa",
+      "binary_label": "control",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Bukan Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Rendah"
+      ],
+      "expected_categories": [
+        "Pendidikan Kewangan / Kerjaya / Pelaburan Sah"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E049",
+      "text": "Akaun anda dikaitkan dengan siasatan kewangan. Sahkan butiran bank sekarang bagi mengelakkan tindakan lanjut.",
+      "template_text": "akaun anda dikaitkan dengan siasatan kewangan sahkan butiran bank sekarang bagi mengelakkan tindakan lanjut",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E050",
+      "text": "Akaun puan akan dibekukan dalam 15 minit jika pengesahan tidak dibuat sekarang.",
+      "template_text": "akaun puan akan dibekukan dalam [angka] minit jika pengesahan tidak dibuat sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 13
+    },
+    {
+      "record_id": "E051",
+      "text": "Akaun puan akan dibekukan dalam 30 minit jika pengesahan tidak dibuat sekarang.",
+      "template_text": "akaun puan akan dibekukan dalam [angka] minit jika pengesahan tidak dibuat sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 13
+    },
+    {
+      "record_id": "E052",
+      "text": "Akaun puan akan dibekukan dalam 45 minit jika pengesahan tidak dibuat sekarang.",
+      "template_text": "akaun puan akan dibekukan dalam [angka] minit jika pengesahan tidak dibuat sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E053",
+      "text": "Akaun puan akan dibekukan dalam 60 minit jika pengesahan tidak dibuat sekarang.",
+      "template_text": "akaun puan akan dibekukan dalam [angka] minit jika pengesahan tidak dibuat sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E054",
+      "text": "Anak saya sakit dan saya perlukan sedikit bayaran untuk selesaikan urusan ini.",
+      "template_text": "anak saya sakit dan saya perlukan sedikit bayaran untuk selesaikan urusan ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Simpati dan Kasihan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E055",
+      "text": "Anda layak menerima bantuan khas RM1500. Sahkan akaun dan bayar caj pengesahan RM150 hari ini.",
+      "template_text": "anda layak menerima bantuan khas [angka] sahkan akaun dan bayar caj pengesahan [angka] hari ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E056",
+      "text": "Anda layak menerima bantuan khas RM1500. Sahkan akaun dan bayar caj pengesahan RM30 hari ini.",
+      "template_text": "anda layak menerima bantuan khas [angka] sahkan akaun dan bayar caj pengesahan [angka] hari ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E057",
+      "text": "Anda layak menerima bantuan khas RM500. Sahkan akaun dan bayar caj pengesahan RM150 hari ini.",
+      "template_text": "anda layak menerima bantuan khas [angka] sahkan akaun dan bayar caj pengesahan [angka] hari ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 16
+    },
+    {
+      "record_id": "E058",
+      "text": "Anda layak menerima bantuan khas RM500. Sahkan akaun dan bayar caj pengesahan RM30 hari ini.",
+      "template_text": "anda layak menerima bantuan khas [angka] sahkan akaun dan bayar caj pengesahan [angka] hari ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E059",
+      "text": "Anda layak menerima bantuan khas RM5000. Sahkan akaun dan bayar caj pengesahan RM150 hari ini.",
+      "template_text": "anda layak menerima bantuan khas [angka] sahkan akaun dan bayar caj pengesahan [angka] hari ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E060",
+      "text": "Anda layak menerima bantuan khas RM5000. Sahkan akaun dan bayar caj pengesahan RM30 hari ini.",
+      "template_text": "anda layak menerima bantuan khas [angka] sahkan akaun dan bayar caj pengesahan [angka] hari ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 16
+    },
+    {
+      "record_id": "E061",
+      "text": "Anda terpilih menerima bantuan khas. Sahkan akaun dan transfer yuran pendaftaran sebelum pukul 10 malam.",
+      "template_text": "anda terpilih menerima bantuan khas sahkan akaun dan transfer yuran pendaftaran sebelum pukul [angka] malam",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E062",
+      "text": "Bantuan tunai RM1500 sudah diluluskan. Transfer RM150 sebagai yuran pendaftaran sebelum pukul 6 malam.",
+      "template_text": "bantuan tunai [angka] sudah diluluskan transfer [angka] sebagai yuran pendaftaran sebelum pukul [angka] malam",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E063",
+      "text": "Bantuan tunai RM1500 sudah diluluskan. Transfer RM30 sebagai yuran pendaftaran sebelum pukul 12 malam.",
+      "template_text": "bantuan tunai [angka] sudah diluluskan transfer [angka] sebagai yuran pendaftaran sebelum pukul [angka] malam",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 16
+    },
+    {
+      "record_id": "E064",
+      "text": "Bantuan tunai RM500 sudah diluluskan. Transfer RM150 sebagai yuran pendaftaran sebelum pukul 10 malam.",
+      "template_text": "bantuan tunai [angka] sudah diluluskan transfer [angka] sebagai yuran pendaftaran sebelum pukul [angka] malam",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E065",
+      "text": "Bantuan tunai RM500 sudah diluluskan. Transfer RM30 sebagai yuran pendaftaran sebelum pukul 3 malam.",
+      "template_text": "bantuan tunai [angka] sudah diluluskan transfer [angka] sebagai yuran pendaftaran sebelum pukul [angka] malam",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E066",
+      "text": "Bantuan tunai RM5000 sudah diluluskan. Transfer RM150 sebagai yuran pendaftaran sebelum pukul 24 malam.",
+      "template_text": "bantuan tunai [angka] sudah diluluskan transfer [angka] sebagai yuran pendaftaran sebelum pukul [angka] malam",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 16
+    },
+    {
+      "record_id": "E067",
+      "text": "Bantuan tunai RM5000 sudah diluluskan. Transfer RM30 sebagai yuran pendaftaran sebelum pukul 8 malam.",
+      "template_text": "bantuan tunai [angka] sudah diluluskan transfer [angka] sebagai yuran pendaftaran sebelum pukul [angka] malam",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E068",
+      "text": "Dana segera boleh dimasukkan hari ini. Deposit kecil diperlukan untuk aktifkan pembayaran.",
+      "template_text": "dana segera boleh dimasukkan hari ini deposit kecil diperlukan untuk aktifkan pembayaran",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E069",
+      "text": "Dana segera RM1500 boleh dimasukkan hari ini. Bayaran deposit RM150 diperlukan untuk aktifkan pembayaran.",
+      "template_text": "dana segera [angka] boleh dimasukkan hari ini bayaran deposit [angka] diperlukan untuk aktifkan pembayaran",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E070",
+      "text": "Dana segera RM1500 boleh dimasukkan hari ini. Bayaran deposit RM30 diperlukan untuk aktifkan pembayaran.",
+      "template_text": "dana segera [angka] boleh dimasukkan hari ini bayaran deposit [angka] diperlukan untuk aktifkan pembayaran",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E071",
+      "text": "Dana segera RM500 boleh dimasukkan hari ini. Bayaran deposit RM150 diperlukan untuk aktifkan pembayaran.",
+      "template_text": "dana segera [angka] boleh dimasukkan hari ini bayaran deposit [angka] diperlukan untuk aktifkan pembayaran",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E072",
+      "text": "Dana segera RM500 boleh dimasukkan hari ini. Bayaran deposit RM30 diperlukan untuk aktifkan pembayaran.",
+      "template_text": "dana segera [angka] boleh dimasukkan hari ini bayaran deposit [angka] diperlukan untuk aktifkan pembayaran",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 16
+    },
+    {
+      "record_id": "E073",
+      "text": "Dana segera RM5000 boleh dimasukkan hari ini. Bayaran deposit RM150 diperlukan untuk aktifkan pembayaran.",
+      "template_text": "dana segera [angka] boleh dimasukkan hari ini bayaran deposit [angka] diperlukan untuk aktifkan pembayaran",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 16
+    },
+    {
+      "record_id": "E074",
+      "text": "Dana segera RM5000 boleh dimasukkan hari ini. Bayaran deposit RM30 diperlukan untuk aktifkan pembayaran.",
+      "template_text": "dana segera [angka] boleh dimasukkan hari ini bayaran deposit [angka] diperlukan untuk aktifkan pembayaran",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E075",
+      "text": "Jangan batalkan proses ini kerana akaun puan boleh disenarai hitam. Selesaikan bayaran pengesahan sekarang.",
+      "template_text": "jangan batalkan proses ini kerana akaun puan boleh disenarai hitam selesaikan bayaran pengesahan sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penguncian Mangsa"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E076",
+      "text": "Jangan malukan keluarga dengan membiarkan perkara ini tersebar.",
+      "template_text": "jangan malukan keluarga dengan membiarkan perkara ini tersebar",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Malu, Bersalah dan Tanggungjawab Palsu"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E077",
+      "text": "Jangan risau, saya akan bantu puan selesaikan perkara ini dengan mudah.",
+      "template_text": "jangan risau saya akan bantu puan selesaikan perkara ini dengan mudah",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kepercayaan dan Keakraban"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E078",
+      "text": "Jangan tangguh lagi kerana sistem hanya dibuka untuk masa yang terhad.",
+      "template_text": "jangan tangguh lagi kerana sistem hanya dibuka untuk masa yang terhad",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E079",
+      "text": "Jika maklumat tidak dihantar, nama puan boleh disenarai hitam dalam sistem.",
+      "template_text": "jika maklumat tidak dihantar nama puan boleh disenarai hitam dalam sistem",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E080",
+      "text": "Jika puan bantu sekarang, saya boleh elakkan masalah yang lebih besar.",
+      "template_text": "jika puan bantu sekarang saya boleh elakkan masalah yang lebih besar",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Simpati dan Kasihan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E081",
+      "text": "Jika tuan tidak bantu, semua kerugian ini akan berpunca daripada tuan.",
+      "template_text": "jika tuan tidak bantu semua kerugian ini akan berpunca daripada tuan",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Malu, Bersalah dan Tanggungjawab Palsu"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E082",
+      "text": "Kami pihak yang mengurus tuntutan ini dan proses puan akan dipermudahkan.",
+      "template_text": "kami pihak yang mengurus tuntutan ini dan proses puan akan dipermudahkan",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kepercayaan dan Keakraban"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E083",
+      "text": "Kami wakil syarikat berdaftar. Peluang pelaburan ini dijamin untung dan slot terakhir ditutup malam ini. Bayar deposit RM30 sekarang.",
+      "template_text": "kami wakil syarikat berdaftar peluang pelaburan ini dijamin untung dan slot terakhir ditutup malam ini bayar deposit [angka] sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 1
+    },
+    {
+      "record_id": "E084",
+      "text": "Kami wakil syarikat berdaftar. Peluang pelaburan ini dijamin untung dan slot terakhir ditutup malam ini. Bayar deposit RM300 sekarang.",
+      "template_text": "kami wakil syarikat berdaftar peluang pelaburan ini dijamin untung dan slot terakhir ditutup malam ini bayar deposit [angka] sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 1
+    },
+    {
+      "record_id": "E085",
+      "text": "Kami wakil syarikat berdaftar. Peluang pelaburan ini dijamin untung dan slot terakhir ditutup malam ini. Bayar deposit RM50 sekarang.",
+      "template_text": "kami wakil syarikat berdaftar peluang pelaburan ini dijamin untung dan slot terakhir ditutup malam ini bayar deposit [angka] sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 1
+    },
+    {
+      "record_id": "E086",
+      "text": "Kegagalan memberi kerjasama boleh menyebabkan tindakan undang-undang diambil.",
+      "template_text": "kegagalan memberi kerjasama boleh menyebabkan tindakan undang undang diambil",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E087",
+      "text": "Kerja sambilan komisen harian terbuka untuk 20 orang sahaja. Bayar deposit latihan RM50 untuk aktifkan akaun.",
+      "template_text": "kerja sambilan komisen harian terbuka untuk [angka] orang sahaja bayar deposit latihan [angka] untuk aktifkan akaun",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E088",
+      "text": "Kes ini akan dirujuk kepada pihak berkuasa jika bayaran tertunggak tidak dibuat segera.",
+      "template_text": "kes ini akan dirujuk kepada pihak berkuasa jika bayaran tertunggak tidak dibuat segera",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Penguncian Mangsa"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E089",
+      "text": "Kes ini boleh dirujuk kepada pihak berkuasa jika bayaran tertunggak tidak diselesaikan segera.",
+      "template_text": "kes ini boleh dirujuk kepada pihak berkuasa jika bayaran tertunggak tidak diselesaikan segera",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E090",
+      "text": "Kes ini sulit, jangan beritahu orang lain kerana nama puan boleh terjejas.",
+      "template_text": "kes ini sulit jangan beritahu orang lain kerana nama puan boleh terjejas",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Malu, Bersalah dan Tanggungjawab Palsu"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E091",
+      "text": "Keuntungan dijamin selepas akaun pelaburan diaktifkan dengan bayaran permulaan RM100.",
+      "template_text": "keuntungan dijamin selepas akaun pelaburan diaktifkan dengan bayaran permulaan [angka]",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 13
+    },
+    {
+      "record_id": "E092",
+      "text": "Keuntungan dijamin selepas akaun pelaburan diaktifkan dengan bayaran permulaan RM150.",
+      "template_text": "keuntungan dijamin selepas akaun pelaburan diaktifkan dengan bayaran permulaan [angka]",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E093",
+      "text": "Keuntungan dijamin selepas akaun pelaburan diaktifkan dengan bayaran permulaan RM300.",
+      "template_text": "keuntungan dijamin selepas akaun pelaburan diaktifkan dengan bayaran permulaan [angka]",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E094",
+      "text": "Keuntungan dijamin selepas akaun pelaburan diaktifkan dengan bayaran permulaan RM50.",
+      "template_text": "keuntungan dijamin selepas akaun pelaburan diaktifkan dengan bayaran permulaan [angka]",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 13
+    },
+    {
+      "record_id": "E095",
+      "text": "Klik pautan ini segera sebelum akaun disekat secara automatik.",
+      "template_text": "klik pautan ini segera sebelum akaun disekat secara automatik",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E096",
+      "text": "Maklumat anda perlu dihantar sekarang untuk elak akaun ditutup secara automatik.",
+      "template_text": "maklumat anda perlu dihantar sekarang untuk elak akaun ditutup secara automatik",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penguncian Mangsa"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E097",
+      "text": "Mentor kami sudah bantu ramai peserta gandakan modal. Bayar RM250 untuk aktifkan akaun pelaburan anda.",
+      "template_text": "mentor kami sudah bantu ramai peserta gandakan modal bayar [angka] untuk aktifkan akaun pelaburan anda",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E098",
+      "text": "Modal kecil RM100 boleh memberi pulangan RM800 dalam masa singkat.",
+      "template_text": "modal kecil [angka] boleh memberi pulangan [angka] dalam masa singkat",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 13
+    },
+    {
+      "record_id": "E099",
+      "text": "Modal kecil RM150 boleh memberi pulangan RM800 dalam masa singkat.",
+      "template_text": "modal kecil [angka] boleh memberi pulangan [angka] dalam masa singkat",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 13
+    },
+    {
+      "record_id": "E100",
+      "text": "Modal kecil RM300 boleh memberi pulangan RM800 dalam masa singkat.",
+      "template_text": "modal kecil [angka] boleh memberi pulangan [angka] dalam masa singkat",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E101",
+      "text": "Modal kecil RM50 boleh memberi pulangan RM800 dalam masa singkat.",
+      "template_text": "modal kecil [angka] boleh memberi pulangan [angka] dalam masa singkat",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E102",
+      "text": "Modal RM30 boleh jadi RM1000 dalam 24 jam. Slot VIP tinggal 1 sahaja. Daftar sekarang.",
+      "template_text": "modal [angka] boleh jadi [angka] dalam [angka] jam slot vip tinggal [angka] sahaja daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E103",
+      "text": "Modal RM30 boleh jadi RM10000 dalam 24 jam. Slot VIP tinggal 4 sahaja. Daftar sekarang.",
+      "template_text": "modal [angka] boleh jadi [angka] dalam [angka] jam slot vip tinggal [angka] sahaja daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E104",
+      "text": "Modal RM30 boleh jadi RM1600 dalam 24 jam. Slot VIP tinggal 3 sahaja. Daftar sekarang.",
+      "template_text": "modal [angka] boleh jadi [angka] dalam [angka] jam slot vip tinggal [angka] sahaja daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E105",
+      "text": "Modal RM30 boleh jadi RM16000 dalam 24 jam. Slot VIP tinggal 6 sahaja. Daftar sekarang.",
+      "template_text": "modal [angka] boleh jadi [angka] dalam [angka] jam slot vip tinggal [angka] sahaja daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E106",
+      "text": "Modal RM30 boleh jadi RM2000 dalam 24 jam. Slot VIP tinggal 5 sahaja. Daftar sekarang.",
+      "template_text": "modal [angka] boleh jadi [angka] dalam [angka] jam slot vip tinggal [angka] sahaja daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E107",
+      "text": "Modal RM30 boleh jadi RM20000 dalam 24 jam. Slot VIP tinggal 8 sahaja. Daftar sekarang.",
+      "template_text": "modal [angka] boleh jadi [angka] dalam [angka] jam slot vip tinggal [angka] sahaja daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E108",
+      "text": "Modal RM30 boleh jadi RM3000 dalam 24 jam. Slot VIP tinggal 7 sahaja. Daftar sekarang.",
+      "template_text": "modal [angka] boleh jadi [angka] dalam [angka] jam slot vip tinggal [angka] sahaja daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E109",
+      "text": "Modal RM30 boleh jadi RM4000 dalam 24 jam. Slot VIP tinggal 9 sahaja. Daftar sekarang.",
+      "template_text": "modal [angka] boleh jadi [angka] dalam [angka] jam slot vip tinggal [angka] sahaja daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E110",
+      "text": "Modal RM30 boleh jadi RM6000 dalam 24 jam. Slot VIP tinggal 2 sahaja. Daftar sekarang.",
+      "template_text": "modal [angka] boleh jadi [angka] dalam [angka] jam slot vip tinggal [angka] sahaja daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E111",
+      "text": "Notis akhir: akaun keselamatan anda perlu diaktifkan. Hantar kod OTP sebelum tamat tempoh.",
+      "template_text": "notis akhir akaun keselamatan anda perlu diaktifkan hantar kod otp sebelum tamat tempoh",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E112",
+      "text": "Pakej pelaburan khas dibuka hari ini. Keuntungan harian dijamin dan peserta boleh withdraw setiap malam.",
+      "template_text": "pakej pelaburan khas dibuka hari ini keuntungan harian dijamin dan peserta boleh withdraw setiap malam",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E113",
+      "text": "Pegawai bank mengesan aktiviti luar biasa. Akaun tuan akan disekat dalam 15 minit jika OTP tidak diberikan sekarang.",
+      "template_text": "pegawai bank mengesan aktiviti luar biasa akaun tuan akan disekat dalam [angka] minit jika otp tidak diberikan sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penguncian Mangsa"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E114",
+      "text": "Pegawai keselamatan memerlukan pengesahan segera. Masukkan TAC anda untuk mengelakkan sekatan akaun.",
+      "template_text": "pegawai keselamatan memerlukan pengesahan segera masukkan tac anda untuk mengelakkan sekatan akaun",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E115",
+      "text": "Peluang pelaburan VIP hanya untuk ahli terpilih. Modal kecil RM80, pulangan RM1000 dijamin.",
+      "template_text": "peluang pelaburan vip hanya untuk ahli terpilih modal kecil [angka] pulangan [angka] dijamin",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E116",
+      "text": "Peluang pelaburan VIP hanya untuk ahli terpilih. Modal kecil RM80, pulangan RM10000 dijamin.",
+      "template_text": "peluang pelaburan vip hanya untuk ahli terpilih modal kecil [angka] pulangan [angka] dijamin",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E117",
+      "text": "Peluang pelaburan VIP hanya untuk ahli terpilih. Modal kecil RM80, pulangan RM1600 dijamin.",
+      "template_text": "peluang pelaburan vip hanya untuk ahli terpilih modal kecil [angka] pulangan [angka] dijamin",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E118",
+      "text": "Peluang pelaburan VIP hanya untuk ahli terpilih. Modal kecil RM80, pulangan RM16000 dijamin.",
+      "template_text": "peluang pelaburan vip hanya untuk ahli terpilih modal kecil [angka] pulangan [angka] dijamin",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E119",
+      "text": "Peluang pelaburan VIP hanya untuk ahli terpilih. Modal kecil RM80, pulangan RM2000 dijamin.",
+      "template_text": "peluang pelaburan vip hanya untuk ahli terpilih modal kecil [angka] pulangan [angka] dijamin",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E120",
+      "text": "Peluang pelaburan VIP hanya untuk ahli terpilih. Modal kecil RM80, pulangan RM20000 dijamin.",
+      "template_text": "peluang pelaburan vip hanya untuk ahli terpilih modal kecil [angka] pulangan [angka] dijamin",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E121",
+      "text": "Peluang pelaburan VIP hanya untuk ahli terpilih. Modal kecil RM80, pulangan RM3000 dijamin.",
+      "template_text": "peluang pelaburan vip hanya untuk ahli terpilih modal kecil [angka] pulangan [angka] dijamin",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E122",
+      "text": "Peluang pelaburan VIP hanya untuk ahli terpilih. Modal kecil RM80, pulangan RM4000 dijamin.",
+      "template_text": "peluang pelaburan vip hanya untuk ahli terpilih modal kecil [angka] pulangan [angka] dijamin",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E123",
+      "text": "Peluang pelaburan VIP hanya untuk ahli terpilih. Modal kecil RM80, pulangan RM6000 dijamin.",
+      "template_text": "peluang pelaburan vip hanya untuk ahli terpilih modal kecil [angka] pulangan [angka] dijamin",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 11
+    },
+    {
+      "record_id": "E124",
+      "text": "Peluang pendapatan harian RM2000 dibuka khas untuk peserta terpilih.",
+      "template_text": "peluang pendapatan harian [angka] dibuka khas untuk peserta terpilih",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E125",
+      "text": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM150 dahulu sebelum wang RM1500 dilepaskan.",
+      "template_text": "permohonan pinjaman anda telah diluluskan bayar caj proses [angka] dahulu sebelum wang [angka] dilepaskan",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 16
+    },
+    {
+      "record_id": "E126",
+      "text": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM150 dahulu sebelum wang RM500 dilepaskan.",
+      "template_text": "permohonan pinjaman anda telah diluluskan bayar caj proses [angka] dahulu sebelum wang [angka] dilepaskan",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E127",
+      "text": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM150 dahulu sebelum wang RM5000 dilepaskan.",
+      "template_text": "permohonan pinjaman anda telah diluluskan bayar caj proses [angka] dahulu sebelum wang [angka] dilepaskan",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E128",
+      "text": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM150 sebelum wang RM3000 dilepaskan hari ini.",
+      "template_text": "permohonan pinjaman anda telah diluluskan bayar caj proses [angka] sebelum wang [angka] dilepaskan hari ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 1
+    },
+    {
+      "record_id": "E129",
+      "text": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM30 dahulu sebelum wang RM1500 dilepaskan.",
+      "template_text": "permohonan pinjaman anda telah diluluskan bayar caj proses [angka] dahulu sebelum wang [angka] dilepaskan",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E130",
+      "text": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM30 dahulu sebelum wang RM500 dilepaskan.",
+      "template_text": "permohonan pinjaman anda telah diluluskan bayar caj proses [angka] dahulu sebelum wang [angka] dilepaskan",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 17
+    },
+    {
+      "record_id": "E131",
+      "text": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM30 dahulu sebelum wang RM5000 dilepaskan.",
+      "template_text": "permohonan pinjaman anda telah diluluskan bayar caj proses [angka] dahulu sebelum wang [angka] dilepaskan",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 16
+    },
+    {
+      "record_id": "E132",
+      "text": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM30 sebelum wang RM500 dilepaskan hari ini.",
+      "template_text": "permohonan pinjaman anda telah diluluskan bayar caj proses [angka] sebelum wang [angka] dilepaskan hari ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 1
+    },
+    {
+      "record_id": "E133",
+      "text": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM300 sebelum wang RM5000 dilepaskan hari ini.",
+      "template_text": "permohonan pinjaman anda telah diluluskan bayar caj proses [angka] sebelum wang [angka] dilepaskan hari ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 1
+    },
+    {
+      "record_id": "E134",
+      "text": "Pihak bank telah mengesan aktiviti luar biasa. Sila berikan OTP untuk sahkan identiti anda sekarang. Jika gagal, akaun anda akan dibekukan dalam 12 jam.",
+      "template_text": "pihak bank telah mengesan aktiviti luar biasa sila berikan otp untuk sahkan identiti anda sekarang jika gagal akaun anda akan dibekukan dalam [angka] jam",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 33
+    },
+    {
+      "record_id": "E135",
+      "text": "Pihak bank telah mengesan aktiviti luar biasa. Sila berikan OTP untuk sahkan identiti anda sekarang. Jika gagal, akaun anda akan dibekukan dalam 3 jam.",
+      "template_text": "pihak bank telah mengesan aktiviti luar biasa sila berikan otp untuk sahkan identiti anda sekarang jika gagal akaun anda akan dibekukan dalam [angka] jam",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 34
+    },
+    {
+      "record_id": "E136",
+      "text": "Pihak bank telah mengesan aktiviti luar biasa. Sila berikan OTP untuk sahkan identiti anda sekarang. Jika gagal, akaun anda akan dibekukan dalam 8 jam.",
+      "template_text": "pihak bank telah mengesan aktiviti luar biasa sila berikan otp untuk sahkan identiti anda sekarang jika gagal akaun anda akan dibekukan dalam [angka] jam",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 33
+    },
+    {
+      "record_id": "E137",
+      "text": "Pinjaman tanpa slip gaji tersedia untuk anda. Hantar kad pengenalan dan nombor akaun sekarang untuk kelulusan segera.",
+      "template_text": "pinjaman tanpa slip gaji tersedia untuk anda hantar kad pengenalan dan nombor akaun sekarang untuk kelulusan segera",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pinjaman / Bantuan Palsu"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E138",
+      "text": "Proses ini mesti diselesaikan hari ini sahaja sebelum peluang dibatalkan.",
+      "template_text": "proses ini mesti diselesaikan hari ini sahaja sebelum peluang dibatalkan",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E139",
+      "text": "Puan boleh percaya kepada saya kerana semua pelanggan melalui prosedur yang sama.",
+      "template_text": "puan boleh percaya kepada saya kerana semua pelanggan melalui prosedur yang sama",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kepercayaan dan Keakraban"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E140",
+      "text": "Puan perlu bertanggungjawab atas kelewatan ini dengan membuat bayaran pengesahan.",
+      "template_text": "puan perlu bertanggungjawab atas kelewatan ini dengan membuat bayaran pengesahan",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Malu, Bersalah dan Tanggungjawab Palsu"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E141",
+      "text": "Puan terpilih menerima bantuan khas RM500. Sahkan akaun untuk tuntutan segera.",
+      "template_text": "puan terpilih menerima bantuan khas [angka] sahkan akaun untuk tuntutan segera",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E142",
+      "text": "Puan yang menyebabkan proses ini tergendala, jadi puan perlu selesaikan bayaran sekarang.",
+      "template_text": "puan yang menyebabkan proses ini tergendala jadi puan perlu selesaikan bayaran sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Malu, Bersalah dan Tanggungjawab Palsu"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E143",
+      "text": "Ramai peserta sudah menerima keuntungan harian. Modal RM30 boleh menjadi RM300 minggu ini jika daftar sekarang.",
+      "template_text": "ramai peserta sudah menerima keuntungan harian modal [angka] boleh menjadi [angka] minggu ini jika daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Janji Ganjaran"
+      ],
+      "source_occurrences": 1
+    },
+    {
+      "record_id": "E144",
+      "text": "Ramai peserta sudah menerima keuntungan harian. Modal RM300 boleh menjadi RM3000 minggu ini jika daftar sekarang.",
+      "template_text": "ramai peserta sudah menerima keuntungan harian modal [angka] boleh menjadi [angka] minggu ini jika daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Janji Ganjaran"
+      ],
+      "source_occurrences": 1
+    },
+    {
+      "record_id": "E145",
+      "text": "Ramai peserta sudah menerima keuntungan harian. Modal RM50 boleh menjadi RM500 minggu ini jika daftar sekarang.",
+      "template_text": "ramai peserta sudah menerima keuntungan harian modal [angka] boleh menjadi [angka] minggu ini jika daftar sekarang",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Janji Ganjaran"
+      ],
+      "source_occurrences": 1
+    },
+    {
+      "record_id": "E146",
+      "text": "Saya faham keadaan puan dan akan pastikan bantuan ini cepat selesai.",
+      "template_text": "saya faham keadaan puan dan akan pastikan bantuan ini cepat selesai",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kepercayaan dan Keakraban"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E147",
+      "text": "Saya hanya mahu membantu sebelum perkara ini menjadi lebih sukar.",
+      "template_text": "saya hanya mahu membantu sebelum perkara ini menjadi lebih sukar",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kepercayaan dan Keakraban"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E148",
+      "text": "Saya malu meminta, tetapi saya benar-benar perlukan bantuan segera.",
+      "template_text": "saya malu meminta tetapi saya benar benar perlukan bantuan segera",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Simpati dan Kasihan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E149",
+      "text": "Saya tidak ada pilihan lain dan berharap puan dapat bantu sebelum malam ini.",
+      "template_text": "saya tidak ada pilihan lain dan berharap puan dapat bantu sebelum malam ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Simpati dan Kasihan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E150",
+      "text": "Screenshot keuntungan peserta sudah terbukti. Masuk kumpulan sekarang dan transfer modal sebelum slot penuh.",
+      "template_text": "screenshot keuntungan peserta sudah terbukti masuk kumpulan sekarang dan transfer modal sebelum slot penuh",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Pelaburan Tidak Wujud"
+      ],
+      "source_occurrences": 100
+    },
+    {
+      "record_id": "E151",
+      "text": "Selesaikan bayaran sebelum jam 3 petang untuk mengelakkan proses gagal.",
+      "template_text": "selesaikan bayaran sebelum jam [angka] petang untuk mengelakkan proses gagal",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 13
+    },
+    {
+      "record_id": "E152",
+      "text": "Selesaikan bayaran sebelum jam 5 petang untuk mengelakkan proses gagal.",
+      "template_text": "selesaikan bayaran sebelum jam [angka] petang untuk mengelakkan proses gagal",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 13
+    },
+    {
+      "record_id": "E153",
+      "text": "Selesaikan bayaran sebelum jam 6 petang untuk mengelakkan proses gagal.",
+      "template_text": "selesaikan bayaran sebelum jam [angka] petang untuk mengelakkan proses gagal",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E154",
+      "text": "Selesaikan bayaran sebelum jam 8 petang untuk mengelakkan proses gagal.",
+      "template_text": "selesaikan bayaran sebelum jam [angka] petang untuk mengelakkan proses gagal",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E155",
+      "text": "Sila bertindak sekarang kerana tawaran ini tamat dalam 10 minit.",
+      "template_text": "sila bertindak sekarang kerana tawaran ini tamat dalam [angka] minit",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 13
+    },
+    {
+      "record_id": "E156",
+      "text": "Sila bertindak sekarang kerana tawaran ini tamat dalam 20 minit.",
+      "template_text": "sila bertindak sekarang kerana tawaran ini tamat dalam [angka] minit",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 13
+    },
+    {
+      "record_id": "E157",
+      "text": "Sila bertindak sekarang kerana tawaran ini tamat dalam 30 minit.",
+      "template_text": "sila bertindak sekarang kerana tawaran ini tamat dalam [angka] minit",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E158",
+      "text": "Sila bertindak sekarang kerana tawaran ini tamat dalam 45 minit.",
+      "template_text": "sila bertindak sekarang kerana tawaran ini tamat dalam [angka] minit",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Kecemasan dan Kesegeraan"
+      ],
+      "source_occurrences": 12
+    },
+    {
+      "record_id": "E159",
+      "text": "Syarikat kami mempunyai lesen sah. Pulangan 30% dijamin setiap hari dan pendaftaran hanya dibuka sampai malam ini.",
+      "template_text": "syarikat kami mempunyai lesen sah pulangan [angka] dijamin setiap hari dan pendaftaran hanya dibuka sampai malam ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Janji Ganjaran"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E160",
+      "text": "Tahniah, nombor anda memenangi hadiah tunai. Klik pautan dan masukkan maklumat bank sebelum tuntutan tamat.",
+      "template_text": "tahniah nombor anda memenangi hadiah tunai klik pautan dan masukkan maklumat bank sebelum tuntutan tamat",
+      "binary_label": "risk",
+      "modules": [
+        "ScamMove"
+      ],
+      "source_sheets": [
+        "ScamMove/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Arahan Bayaran/Data"
+      ],
+      "source_occurrences": 3
+    },
+    {
+      "record_id": "E161",
+      "text": "Tahniah, tuan layak mendapat hadiah tunai eksklusif hari ini.",
+      "template_text": "tahniah tuan layak mendapat hadiah tunai eksklusif hari ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Harapan dan Ganjaran"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E162",
+      "text": "Tolong bantu saya sekali ini sahaja kerana saya benar-benar terdesak.",
+      "template_text": "tolong bantu saya sekali ini sahaja kerana saya benar benar terdesak",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sederhana",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Simpati dan Kasihan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E163",
+      "text": "Transaksi mencurigakan dikesan dan akaun tuan berisiko disekat hari ini.",
+      "template_text": "transaksi mencurigakan dikesan dan akaun tuan berisiko disekat hari ini",
+      "binary_label": "risk",
+      "modules": [
+        "ScamEmotion"
+      ],
+      "source_sheets": [
+        "ScamEmotion/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Manipulasi Emosi Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi",
+        "Tinggi"
+      ],
+      "expected_categories": [
+        "Eksploitasi Ketakutan"
+      ],
+      "source_occurrences": 50
+    },
+    {
+      "record_id": "E164",
+      "text": "Unit pengesahan mendapati rekod anda bermasalah. Klik pautan dan masukkan maklumat peribadi untuk pengesahan.",
+      "template_text": "unit pengesahan mendapati rekod anda bermasalah klik pautan dan masukkan maklumat peribadi untuk pengesahan",
+      "binary_label": "risk",
+      "modules": [
+        "ScamSpeech"
+      ],
+      "source_sheets": [
+        "ScamSpeech/DATASET_UTAMA"
+      ],
+      "original_labels": [
+        "Penipuan Siber"
+      ],
+      "expected_levels": [
+        "Sangat Tinggi"
+      ],
+      "expected_categories": [
+        "Penyamaran Autoriti"
+      ],
+      "source_occurrences": 100
+    }
+  ],
+  "system_tests": [
+    {
+      "test_id": "ScamSpeech-01",
+      "module": "ScamSpeech",
+      "text": "Pihak bank telah mengesan aktiviti luar biasa. Sila berikan OTP untuk sahkan identiti anda sekarang. Jika gagal, akaun anda akan dibekukan dalam 24 jam.",
+      "expected_level": "Sangat Tinggi",
+      "expected_category": "Penyamaran Autoriti"
+    },
+    {
+      "test_id": "ScamSpeech-02",
+      "module": "ScamSpeech",
+      "text": "Kerja mudah dari rumah. Hanya tekan like dan follow. Bayaran harian RM300 hingga RM500. Daftar sekarang, bayar yuran pendaftaran RM50 untuk bermula.",
+      "expected_level": "Tinggi",
+      "expected_category": "Penipuan Kerja Mudah"
+    },
+    {
+      "test_id": "ScamSpeech-03",
+      "module": "ScamSpeech",
+      "text": "Nikmati promosi istimewa sehingga 20% untuk pembayaran bil melalui aplikasi rasmi. Tertakluk pada terma dan syarat. Maklumat lanjut di laman rasmi kami.",
+      "expected_level": "Rendah",
+      "expected_category": "Promosi / Transaksi Sah"
+    },
+    {
+      "test_id": "ScamSpeech-04",
+      "module": "ScamSpeech",
+      "text": "Sila buat pembayaran seperti invois yang dilampirkan. Pembayaran ke akaun syarikat berdaftar. Sebarang pertanyaan, hubungi emel rasmi.",
+      "expected_level": "Rendah",
+      "expected_category": "Promosi / Transaksi Sah"
+    },
+    {
+      "test_id": "ScamEmotion-01",
+      "module": "ScamEmotion",
+      "text": "Akaun puan akan disekat dalam masa 30 minit jika OTP tidak disahkan sekarang.",
+      "expected_level": "Sangat Tinggi",
+      "expected_category": "E1 + E2"
+    },
+    {
+      "test_id": "ScamEmotion-02",
+      "module": "ScamEmotion",
+      "text": "Tuan terpilih menerima hadiah tunai eksklusif hari ini sahaja.",
+      "expected_level": "Tinggi",
+      "expected_category": "E3 + E2"
+    },
+    {
+      "test_id": "ScamEmotion-03",
+      "module": "ScamEmotion",
+      "text": "Jangan risau, saya akan bantu puan selesaikan perkara ini.",
+      "expected_level": "Sederhana",
+      "expected_category": "E4"
+    },
+    {
+      "test_id": "ScamEmotion-04",
+      "module": "ScamEmotion",
+      "text": "Pihak bank mengingatkan pelanggan supaya tidak berkongsi OTP dengan sesiapa.",
+      "expected_level": "Rendah",
+      "expected_category": "KAWALAN"
+    },
+    {
+      "test_id": "ScamMove-01",
+      "module": "ScamMove",
+      "text": "Pegawai bank mengesan aktiviti luar biasa. Akaun akan disekat dalam 15 minit jika OTP tidak diberikan sekarang.",
+      "expected_level": "Sangat Tinggi",
+      "expected_category": "M1>M4>M5>M6"
+    },
+    {
+      "test_id": "ScamMove-02",
+      "module": "ScamMove",
+      "text": "Promosi pembayaran bil melalui aplikasi rasmi tertakluk pada terma dan syarat.",
+      "expected_level": "Rendah",
+      "expected_category": "K1>K3"
+    },
+    {
+      "test_id": "ScamMove-03",
+      "module": "ScamMove",
+      "text": "Peluang pelaburan dijamin untung. Slot terakhir malam ini. Bayar deposit sekarang.",
+      "expected_level": "Sangat Tinggi",
+      "expected_category": "M2>M3>M4>M5"
+    },
+    {
+      "test_id": "ScamMove-04",
+      "module": "ScamMove",
+      "text": "Jika ragu-ragu, jangan buat bayaran dan hubungi talian rasmi.",
+      "expected_level": "Rendah",
+      "expected_category": "K1>K2>K4"
+    }
+  ]
+}

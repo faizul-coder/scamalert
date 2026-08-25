@@ -1,8 +1,22 @@
+import hashlib
 import html
-import re
-from typing import Dict, List, Tuple
 
 import streamlit as st
+
+from scamalert_core import (
+    SCAMMOVE_CONTROL_EXAMPLES,
+    SCAMMOVE_SCAM_EXAMPLES,
+    analyse_text,
+    get_reference_status,
+)
+from scamalert_ocr import (
+    OCRInputError,
+    OCRProcessingError,
+    OCRUnavailableError,
+    extract_text_from_image,
+    get_ocr_status,
+)
+
 
 st.set_page_config(page_title="ScamAlert", page_icon="🛡️", layout="wide")
 
@@ -10,7 +24,7 @@ st.markdown(
     """
 <style>
 :root {
-    --bg: #F8F7F4;
+    --bg: #F7F7F5;
     --card: #FFFFFF;
     --ink: #111827;
     --muted: #4B5563;
@@ -18,711 +32,429 @@ st.markdown(
     --red: #B91C1C;
     --red-dark: #7F1D1D;
     --red-soft: #FEE2E2;
-    --yellow: #CA8A04;
-    --yellow-soft: #FEF3C7;
+    --amber: #B45309;
+    --amber-soft: #FEF3C7;
     --green: #15803D;
     --green-soft: #DCFCE7;
+    --blue: #1D4ED8;
     --blue-soft: #EFF6FF;
-    --blue-line: #BFDBFE;
-    --blue-text: #1D4ED8;
 }
-html, body, [class*="css"] { font-family: "Inter", sans-serif; }
+html, body, [class*="css"] { font-family: "Inter", "Segoe UI", sans-serif; }
 .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-    background-color: var(--bg) !important;
-    background-image: none !important;
+    background: var(--bg) !important;
 }
-.block-container {
-    max-width: 1080px;
-    padding-top: 1.2rem;
-    padding-bottom: 3rem;
-    position: relative;
-    z-index: 1;
-}
+.block-container { max-width: 1120px; padding-top: 1.2rem; padding-bottom: 3rem; }
 h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
-.hero-card, .panel-card {
-    background: transparent;
-    border: none;
-    border-top: 1px solid var(--line);
-    border-radius: 0;
-    padding: 1.25rem 0 1.1rem 0;
-    box-shadow: none;
+.hero {
+    border-top: 4px solid var(--red);
+    border-bottom: 1px solid var(--line);
+    padding: 1.35rem 0 1.25rem 0;
+    margin-bottom: 1rem;
 }
-.hero-card { border-top: 3px solid var(--red); margin-bottom: 1.1rem; }
-.title-main {
-    font-size: 2.9rem;
-    font-weight: 850;
-    margin: 0 0 0.65rem 0;
-    line-height: 1.08;
-    color: var(--ink);
-}
-.subtitle-main {
-    font-size: 1.12rem;
-    line-height: 1.65;
-    color: var(--muted);
-    margin: 0;
-}
-.helper-text { color: var(--muted); font-size: 1rem; margin-top: -0.3rem; margin-bottom: 0.8rem; }
-.result-card {
-    background: #FFFFFF;
-    border: 1px solid #EEF0F3;
+.eyebrow { color: var(--red); font-size: .82rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+.title { font-size: 3rem; font-weight: 900; line-height: 1.05; margin: .2rem 0 .55rem 0; }
+.subtitle { max-width: 900px; color: var(--muted); font-size: 1.08rem; line-height: 1.6; }
+.status-good, .status-bad {
     border-radius: 14px;
-    padding: 1rem;
+    padding: .95rem 1rem;
+    margin: .8rem 0 1rem 0;
+    line-height: 1.5;
+}
+.status-good { background: var(--green-soft); border: 1px solid #BBF7D0; color: #14532D; }
+.status-bad { background: var(--red-soft); border: 1px solid #FECACA; color: var(--red-dark); }
+.panel { border-top: 1px solid var(--line); padding: 1.2rem 0 .8rem 0; margin-top: .5rem; }
+.helper { color: var(--muted); line-height: 1.55; margin-top: -.3rem; }
+.card {
     height: 100%;
-    box-shadow: none;
-}
-.module-card {
-    background: #FFFFFF;
-    border: 1px solid #EEF0F3;
-    border-radius: 16px;
-    padding: 1.05rem;
-    height: 100%;
-}
-.module-title { font-size: 1.05rem; font-weight: 850; margin-bottom: 0.2rem; }
-.module-caption { font-size: 0.9rem; color: var(--muted); line-height: 1.45; margin-bottom: 0.8rem; }
-.result-label { font-size: 0.9rem; color: var(--muted); font-weight: 750; margin-bottom: 0.35rem; }
-.result-value { font-size: 1.95rem; font-weight: 850; color: var(--ink); line-height: 1.15; }
-.result-note { font-size: 0.92rem; color: var(--muted); margin-top: 0.45rem; line-height: 1.45; }
-.badge {
-    display: inline-block;
-    padding: 0.38rem 0.78rem;
-    border-radius: 999px;
-    font-size: 0.92rem;
-    font-weight: 750;
-    border: 1px solid transparent;
-    margin-top: 0.35rem;
-}
-.badge-low { background: var(--green-soft); color: var(--green); border-color: #BBF7D0; }
-.badge-medium { background: var(--yellow-soft); color: var(--yellow); border-color: #FDE68A; }
-.badge-high { background: var(--red-soft); color: var(--red); border-color: #FECACA; }
-.badge-vhigh { background: #FDE8E8; color: var(--red-dark); border-color: #FCA5A5; }
-.tag-wrap { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 0.55rem; }
-.tag {
-    display: inline-block;
-    padding: 0.5rem 0.8rem;
-    border-radius: 12px;
-    font-size: 0.95rem;
-    font-weight: 650;
-    border: 1px solid var(--line);
-    color: var(--ink);
-}
-.tag-red { background: var(--red-soft); border-color: #FECACA; }
-.tag-yellow { background: var(--yellow-soft); border-color: #FDE68A; }
-.tag-green { background: var(--green-soft); border-color: #BBF7D0; }
-.tag-blue { background: var(--blue-soft); border-color: var(--blue-line); color: var(--blue-text); }
-.tag-neutral { background: #F3F4F6; border-color: #E5E7EB; }
-.stTextArea textarea {
-    background: #FFFFFF !important;
-    color: var(--ink) !important;
-    border: 1px solid #E5E7EB !important;
-    border-radius: 12px !important;
-    min-height: 180px !important;
-    font-size: 1rem !important;
-}
-.stTextArea textarea::placeholder { color: #9CA3AF !important; }
-.stTextArea textarea:focus {
-    border: 1px solid var(--red) !important;
-    box-shadow: 0 0 0 1px rgba(185, 28, 28, 0.08) !important;
-    outline: none !important;
-}
-.stButton > button {
-    background: var(--red) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 14px !important;
-    padding: 0.7rem 1.3rem !important;
-    font-weight: 750 !important;
-    font-size: 1rem !important;
-}
-.stButton > button:hover { background: #991B1B !important; color: white !important; }
-.stButton > button * { color: #FFFFFF !important; }
-.subtle-note {
-    background: #FFFFFF;
-    border: 1px solid #E5E7EB;
-    border-radius: 14px;
-    padding: 1rem 1.1rem;
-    color: var(--muted);
-    line-height: 1.6;
-    box-shadow: none;
-}
-.meter-wrap { margin-top: 0.2rem; }
-.meter-score {
-    font-size: 1.85rem;
-    font-weight: 850;
-    color: var(--ink);
-    line-height: 1.1;
-    margin-bottom: 0.55rem;
-}
-.meter-zones {
-    position: relative;
-    width: 100%;
-    height: 10px;
-    border-radius: 999px;
-    background: linear-gradient(90deg,
-        #15803D 0%, #15803D 24%,
-        #CA8A04 24%, #CA8A04 49%,
-        #DC2626 49%, #DC2626 74%,
-        #7F1D1D 74%, #7F1D1D 100%);
-    opacity: 0.92;
-}
-.meter-pointer {
-    position: absolute;
-    top: -5px;
-    width: 7px;
-    height: 20px;
-    border-radius: 999px;
-    background: #111827;
-    box-shadow: 0 0 0 2px #FFFFFF;
-    transform: translateX(-50%);
-}
-.meter-scale {
-    display: flex;
-    justify-content: space-between;
-    color: var(--muted);
-    font-size: 0.72rem;
-    margin-top: 0.35rem;
-}
-.pathway {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-top: 0.7rem;
-}
-.move-step {
-    background: #FFFFFF;
-    border: 1px solid #FECACA;
-    color: var(--red-dark);
-    border-radius: 14px;
-    padding: 0.55rem 0.75rem;
-    font-size: 0.92rem;
-    font-weight: 750;
-}
-.move-arrow {
-    color: var(--muted);
-    font-weight: 900;
-}
-.move-box {
-    border-left: 4px solid var(--red);
-    background: #FFFFFF;
-    border-radius: 12px;
-    padding: 0.85rem 0.95rem;
-    margin: 0.65rem 0;
-    border-top: 1px solid #EEF0F3;
-    border-right: 1px solid #EEF0F3;
-    border-bottom: 1px solid #EEF0F3;
-}
-.move-name { font-weight: 850; margin-bottom: 0.25rem; }
-.move-function { color: var(--muted); font-size: 0.93rem; line-height: 1.45; }
-.small-muted { color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
-.evidence-text {
-    background: #FFFFFF;
-    border: 1px solid #EEF0F3;
-    border-radius: 14px;
+    background: var(--card);
+    border: 1px solid #EAECF0;
+    border-radius: 15px;
     padding: 1rem;
-    line-height: 1.6;
 }
-
-/* Kotak muat naik gambar: putih dengan outline hitam */
-[data-testid="stFileUploader"] {
-    margin-top: 0.25rem !important;
-    margin-bottom: 1rem !important;
-}
-[data-testid="stFileUploader"] section,
-[data-testid="stFileUploaderDropzone"] {
-    background: #FFFFFF !important;
-    background-color: #FFFFFF !important;
-    border: 1.5px solid #111827 !important;
-    border-radius: 12px !important;
-    padding: 1rem !important;
-    box-shadow: none !important;
-}
-[data-testid="stFileUploaderDropzone"] > div,
-[data-testid="stFileUploaderDropzone"] small,
-[data-testid="stFileUploaderDropzone"] span,
-[data-testid="stFileUploaderDropzone"] p {
-    background: transparent !important;
-    color: #111827 !important;
-}
-[data-testid="stFileUploaderDropzone"] button {
-    min-width: 245px !important;
-    height: 46px !important;
-    background: #FFFFFF !important;
-    background-color: #FFFFFF !important;
-    border: 1px solid #111827 !important;
-    border-radius: 10px !important;
-    color: transparent !important;
-    font-size: 0 !important;
-    box-shadow: none !important;
-    position: relative !important;
-}
-[data-testid="stFileUploaderDropzone"] button * {
-    display: none !important;
-}
-[data-testid="stFileUploaderDropzone"] button::after {
-    content: "Muat naik gambar di sini";
-    color: #111827 !important;
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 400;
-    font-size: 0.95rem;
-}
-
+.label { color: var(--muted); font-size: .84rem; font-weight: 800; text-transform: uppercase; letter-spacing: .03em; }
+.value { font-size: 1.8rem; font-weight: 900; line-height: 1.15; margin-top: .35rem; }
+.note { color: var(--muted); font-size: .9rem; line-height: 1.45; margin-top: .45rem; }
+.badge { display: inline-block; border-radius: 999px; padding: .4rem .75rem; font-weight: 800; margin-top: .45rem; }
+.low { color: var(--green); background: var(--green-soft); border: 1px solid #BBF7D0; }
+.medium { color: var(--amber); background: var(--amber-soft); border: 1px solid #FDE68A; }
+.high { color: var(--red); background: var(--red-soft); border: 1px solid #FECACA; }
+.very-high { color: var(--red-dark); background: #FDE8E8; border: 1px solid #FCA5A5; }
+.meter { margin-top: .65rem; }
+.meter-score { font-size: 1.75rem; font-weight: 900; margin-bottom: .45rem; }
+.meter-bar { position: relative; height: 10px; border-radius: 99px; background: linear-gradient(90deg,#15803D 0 25%,#CA8A04 25% 50%,#DC2626 50% 75%,#7F1D1D 75% 100%); }
+.meter-pointer { position:absolute; top:-5px; width:7px; height:20px; border-radius:99px; background:#111827; box-shadow:0 0 0 2px white; transform:translateX(-50%); }
+.meter-scale { display:flex; justify-content:space-between; color:var(--muted); font-size:.7rem; margin-top:.3rem; }
+.tag-wrap { display:flex; flex-wrap:wrap; gap:8px; margin:.4rem 0 .8rem 0; }
+.tag { padding:.42rem .7rem; border-radius:10px; font-size:.9rem; font-weight:650; border:1px solid var(--line); }
+.tag-red { background:var(--red-soft); border-color:#FECACA; }
+.tag-amber { background:var(--amber-soft); border-color:#FDE68A; }
+.tag-blue { background:var(--blue-soft); border-color:#BFDBFE; color:var(--blue); }
+.tag-green { background:var(--green-soft); border-color:#BBF7D0; color:var(--green); }
+.path { display:flex; flex-wrap:wrap; align-items:center; gap:7px; margin:.65rem 0; }
+.move { background:white; border:1px solid #FECACA; color:var(--red-dark); border-radius:12px; padding:.48rem .7rem; font-weight:750; }
+.arrow { color:var(--muted); font-weight:900; }
+.callout { border-left:4px solid var(--red); background:white; border-radius:10px; padding:.8rem .9rem; margin:.55rem 0; border-top:1px solid #EEF0F3; border-right:1px solid #EEF0F3; border-bottom:1px solid #EEF0F3; }
+.match { background:white; border:1px solid #E5E7EB; border-radius:13px; padding:.85rem; margin:.55rem 0; }
+.match-risk { border-left:4px solid var(--red); }
+.match-control { border-left:4px solid var(--green); }
+.match-head { font-weight:850; }
+.match-text { color:#1F2937; line-height:1.5; margin-top:.35rem; }
+.match-meta { color:var(--muted); font-size:.82rem; margin-top:.4rem; }
+.disclaimer { background:#FCFCFD; border-top:1px solid var(--line); padding:1rem 0; color:var(--muted); line-height:1.55; }
+.stTextArea textarea { background:white !important; color:var(--ink) !important; border:1px solid #D1D5DB !important; border-radius:12px !important; min-height:180px !important; }
+.stButton > button { background:var(--red) !important; color:white !important; border:none !important; border-radius:12px !important; font-weight:800 !important; padding:.7rem 1.3rem !important; }
+.stButton > button:hover { background:#991B1B !important; }
+[data-testid="stFileUploaderDropzone"] { background:white !important; border:1px dashed #9CA3AF !important; border-radius:12px !important; }
+@media (max-width: 700px) { .title { font-size:2.3rem; } .block-container { padding-left:1rem; padding-right:1rem; } }
 </style>
 """,
     unsafe_allow_html=True,
 )
 
-# -----------------------------------------------------------------------------
-# Dataset prototaip berbentuk pola: dibina daripada data ScamSpeech, ScamEmotion
-# dan tambahan data ScamMove supaya aplikasi mempunyai tiga enjin analisis.
-# -----------------------------------------------------------------------------
-DIRECT_PATTERNS: Dict[str, Tuple[int, str]] = {
-    r"berikan otp|masukkan otp|kongsi otp|hantar otp|kod otp": (35, "permintaan OTP"),
-    r"kata laluan|password|pin keselamatan": (35, "permintaan kata laluan/PIN"),
-    r"bayar caj proses|caj proses|bayar caj pengesahan|caj pengesahan": (30, "bayar caj proses/pengesahan"),
-    r"bayar yuran|yuran pendaftaran|bayaran deposit|deposit rm": (28, "bayaran pendahuluan"),
-    r"pindahkan wang|transfer wang|transfer rm|buat bayaran|bayar rm": (35, "arahan pindahan wang"),
-    r"daftar sekarang|aktifkan akaun|sahkan akaun": (20, "arahan segera mendaftar/mengesahkan"),
-    r"klik pautan|tekan pautan|buka pautan|link di bawah": (22, "arahan menekan pautan"),
-    r"hantar kad pengenalan|nombor akaun|maklumat bank": (35, "permintaan data peribadi/kewangan"),
-    r"akaun.*dibekukan|akaun.*disekat|akaun.*ditutup": (35, "ancaman akaun dibekukan/disekat"),
-}
-
-INDIRECT_PATTERNS: Dict[str, Tuple[int, str]] = {
-    r"jika gagal|kalau gagal|sekiranya gagal|jika tidak": (18, "ancaman tersirat"),
-    r"segera|sekarang|serta-merta|akhir hari ini": (12, "desakan masa"),
-    r"24 jam|15 minit|30 minit|hari ini|sebelum jam|pukul \d+": (17, "had masa"),
-    r"slot terhad|tinggal \d+|kuota terhad|tempat terhad": (18, "kelangkaan palsu"),
-    r"risiko rendah|jamin|dijamin|tanpa risiko": (18, "jaminan tidak realistik"),
-    r"pulangan tinggi|untung besar|modal.*jadi|wang.*dilepaskan|keuntungan harian": (22, "janji keuntungan"),
-    r"terpilih|layak menerima|permohonan.*diluluskan|peluang khas": (15, "peluang eksklusif"),
-}
-
-EMOTION_PATTERNS: Dict[str, List[str]] = {
-    "Ketakutan": [
-        r"akaun.*dibekukan", r"akaun.*disekat", r"disenarai hitam", r"aktiviti luar biasa",
-        r"tindakan undang-undang", r"polis", r"pihak berkuasa", r"kehilangan akses",
-    ],
-    "Kecemasan": [r"segera", r"sekarang", r"24 jam", r"15 minit", r"30 minit", r"hari ini", r"sebelum jam"],
-    "Harapan keuntungan": [r"untung", r"ganjaran", r"bonus", r"pulangan", r"diluluskan", r"hadiah", r"wang.*dilepaskan"],
-    "Kepercayaan palsu": [r"bank", r"pegawai", r"rasmi", r"syarikat berdaftar", r"lesen", r"invois", r"suruhanjaya"],
-    "Simpati": [r"bantu", r"sumbangan", r"anak sakit", r"kesusahan", r"derma", r"kecemasan keluarga"],
-    "Rasa bersalah": [r"jika anda tidak", r"anda punca", r"tolong saya", r"jangan kecewakan", r"harap kerjasama"],
-}
-
-CONTROL_PATTERNS: Dict[str, str] = {
-    r"melalui aplikasi rasmi|aplikasi rasmi": "saluran rasmi",
-    r"tertakluk pada terma dan syarat|terma dan syarat": "terma dan syarat",
-    r"jangan kongsi otp|tidak berkongsi otp|jangan berkongsi otp": "peringatan keselamatan OTP",
-    r"jangan kongsi kata laluan|jangan berkongsi kata laluan": "peringatan keselamatan kata laluan",
-    r"hubungi emel rasmi|emel rasmi|alamat emel rasmi": "emel rasmi",
-    r"akaun syarikat berdaftar": "akaun syarikat berdaftar",
-    r"invois rasmi|invois yang dilampirkan|resit rasmi": "invois/resit rasmi",
-    r"saluran rasmi|laman rasmi|portal rasmi|kaunter rasmi": "saluran rasmi",
-    r"semak dahulu|membuat semakan|semakan melalui": "semakan rasmi",
-}
-
-SCAMMOVE_PATTERNS = [
-    {
-        "code": "M1",
-        "name": "Bina Kepercayaan",
-        "function": "Mewujudkan kredibiliti awal melalui penyamaran autoriti, bukti sosial atau imej institusi.",
-        "patterns": [r"bank", r"pegawai", r"wakil", r"syarikat berdaftar", r"lesen", r"suruhanjaya", r"testimoni", r"ramai pelanggan"],
-        "weight": 16,
-    },
-    {
-        "code": "M2",
-        "name": "Tawar Peluang",
-        "function": "Menarik minat pengguna dengan tawaran bantuan, pinjaman, kerja, hadiah atau pelaburan khas.",
-        "patterns": [r"terpilih", r"layak", r"peluang", r"bantuan", r"pinjaman", r"pelaburan", r"program khas", r"hadiah"],
-        "weight": 16,
-    },
-    {
-        "code": "M3",
-        "name": "Janji Ganjaran",
-        "function": "Membina harapan melalui janji pulangan, bonus, keuntungan atau wang yang akan dilepaskan.",
-        "patterns": [r"pulangan", r"untung", r"bonus", r"modal.*jadi", r"dijamin", r"tanpa risiko", r"wang.*dilepaskan", r"keuntungan"],
-        "weight": 20,
-    },
-    {
-        "code": "M4",
-        "name": "Tekanan Masa",
-        "function": "Mendesak pengguna supaya bertindak cepat tanpa semakan lanjut.",
-        "patterns": [r"segera", r"sekarang", r"hari ini", r"slot terhad", r"tinggal \d+", r"sebelum jam", r"24 jam", r"15 minit", r"30 minit"],
-        "weight": 18,
-    },
-    {
-        "code": "M5",
-        "name": "Arahan Bayaran/Data",
-        "function": "Menggerakkan pengguna untuk membayar, menekan pautan atau menyerahkan data sensitif.",
-        "patterns": [r"\bbayar\b", r"buat bayaran", r"bayaran deposit", r"bayaran pengesahan", r"caj proses", r"caj pengesahan", r"deposit", r"transfer", r"pindahan", r"otp", r"kata laluan", r"kad pengenalan", r"nombor akaun", r"klik pautan", r"tekan pautan"],
-        "weight": 26,
-    },
-    {
-        "code": "M6",
-        "name": "Penguncian Mangsa",
-        "function": "Menghalang mangsa daripada berundur melalui ancaman, kerahsiaan atau risiko kehilangan peluang.",
-        "patterns": [r"jangan batalkan", r"jangan beritahu", r"rahsia", r"sulit", r"akaun.*dibekukan", r"akaun.*disekat", r"disenarai hitam", r"tindakan undang-undang", r"terlepas peluang"],
-        "weight": 24,
-    },
-]
-
-SCAMMOVE_CONTROL_PATTERNS: Dict[str, str] = {
-    r"semak.*saluran rasmi|saluran rasmi|laman rasmi|aplikasi rasmi|portal rasmi": "Kawalan: semakan melalui saluran rasmi",
-    r"jangan.*otp|tidak.*otp|jangan.*kata laluan|tidak.*kata laluan": "Kawalan: peringatan keselamatan data",
-    r"terma dan syarat|invois rasmi|resit rasmi|emel rasmi|kaunter rasmi": "Kawalan: bukti transaksi sah",
-    r"tidak perlu bayaran pendahuluan|tiada bayaran pendahuluan|tiada caj proses": "Kawalan: tiada desakan bayaran awal",
-}
-
-SCAMMOVE_SCAM_EXAMPLES = [
-    "Bina Kepercayaan → Tawar Peluang → Janji Ganjaran → Tekanan Masa → Arahan Bayaran",
-    "Penyamaran Autoriti → Ancaman Akaun → Tekanan Masa → Permintaan OTP",
-    "Tawar Bantuan → Kelulusan Palsu → Caj Proses → Penguncian Mangsa",
-]
-
-SCAMMOVE_CONTROL_EXAMPLES = [
-    "Maklumat Rasmi → Terma dan Syarat → Saluran Semakan",
-    "Peringatan Keselamatan → Jangan Kongsi OTP → Hubungi Saluran Rasmi",
-    "Invois Rasmi → Akaun Syarikat Berdaftar → Resit Melalui Emel Rasmi",
-]
-
-
-def risk_level(score: int) -> str:
-    if score <= 24:
-        return "Rendah"
-    if score <= 49:
-        return "Sederhana"
-    if score <= 74:
-        return "Tinggi"
-    return "Sangat Tinggi"
-
 
 def badge_class(level: str) -> str:
     return {
-        "Rendah": "badge-low",
-        "Sederhana": "badge-medium",
-        "Tinggi": "badge-high",
-        "Sangat Tinggi": "badge-vhigh",
-    }.get(level, "badge-medium")
+        "Rendah": "low",
+        "Sederhana": "medium",
+        "Tinggi": "high",
+        "Sangat Tinggi": "very-high",
+    }.get(level, "medium")
 
 
-def risk_meter(score: int) -> str:
+def meter(score: int) -> str:
     score = max(0, min(100, int(score)))
     return f"""
-    <div class="meter-wrap">
-        <div class="meter-score">{score}/100</div>
-        <div class="meter-zones"><span class="meter-pointer" style="left:{score}%;"></span></div>
-        <div class="meter-scale"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+    <div class="meter">
+      <div class="meter-score">{score}/100</div>
+      <div class="meter-bar"><span class="meter-pointer" style="left:{score}%;"></span></div>
+      <div class="meter-scale"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
     </div>
     """
 
 
-def unique(items: List[str]) -> List[str]:
-    return list(dict.fromkeys(items))
+def tags(items, css_class: str) -> str:
+    values = items or ["Tiada petanda yang ketara"]
+    return '<div class="tag-wrap">' + "".join(
+        f'<span class="tag {css_class}">{html.escape(str(item))}</span>' for item in values
+    ) + "</div>"
 
 
-def find_matches(text: str, pattern_dict: Dict[str, object]):
-    labels, score = [], 0
-    for pattern, payload in pattern_dict.items():
-        if re.search(pattern, text, flags=re.I):
-            if isinstance(payload, tuple):
-                weight, label = payload
-                score += weight
-                labels.append(label)
-            else:
-                labels.append(str(payload))
-    return score, unique(labels)
-
-
-def analyse_emotions(text: str):
-    emotions, score = [], 0
-    for emotion, patterns in EMOTION_PATTERNS.items():
-        if any(re.search(p, text, flags=re.I) for p in patterns):
-            emotions.append(emotion)
-            score += 18
-    if "Ketakutan" in emotions and "Kecemasan" in emotions:
-        score += 12
-    if "Harapan keuntungan" in emotions and "Kepercayaan palsu" in emotions:
-        score += 8
-    return min(score, 100), emotions
-
-
-def analyse_moves(text: str):
-    detected = []
-    move_score = 0
-    for move in SCAMMOVE_PATTERNS:
-        matched_patterns = [p for p in move["patterns"] if re.search(p, text, flags=re.I)]
-        if matched_patterns:
-            detected.append(move)
-            move_score += int(move["weight"])
-
-    control_score, control_labels = find_matches(text, {k: (10, v) for k, v in SCAMMOVE_CONTROL_PATTERNS.items()})
-
-    move_codes = [m["code"] for m in detected]
-    if len(detected) >= 4:
-        move_score += 16
-    if "M4" in move_codes and "M5" in move_codes:
-        move_score += 18
-    if all(code in move_codes for code in ["M1", "M3", "M4", "M5"]):
-        move_score += 18
-    if "M5" in move_codes and "M6" in move_codes:
-        move_score += 12
-
-    move_score = max(0, min(100, move_score - control_score))
-    return move_score, detected, control_labels
-
-
-def match_phrase(score: int, has_control: bool) -> str:
-    if score >= 60:
-        return "Lebih hampir kepada data penipuan siber"
-    if has_control and score <= 40:
-        return "Lebih hampir kepada data kawalan sepadan"
-    return "Memerlukan semakan lanjut"
-
-
-def classify_threat(text: str, result: dict) -> str:
-    if re.search(r"otp|kata laluan|password|pin|akaun.*dibekukan|akaun.*disekat", text, flags=re.I):
-        return "Penyamaran autoriti / pengambilalihan akaun"
-    if re.search(r"pelaburan|pulangan|untung|modal.*jadi|keuntungan", text, flags=re.I):
-        return "Penipuan pelaburan / pulangan palsu"
-    if re.search(r"pinjaman|bantuan|dana|diluluskan|caj proses|caj pengesahan", text, flags=re.I):
-        return "Penipuan pinjaman atau bantuan palsu"
-    if re.search(r"kerja|jawatan|gaji|komisen|tugasan", text, flags=re.I):
-        return "Penipuan kerja / komisen palsu"
-    if result["overall_score"] >= 60:
-        return "Mesej berisiko tinggi dengan unsur manipulasi"
-    return "Tiada kategori ancaman yang jelas"
-
-
-def control_message(category: str) -> str:
-    if "pelaburan" in category.lower():
-        return "Mesej pelaburan yang sah biasanya menyediakan maklumat syarikat, risiko, dokumen rasmi dan saluran semakan tanpa menjanjikan keuntungan segera."
-    if "pinjaman" in category.lower() or "bantuan" in category.lower():
-        return "Mesej bantuan atau pinjaman yang sah tidak mendesak bayaran caj proses sebelum wang dilepaskan dan biasanya merujuk portal rasmi."
-    if "akaun" in category.lower() or "autoriti" in category.lower():
-        return "Amaran keselamatan yang sah lazimnya mengingatkan pengguna supaya tidak berkongsi OTP, kata laluan atau PIN dengan sesiapa."
-    return "Mesej yang sah biasanya memberi ruang semakan, menyatakan saluran rasmi dan tidak memaksa bayaran atau tindakan segera."
-
-
-def move_pathway_html(moves: List[dict]) -> str:
+def move_path(moves) -> str:
     if not moves:
-        return '<div class="small-muted">Tiada urutan gerakan scam yang ketara.</div>'
-    chunks = []
-    for i, move in enumerate(moves):
-        if i > 0:
-            chunks.append('<span class="move-arrow">→</span>')
-        chunks.append(f'<span class="move-step">{html.escape(move["name"])}</span>')
-    return '<div class="pathway">' + ''.join(chunks) + '</div>'
+        return '<div class="note">Tiada urutan gerakan berisiko yang ketara.</div>'
+    pieces = []
+    for index, move in enumerate(moves):
+        if index:
+            pieces.append('<span class="arrow">→</span>')
+        pieces.append(f'<span class="move">{html.escape(move["name"])}</span>')
+    return '<div class="path">' + "".join(pieces) + "</div>"
 
 
-def tag_html(items: List[str], cls: str) -> str:
-    safe_items = [html.escape(x) for x in (items or ["Tiada petanda yang ketara"])]
-    return '<div class="tag-wrap">' + ''.join([f'<span class="tag {cls}">{t}</span>' for t in safe_items]) + '</div>'
+def match_card(match: dict, kind: str) -> str:
+    similarity = float(match.get("similarity", 0.0)) * 100
+    title = "Rujukan risiko" if kind == "risk" else "Rujukan kawalan"
+    category = match.get("category") or "Kategori tidak dinyatakan"
+    module = match.get("module") or "Modul tidak dinyatakan"
+    return f"""
+    <div class="match match-{'risk' if kind == 'risk' else 'control'}">
+      <div class="match-head">{title} · persamaan teks {similarity:.1f}%</div>
+      <div class="match-text">“{html.escape(str(match.get('text', '')))}”</div>
+      <div class="match-meta">ID {html.escape(str(match.get('record_id', '')))} · {html.escape(module)} · {html.escape(category)}</div>
+    </div>
+    """
 
 
-def analyse_text(message: str):
-    text = message.strip().lower()
-    direct_score, direct_labels = find_matches(text, DIRECT_PATTERNS)
-    indirect_score, indirect_labels = find_matches(text, INDIRECT_PATTERNS)
-    control_score, control_labels = find_matches(text, {k: (8, v) for k, v in CONTROL_PATTERNS.items()})
-    emotion_score, emotions = analyse_emotions(text)
-    move_score, moves, move_control_labels = analyse_moves(text)
+DEMO_EXAMPLES = {
+    "Masukkan mesej sendiri": "",
+    "Penyamaran bank + OTP": "Pihak bank mengesan aktiviti luar biasa. Berikan OTP sekarang. Jika gagal, akaun anda akan dibekukan dalam 15 minit.",
+    "Pinjaman + caj proses": "Permohonan pinjaman anda telah diluluskan. Bayar caj proses RM30 dahulu sebelum wang RM500 dilepaskan hari ini.",
+    "Laporan mangsa + caj berulang": "Saya sudah bayar dua kali, tetapi mereka masih minta deposit tambahan untuk keluarkan duit hari ini.",
+    "Peringatan keselamatan sebenar": "Pihak bank tidak pernah meminta OTP. Jangan kongsi OTP, PIN atau kata laluan dengan sesiapa. Semak melalui aplikasi rasmi.",
+    "Ayat keselamatan palsu + arahan": "Jangan bayar caj proses kepada orang lain, tetapi bayar deposit RM500 kepada saya sekarang.",
+}
 
-    speech_score = max(0, min(100, direct_score + indirect_score - control_score))
-    overall_score = int(min(100, round((speech_score + emotion_score + move_score) / 3)))
 
-    has_otp = bool(re.search(r"otp|kata laluan|password|pin", text, flags=re.I))
-    has_account_threat = bool(re.search(r"akaun.*dibekukan|akaun.*disekat|akaun.*ditutup", text, flags=re.I))
-    has_time_pressure = bool(re.search(r"segera|sekarang|24 jam|15 minit|30 minit|5 minit|jika gagal|kalau gagal", text, flags=re.I))
-    has_money_request = bool(re.search(r"bayar|caj proses|caj pengesahan|yuran pendaftaran|deposit|transfer|pindahan", text, flags=re.I))
-    has_unrealistic_gain = bool(re.search(r"modal.*jadi|untung|pulangan tinggi|dijamin|bonus|hadiah|wang.*dilepaskan", text, flags=re.I))
-    has_benefit_release = bool(re.search(r"wang.*dilepaskan|permohonan.*diluluskan|pinjaman|bantuan|dana", text, flags=re.I))
-
-    # Peraturan kritikal prototaip: kombinasi data sensitif, tekanan masa,
-    # ancaman akaun, bayaran awal dan janji tidak realistik dikategorikan tinggi.
-    if has_otp and has_account_threat and has_time_pressure:
-        speech_score = max(speech_score, 90)
-        emotion_score = max(emotion_score, 82)
-        move_score = max(move_score, 90)
-        overall_score = max(overall_score, 94)
-    elif has_otp and has_time_pressure:
-        speech_score = max(speech_score, 84)
-        move_score = max(move_score, 84)
-        overall_score = max(overall_score, 86)
-    elif has_money_request and has_time_pressure and has_unrealistic_gain:
-        speech_score = max(speech_score, 76)
-        emotion_score = max(emotion_score, 70)
-        move_score = max(move_score, 86)
-        overall_score = max(overall_score, 84)
-    elif has_money_request and has_account_threat:
-        speech_score = max(speech_score, 78)
-        move_score = max(move_score, 84)
-        overall_score = max(overall_score, 84)
-    elif has_money_request and has_benefit_release:
-        speech_score = max(speech_score, 74)
-        move_score = max(move_score, 76)
-        overall_score = max(overall_score, 76)
-
-    if direct_labels and indirect_labels:
-        speech_type = "Gabungan Lakuan Pertuturan Langsung dan Tidak Langsung"
-    elif direct_labels:
-        speech_type = "Lakuan Pertuturan Langsung"
-    elif indirect_labels:
-        speech_type = "Lakuan Pertuturan Tidak Langsung"
-    else:
-        speech_type = "Tiada pola lakuan yang ketara"
-
-    overall_level = risk_level(overall_score)
-    result = {
-        "overall_score": overall_score,
-        "overall_level": overall_level,
-        "speech_score": speech_score,
-        "speech_level": risk_level(speech_score),
-        "speech_type": speech_type,
-        "speech_match": match_phrase(speech_score, bool(control_labels)),
-        "emotion_score": emotion_score,
-        "emotion_level": risk_level(emotion_score),
-        "emotion_match": match_phrase(emotion_score, bool(control_labels)),
-        "move_score": move_score,
-        "move_level": risk_level(move_score),
-        "move_match": match_phrase(move_score, bool(move_control_labels)),
-        "emotions": emotions,
-        "moves": moves,
-        "direct_phrases": direct_labels,
-        "indirect_phrases": indirect_labels,
-        "emotion_phrases": emotions,
-        "control_phrases": unique(control_labels + move_control_labels),
-    }
-    result["threat_category"] = classify_threat(text, result)
-    result["overall_match"] = match_phrase(overall_score, bool(result["control_phrases"]))
-    result["control_message"] = control_message(result["threat_category"])
-    return result
+def load_demo_message():
+    st.session_state["message_input"] = DEMO_EXAMPLES.get(
+        st.session_state.get("demo_choice", ""), ""
+    )
+    st.session_state.pop("ocr_image_key", None)
+    st.session_state.pop("ocr_result", None)
+    st.session_state.pop("ocr_error", None)
 
 
 st.markdown(
     """
-<div class="hero-card">
-  <div class="title-main">ScamAlert</div>
-  <p class="subtitle-main">ScamAlert ialah sistem amaran awal penipuan siber berasaskan Kecerdasan Buatan (AI) yang menganalisis corak bahasa, manipulasi emosi dan gerakan strategi pujukan dalam mesej digital sebelum pengguna berkongsi maklumat peribadi, menekan pautan atau membuat transaksi kewangan.</p>
+<div class="hero">
+  <div class="eyebrow">NICE 2026 · Demo 1.2 · Data + linguistik + OCR</div>
+  <div class="title">ScamAlert</div>
+  <div class="subtitle">Saringan awal mesej digital yang membaca teks atau tangkapan layar, membandingkannya dengan korpus rujukan unik dan menggabungkannya dengan peraturan linguistik yang boleh dijelaskan. Keputusan ialah indeks petanda risiko, bukan kebarangkalian atau pengesahan rasmi.</div>
 </div>
 """,
     unsafe_allow_html=True,
 )
 
-st.markdown('<div class="panel-card">', unsafe_allow_html=True)
-st.markdown("## Semak Mesej Mencurigakan")
-st.markdown('<p class="helper-text">Masukkan mesej di bawah:</p>', unsafe_allow_html=True)
-message = st.text_area("Mesej", label_visibility="collapsed", placeholder="Masukkan mesej di sini", key="message_input")
-st.markdown('<p class="helper-text">atau muat naik gambar di bawah:</p>', unsafe_allow_html=True)
-uploaded_image = st.file_uploader("Muat naik gambar di sini", type=["png", "jpg", "jpeg"], label_visibility="collapsed")
-if uploaded_image is not None:
-    st.image(uploaded_image, caption="Tangkapan layar yang dimuat naik", use_container_width=True)
+
+reference_status = get_reference_status()
+if reference_status["loaded"]:
+    stats = reference_status["statistics"]
+    st.markdown(
+        f"""
+        <div class="status-good"><strong>✓ Data rujukan aktif.</strong>
+        Enjin memuatkan {stats['normalized_templates']} templat unik
+        ({stats['templates_by_label']['risk']} risiko, {stats['templates_by_label']['control']} kawalan)
+        daripada {stats['exact_unique_messages']} teks unik global. Pendua sintetik tidak menerima undi tambahan.</div>
+        """,
+        unsafe_allow_html=True,
+    )
+    with st.expander("Lihat audit data yang digunakan"):
+        st.markdown(
+            f"""
+- **{stats['source_rows']:,}** baris sumber telah diaudit.
+- **{stats['exact_unique_messages']}** teks unik global: **{stats['exact_unique_by_label']['risk']} risiko** dan **{stats['exact_unique_by_label']['control']} kawalan**.
+- **{stats['normalized_templates']}** templat digunakan untuk padanan: satu undi bagi setiap templat.
+- **{stats['exact_level_conflicts']}** teks mempunyai label tahap risiko yang bercanggah; sebab itu tahap asal tidak digunakan sebagai sasaran skor.
+- Status sumber: data simulasi terkawal, **belum** data ground truth dunia sebenar.
+            """
+        )
+else:
+    st.markdown(
+        f'<div class="status-bad"><strong>Data rujukan gagal dimuatkan.</strong> Aplikasi berada dalam mod peraturan sahaja. {html.escape(str(reference_status.get("error") or ""))}</div>',
+        unsafe_allow_html=True,
+    )
+
+ocr_status = get_ocr_status()
+if ocr_status["available"]:
+    language_label = "Bahasa Melayu + Inggeris" if ocr_status["selected_language"] == "msa+eng" else "Inggeris/teks Rumi"
+    st.markdown(
+        f'<div class="status-good"><strong>✓ OCR aktif.</strong> Teks dalam PNG/JPG akan diekstrak secara setempat menggunakan {html.escape(language_label)}, kemudian dimasukkan ke ruangan mesej untuk disemak sebelum analisis.</div>',
+        unsafe_allow_html=True,
+    )
+else:
+    st.markdown(
+        f'<div class="status-bad"><strong>OCR tidak tersedia.</strong> Tampal teks secara manual. {html.escape(str(ocr_status.get("error") or ""))}</div>',
+        unsafe_allow_html=True,
+    )
+
+
+st.markdown('<div class="panel">', unsafe_allow_html=True)
+st.markdown("## Semak mesej mencurigakan")
+st.markdown('<div class="helper">Pilih contoh demonstrasi atau tampal mesej sendiri. Elakkan memasukkan OTP, nombor akaun atau data peribadi sebenar ketika pameran.</div>', unsafe_allow_html=True)
+st.selectbox(
+    "Contoh demonstrasi",
+    list(DEMO_EXAMPLES.keys()),
+    key="demo_choice",
+    on_change=load_demo_message,
+)
+if "message_input" not in st.session_state:
+    st.session_state["message_input"] = ""
+
+# Containers are created in display order, while OCR is executed before the
+# text widget is instantiated.  This lets extracted text safely populate the
+# editable text area without mutating an already-created Streamlit widget.
+text_input_area = st.container()
+image_upload_area = st.container()
+
+with image_upload_area:
+    st.markdown("**atau muat naik gambar di bawah:**")
+    uploaded_image = st.file_uploader(
+        "Muat naik gambar di sini",
+        type=["png", "jpg", "jpeg"],
+        label_visibility="collapsed",
+    )
+    if uploaded_image is not None:
+        image_bytes = uploaded_image.getvalue()
+        image_key = hashlib.sha256(image_bytes).hexdigest()
+
+        # A new upload must never inherit the result or error from a previous
+        # screenshot.  Manual text is preserved until the user explicitly asks
+        # OCR to replace it.
+        if st.session_state.get("ocr_upload_key") != image_key:
+            previous_ocr = st.session_state.get("ocr_result") or {}
+            if st.session_state.get("message_input") == previous_ocr.get("text"):
+                st.session_state["message_input"] = ""
+            st.session_state["ocr_upload_key"] = image_key
+            st.session_state.pop("ocr_image_key", None)
+            st.session_state.pop("ocr_result", None)
+            st.session_state.pop("ocr_error", None)
+
+        extract_clicked = st.button(
+            "Ekstrak teks daripada gambar",
+            key=f"ocr_extract_{image_key[:16]}",
+            disabled=not bool(ocr_status["available"]),
+        )
+        if extract_clicked:
+            try:
+                with st.spinner("Membaca teks daripada gambar…"):
+                    ocr_result = extract_text_from_image(image_bytes)
+                st.session_state["ocr_image_key"] = image_key
+                st.session_state["ocr_result"] = ocr_result
+                st.session_state["message_input"] = ocr_result["text"]
+                st.session_state.pop("ocr_error", None)
+            except (OCRUnavailableError, OCRInputError, OCRProcessingError) as exc:
+                st.session_state["ocr_image_key"] = image_key
+                st.session_state["ocr_error"] = str(exc)
+                st.session_state.pop("ocr_result", None)
+
+        if st.session_state.get("ocr_image_key") == image_key and st.session_state.get("ocr_error"):
+            st.error(st.session_state["ocr_error"])
+            st.caption("Input manual masih boleh digunakan; kegagalan OCR tidak menghasilkan skor risiko.")
+        elif st.session_state.get("ocr_image_key") == image_key and st.session_state.get("ocr_result"):
+            ocr_result = st.session_state["ocr_result"]
+            st.success(
+                f'Teks OCR berjaya diekstrak: {ocr_result["word_count"]} perkataan, '
+                f'purata keyakinan OCR perkataan {ocr_result["confidence"]:.1f}%.'
+            )
+            st.caption(
+                "Semak dan betulkan teks dalam ruangan mesej sebelum menekan Semak Mesej. "
+                "Keyakinan OCR bukan keyakinan bahawa mesej itu penipuan."
+            )
+            if ocr_result.get("warning"):
+                st.warning(ocr_result["warning"])
+        else:
+            st.caption("Klik Ekstrak teks, kemudian semak hasilnya dalam ruangan mesej sebelum analisis.")
+        with st.expander("Lihat gambar dan butiran OCR"):
+            st.image(uploaded_image, use_container_width=True)
+            if st.session_state.get("ocr_image_key") == image_key and st.session_state.get("ocr_result"):
+                ocr_result = st.session_state["ocr_result"]
+                st.caption(
+                    f'Bahasa: {ocr_result["language"]} · Kaedah susun atur: PSM {ocr_result["psm"]} · '
+                    f'Prapemprosesan: {ocr_result["preprocessing"]} · '
+                    f'Resolusi diproses: {ocr_result["processed_size"][0]} × {ocr_result["processed_size"][1]}'
+                )
+
+with text_input_area:
+    st.markdown("**Masukkan mesej di bawah:**")
+    message = st.text_area(
+        "Mesej",
+        label_visibility="collapsed",
+        placeholder="Tampal teks mesej di sini…",
+        key="message_input",
+    )
+
 check = st.button("Semak Mesej")
-st.markdown('</div>', unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
 
 if check and message.strip():
     result = analyse_text(message)
 
-    st.markdown('<div class="panel-card">', unsafe_allow_html=True)
-    st.markdown("## Keputusan Keseluruhan")
-    c1, c2, c3 = st.columns([1.1, 0.9, 1.2])
-    with c1:
+    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    st.markdown("## Keputusan keseluruhan")
+    col1, col2, col3 = st.columns([1.1, 0.9, 1.2])
+    with col1:
         st.markdown(
-            f'<div class="result-card"><div class="result-label">Skor Risiko Keseluruhan</div>{risk_meter(result["overall_score"])}'
-            '</div>',
+            f'<div class="card"><div class="label">Indeks Petanda Risiko Hibrid</div>{meter(result["overall_score"])}<div class="note">Gabungan peraturan linguistik dan padanan data apabila bukti mencukupi.</div></div>',
             unsafe_allow_html=True,
         )
-    with c2:
-        level = result["overall_level"]
+    with col2:
         st.markdown(
-            f'<div class="result-card"><div class="result-label">Tahap Risiko</div><div class="badge {badge_class(level)}">{level}</div>'
-            '</div>',
+            f'<div class="card"><div class="label">Tahap Saringan</div><div class="badge {badge_class(result["overall_level"])}">{html.escape(result["overall_level"])}</div><div class="note">Indeks, bukan peratus kemungkinan.</div></div>',
             unsafe_allow_html=True,
         )
-    with c3:
+    with col3:
         st.markdown(
-            f'<div class="result-card"><div class="result-label">Kategori Ancaman</div><div class="result-note" style="color:#111827;font-weight:750;">{html.escape(result["threat_category"])}</div>'
-            '</div>',
+            f'<div class="card"><div class="label">Kategori Petanda</div><div class="note" style="font-size:1rem;font-weight:800;color:#111827;">{html.escape(result["threat_category"])}</div><div class="note">Amaran awal; semak melalui pihak rasmi.</div></div>',
             unsafe_allow_html=True,
         )
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown('<div class="panel-card">', unsafe_allow_html=True)
-    st.markdown("## Tiga Enjin Analisis")
-    s_col, e_col, m_col = st.columns(3)
+    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    st.markdown("## Bagaimana indeks dibentuk")
+    a, b, c, d = st.columns(4)
+    a.metric("Peraturan linguistik", f'{result["rule_score"]}/100')
+    b.metric("Indeks rujukan data", f'{result["data_index"]:.1f}/100')
+    c.metric("Berat data digunakan", f'{result["data_weight"] * 100:.1f}%')
+    d.metric("Persamaan terbaik", f'{result["best_similarity"] * 100:.1f}%')
+    st.info(result["data_message"] + ". Nilai persamaan ialah kesamaan teks, bukan keyakinan bahawa mesej itu penipuan.")
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    with s_col:
-        speech_card = (
-            '<div class="module-card">'
-            '<div class="module-title">Makna Tersurat dan Makna Tersirat</div>'
-            '<div class="module-caption">Menganalisis lakuan pertuturan langsung dan tidak langsung.</div>'
-            f'{risk_meter(result["speech_score"])}'
-            f'<span class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</span>'
-            '</div>'
+    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    st.markdown("## Bukti padanan data masa nyata")
+    st.markdown('<div class="helper">Aplikasi menunjukkan rujukan risiko dan kawalan terdekat yang benar-benar dibaca daripada fail data. Hanya padanan sederhana atau kuat mempengaruhi indeks hibrid.</div>', unsafe_allow_html=True)
+    risk_col, control_col = st.columns(2)
+    with risk_col:
+        st.markdown("### Risiko terdekat")
+        if result["risk_matches"]:
+            for item in result["risk_matches"][:2]:
+                st.markdown(match_card(item, "risk"), unsafe_allow_html=True)
+        else:
+            st.caption("Tiada rujukan risiko tersedia.")
+    with control_col:
+        st.markdown("### Kawalan terdekat")
+        if result["control_matches"]:
+            for item in result["control_matches"][:2]:
+                st.markdown(match_card(item, "control"), unsafe_allow_html=True)
+        else:
+            st.caption("Tiada rujukan kawalan tersedia.")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    st.markdown("## Tiga lapisan linguistik")
+    speech_col, emotion_col, move_col = st.columns(3)
+    with speech_col:
+        st.markdown(
+            f'<div class="card"><div class="label">Lakuan Langsung / Tidak Langsung</div>{meter(result["speech_score"])}<div class="badge {badge_class(result["speech_level"])}">{result["speech_level"]}</div><div class="note">{html.escape(result["speech_type"])}</div></div>',
+            unsafe_allow_html=True,
         )
-        st.markdown(speech_card, unsafe_allow_html=True)
-
-    with e_col:
-        emo_text = ", ".join(result["emotions"]) if result["emotions"] else "Tiada pencetus emosi yang ketara"
-        emotion_card = (
-            '<div class="module-card">'
-            '<div class="module-title">Pencetus Emosi</div>'
-            '<div class="module-caption">Mengesan emosi yang digunakan untuk memujuk atau menekan pengguna.</div>'
-            f'{risk_meter(result["emotion_score"])}'
-            f'<span class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</span>'
-            '</div>'
+    with emotion_col:
+        emotion_text = ", ".join(result["emotions"]) if result["emotions"] else "Tiada pencetus ketara"
+        st.markdown(
+            f'<div class="card"><div class="label">Pencetus Emosi</div>{meter(result["emotion_score"])}<div class="badge {badge_class(result["emotion_level"])}">{result["emotion_level"]}</div><div class="note">{html.escape(emotion_text)}</div></div>',
+            unsafe_allow_html=True,
         )
-        st.markdown(emotion_card, unsafe_allow_html=True)
-
-    with m_col:
-        move_card = (
-            '<div class="module-card">'
-            '<div class="module-title">Gerakan Strategi Penipuan</div>'
-            '<div class="module-caption">Memetakan gerakan strategi penipuan daripada bina kepercayaan kepada arahan tindakan.</div>'
-            f'{risk_meter(result["move_score"])}'
-            f'<span class="badge {badge_class(result["move_level"])}">{result["move_level"]}</span>'
-            '</div>'
+    with move_col:
+        st.markdown(
+            f'<div class="card"><div class="label">Gerakan Strategi</div>{meter(result["move_score"])}<div class="badge {badge_class(result["move_level"])}">{result["move_level"]}</div><div class="note">{html.escape(result["move_match"])}</div></div>',
+            unsafe_allow_html=True,
         )
-        st.markdown(move_card, unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    st.markdown('<div class="panel-card">', unsafe_allow_html=True)
-    st.markdown("## Frasa dan Petanda Dikesan")
-    sections = [
-        ("Frasa Lakuan Langsung", result["direct_phrases"], "tag-red"),
-        ("Frasa Lakuan Tidak Langsung", result["indirect_phrases"], "tag-yellow"),
-        ("Pencetus Emosi", result["emotion_phrases"], "tag-blue"),
-        ("Gerakan Strategi", [m["name"] for m in result["moves"]], "tag-red"),
-    ]
-    for title, tags, cls in sections:
-        st.markdown(f"#### {title}")
-        st.markdown(tag_html(tags, cls), unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    st.markdown('<div class="panel-card">', unsafe_allow_html=True)
-    st.markdown("## Padanan Data Kawalan Sepadan")
-    st.markdown(f'<div class="subtle-note">{html.escape(result["control_message"])}</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    st.markdown("## Peta gerakan dan petanda")
+    st.markdown(move_path(result["moves"]), unsafe_allow_html=True)
+    for move in result["moves"]:
+        st.markdown(
+            f'<div class="callout"><strong>{html.escape(move["code"])} · {html.escape(move["name"])}</strong><div class="note">{html.escape(move["function"])}</div></div>',
+            unsafe_allow_html=True,
+        )
+    st.markdown("#### Arahan / makna tersurat")
+    st.markdown(tags(result["direct_phrases"], "tag-red"), unsafe_allow_html=True)
+    st.markdown("#### Pujukan / makna tersirat")
+    st.markdown(tags(result["indirect_phrases"], "tag-amber"), unsafe_allow_html=True)
+    st.markdown("#### Pencetus emosi")
+    st.markdown(tags(result["emotion_phrases"], "tag-blue"), unsafe_allow_html=True)
+    st.markdown("#### Isyarat keselamatan linguistik")
+    st.markdown(tags(result["control_phrases"], "tag-green"), unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     guidance = {
-        "Rendah": "Risiko rendah dikesan. Namun begitu, pengguna masih digalakkan menyemak kesahihan mesej melalui saluran rasmi.",
-        "Sederhana": "Terdapat beberapa ciri mencurigakan. Semak sumber mesej dan elakkan membuat bayaran, menekan pautan atau berkongsi maklumat peribadi sebelum pengesahan lanjut.",
-        "Tinggi": "Mesej menunjukkan ciri manipulatif yang kuat. Jangan berkongsi maklumat peribadi, jangan membuat bayaran dan semak melalui saluran rasmi.",
-        "Sangat Tinggi": "Mesej ini menunjukkan risiko yang sangat tinggi. Jangan kongsi OTP, kata laluan atau PIN, jangan tekan pautan, jangan buat bayaran dan segera semak dengan pihak rasmi.",
+        "Rendah": "Petanda rendah dikesan, tetapi sahkan sumber melalui saluran rasmi jika mesej melibatkan wang atau data peribadi.",
+        "Sederhana": "Ada petanda yang memerlukan semakan. Jangan bayar, klik pautan atau berkongsi data sebelum pengesahan bebas.",
+        "Tinggi": "Petanda manipulatif kuat. Hentikan tindakan, jangan bayar atau kongsi data, dan hubungi pihak rasmi.",
+        "Sangat Tinggi": "Petanda sangat kuat. Jangan kongsi OTP/PIN, jangan tekan pautan dan jangan buat bayaran; hubungi bank atau pihak berkuasa melalui saluran rasmi.",
     }
-    st.markdown('<div class="panel-card">', unsafe_allow_html=True)
-    st.markdown("## Cadangan Tindakan Selamat")
-    st.markdown(f'<div class="subtle-note">{html.escape(guidance[result["overall_level"]])}</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    st.markdown("## Cadangan tindakan selamat")
+    st.markdown(f'<div class="callout">{html.escape(guidance[result["overall_level"]])}</div>', unsafe_allow_html=True)
+    st.caption(result["control_message"])
+    st.markdown("</div>", unsafe_allow_html=True)
 
+    with st.expander("Lihat contoh struktur gerakan"):
+        st.markdown("**Struktur mesej berisiko**")
+        for item in SCAMMOVE_SCAM_EXAMPLES:
+            st.markdown(f"- {item}")
+        st.markdown("**Struktur mesej kawalan**")
+        for item in SCAMMOVE_CONTROL_EXAMPLES:
+            st.markdown(f"- {item}")
 
-    st.markdown('<div class="panel-card">', unsafe_allow_html=True)
+    st.markdown('<div class="panel">', unsafe_allow_html=True)
     st.markdown("## Penafian")
-    st.markdown('<div class="subtle-note">ScamAlert ialah prototaip amaran awal dan tidak menggantikan semakan rasmi. Pengguna digalakkan menyemak kesahihan mesej melalui saluran rasmi sebelum berkongsi maklumat peribadi, menekan pautan atau membuat sebarang transaksi kewangan.</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="disclaimer">ScamAlert ialah prototaip saringan hibrid menggunakan data simulasi terkawal dan peraturan linguistik. Ia belum model AI yang divalidasi, belum mengukur ketepatan populasi, dan tidak mengesahkan bahawa seseorang atau organisasi melakukan penipuan. OCR boleh tersalah membaca imej; semak teks yang diekstrak sebelum analisis. Keputusan tidak menggantikan semakan bank, penyedia perkhidmatan atau pihak berkuasa.</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown("</div>", unsafe_allow_html=True)
+
 elif check and not message.strip():
-    st.warning("Sila masukkan mesej terlebih dahulu.")
+    st.warning("Sila tampal teks mesej atau muat naik gambar yang mengandungi teks terlebih dahulu.")
