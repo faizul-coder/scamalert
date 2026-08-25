@@ -75,7 +75,7 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 [data-testid="stFileUploaderDropzone"] button { background:white !important; color:var(--ink) !important; border:1px solid #CBD0D8 !important; }
 [data-testid="stFileUploaderDropzone"] button { font-size:0 !important; min-width:240px; }
 [data-testid="stFileUploaderDropzone"] button > * { display:none !important; }
-[data-testid="stFileUploaderDropzone"] button::after { content:"Muat naik gambar di sini"; display:block; font-size:1rem; line-height:1.25; color:var(--ink); font-weight:650; }
+[data-testid="stFileUploaderDropzone"] button::after { content:"Muat naik gambar di sini"; display:block; font-size:1rem; line-height:1.25; color:#707887; font-weight:400; }
 [data-testid="stFileUploaderDropzoneInstructions"] span,
 [data-testid="stFileUploaderDropzoneInstructions"] small,
 [data-testid="stFileUploaderDropzone"] small { color:var(--muted) !important; opacity:1 !important; }
