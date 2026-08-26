@@ -66,8 +66,8 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .match-text { color:#303846; line-height:1.45; margin-top:.3rem; }
 .match-meta { color:var(--muted); font-size:.78rem; margin-top:.35rem; }
 .footer-note { border-top:1px solid var(--line); color:var(--muted); font-size:.8rem; line-height:1.45; margin-top:1.5rem; padding-top:.8rem; }
-.stTextArea textarea { background:white !important; color:var(--ink) !important; border:1px solid #AEB5BF !important; border-radius:12px !important; min-height:170px !important; }
-.stTextArea textarea::placeholder { color:#707887 !important; opacity:1 !important; }
+.stTextArea textarea { background:white !important; color:var(--ink) !important; border:1px solid #AEB5BF !important; border-radius:12px !important; min-height:170px !important; font-size:.875rem !important; font-weight:400 !important; line-height:1.5 !important; }
+.stTextArea textarea::placeholder { color:#707887 !important; opacity:1 !important; font-size:.875rem !important; font-weight:400 !important; line-height:1.5 !important; }
 .stButton > button { background:var(--red) !important; color:#FFFFFF !important; border:none !important; border-radius:11px !important; font-weight:850 !important; padding:.72rem 1.25rem !important; }
 .stButton > button *, .stButton > button p, .stButton > button span { color:#FFFFFF !important; }
 .stButton > button:hover { background:var(--red-dark) !important; color:#FFFFFF !important; }
@@ -75,7 +75,7 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 [data-testid="stFileUploaderDropzone"] button { background:white !important; color:var(--ink) !important; border:1px solid #CBD0D8 !important; }
 [data-testid="stFileUploaderDropzone"] button { font-size:0 !important; min-width:240px; }
 [data-testid="stFileUploaderDropzone"] button > * { display:none !important; }
-[data-testid="stFileUploaderDropzone"] button::after { content:"Muat naik gambar di sini"; display:block; font-size:1rem; line-height:1.25; color:#707887; font-weight:400; }
+[data-testid="stFileUploaderDropzone"] button::after { content:"Muat naik gambar di sini"; display:block; font-size:.875rem; line-height:1.5; color:#707887; font-weight:400; }
 [data-testid="stFileUploaderDropzoneInstructions"] span,
 [data-testid="stFileUploaderDropzoneInstructions"] small,
 [data-testid="stFileUploaderDropzone"] small { color:var(--muted) !important; opacity:1 !important; }
