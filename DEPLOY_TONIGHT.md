@@ -40,9 +40,10 @@ that backup or its commit reference.
    **Bukti Tidak Mencukupi**, not Rendah.
 6. Upload `demo_assets/01_risk_dark_chat.png`. OCR should run automatically;
    review the populated text and click **Semak Mesej**. Expected: high warning.
-7. Confirm that the OCR success box, word count, raw index cards, move examples
-   and long disclaimer are absent from the main flow.
+7. Confirm that the decision explanation, reason list, technical expanders,
+   OCR details and safety footer are absent from the public result.
 8. Confirm that red buttons have white, legible text.
+9. Confirm that the action heading reads **Cadangan Tindakan**.
 
 If OCR is unavailable, the app will show a warning. Continue the pitch by
 pasting the prepared text cases; text analysis remains available.

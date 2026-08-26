@@ -19,9 +19,11 @@ Date: 2026-08-26
 - Uploader button exposes one Malay label only; the default label is hidden.
 - Uploader label uses regular weight and the same muted tone as the message
   placeholder.
-- Safety footer is absent from the initial task screen and appears only after
-  a result is produced.
-- Result runtime test: risk result, category, reasons and technical expanders
+- Message placeholder and uploader label are both explicitly set to 0.875 rem,
+  regular weight and 1.5 line height.
+- Decision explanation, reason list, technical expanders and safety footer are
+  absent from the public result.
+- Result runtime test: screening state, category and **Cadangan Tindakan**
   rendered without exceptions.
 
 ## Scenario coverage exercised

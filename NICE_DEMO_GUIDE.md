@@ -5,12 +5,11 @@
 1. Say: “ScamAlert gives an early warning before a user clicks, pays or shares
    personal information.”
 2. Paste the prepared family-impersonation message and click **Semak Mesej**.
-3. Point only to the risk level, the three reasons and the recommended action.
+3. Point only to the risk level, category and **Cadangan Tindakan**.
 4. Upload the dark chat screenshot. Explain that OCR places editable text into
    the same analysis flow automatically.
-5. If asked about method, open **Lihat butiran analisis** and explain that the
-   index combines linguistic patterns with deduplicated risk/control reference
-   texts.
+5. If asked about method, explain verbally that the engine combines linguistic
+   patterns with deduplicated risk/control reference texts.
 
 ## Recommended wording
 
@@ -32,8 +31,8 @@
 ## If a prospect enters their own message
 
 - Let the application analyse it.
-- If the result is **Tinggi/Sangat Tinggi**, explain the displayed combination
-  of cues.
+- If the result is **Tinggi/Sangat Tinggi**, point to the risk category and
+  proposed action.
 - If it is **Perlu Berhati-hati**, say that the message needs independent
   verification.
 - If it is **Bukti Tidak Mencukupi**, explain that the system deliberately

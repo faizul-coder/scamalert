@@ -28,11 +28,11 @@
   **Semak mesej** button.
 - A new screenshot triggers OCR automatically; the user reviews the editable
   text before analysis.
-- The main result contains the screening state, category when available, three
-  reasons and one recommended action.
-- Scores, similarity, linguistic subscores, nearest references and OCR details
-  are collapsed under **Lihat butiran analisis**.
-- Full limitations are collapsed; a one-line safety notice remains visible.
+- The public result contains only the screening state, category when available
+  and **Cadangan Tindakan**.
+- Decision explanations, scores, similarity, linguistic subscores, nearest
+  references, OCR details, technical expanders and the safety footer are not
+  rendered in the public interface.
 
 ## Failure and privacy behaviour
 

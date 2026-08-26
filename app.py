@@ -49,23 +49,9 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .result-card.insufficient { border-left-color:#64748B; background:#F8FAFC; }
 .result-label { color:var(--muted); font-size:.78rem; font-weight:850; letter-spacing:.06em; text-transform:uppercase; }
 .result-level { font-size:2rem; font-weight:900; margin:.22rem 0 .3rem 0; }
-.result-summary { color:#313946; font-size:1.02rem; line-height:1.5; }
-.result-category { display:inline-block; margin-top:.7rem; padding:.38rem .62rem; border-radius:9px; background:rgba(255,255,255,.68); border:1px solid rgba(17,24,39,.10); font-weight:750; }
-.reason-list { margin:.25rem 0 0 0; padding-left:1.2rem; }
-.reason-list li { margin:.46rem 0; line-height:1.45; }
+.result-category { display:inline-block; margin-top:.35rem; padding:.38rem .62rem; border-radius:9px; background:rgba(255,255,255,.68); border:1px solid rgba(17,24,39,.10); font-weight:750; }
 .action-box { background:#111827; color:white; border-radius:14px; padding:1rem 1.08rem; font-size:1rem; line-height:1.5; margin-top:.4rem; }
 .action-box strong, .action-box span { color:white !important; }
-.mini-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.75rem; margin:.75rem 0; }
-.mini-card { background:white; border:1px solid var(--line); border-radius:12px; padding:.8rem; }
-.mini-label { color:var(--muted); font-size:.76rem; font-weight:800; text-transform:uppercase; }
-.mini-value { font-size:1.2rem; font-weight:850; margin-top:.2rem; }
-.match { background:white; border:1px solid var(--line); border-radius:12px; padding:.75rem; margin:.55rem 0; }
-.match-risk { border-left:4px solid var(--red); }
-.match-control { border-left:4px solid var(--green); }
-.match-head { font-weight:800; }
-.match-text { color:#303846; line-height:1.45; margin-top:.3rem; }
-.match-meta { color:var(--muted); font-size:.78rem; margin-top:.35rem; }
-.footer-note { border-top:1px solid var(--line); color:var(--muted); font-size:.8rem; line-height:1.45; margin-top:1.5rem; padding-top:.8rem; }
 .stTextArea textarea { background:white !important; color:var(--ink) !important; border:1px solid #AEB5BF !important; border-radius:12px !important; min-height:170px !important; font-size:.875rem !important; font-weight:400 !important; line-height:1.5 !important; }
 .stTextArea textarea::placeholder { color:#707887 !important; opacity:1 !important; font-size:.875rem !important; font-weight:400 !important; line-height:1.5 !important; }
 .stButton > button { background:var(--red) !important; color:#FFFFFF !important; border:none !important; border-radius:11px !important; font-weight:850 !important; padding:.72rem 1.25rem !important; }
@@ -84,31 +70,11 @@ div[data-baseweb="select"] * { color:var(--ink) !important; }
 @media (max-width: 700px) {
     .title-main { font-size:2.45rem; }
     .block-container { padding-left:1rem; padding-right:1rem; }
-    .mini-grid { grid-template-columns:1fr; }
 }
 </style>
 """,
     unsafe_allow_html=True,
 )
-
-
-def match_card(match: dict, kind: str) -> str:
-    similarity = float(match.get("similarity", 0.0)) * 100
-    title = "Rujukan risiko" if kind == "risk" else "Rujukan kawalan"
-    return f"""
-    <div class="match match-{'risk' if kind == 'risk' else 'control'}">
-      <div class="match-head">{title} · persamaan teks {similarity:.1f}%</div>
-      <div class="match-text">“{html.escape(str(match.get('text', '')))}”</div>
-      <div class="match-meta">{html.escape(str(match.get('category') or 'Kategori tidak dinyatakan'))}</div>
-    </div>
-    """
-
-
-def list_html(items) -> str:
-    values = list(items or ["Konteks belum mencukupi"])
-    return '<ul class="reason-list">' + "".join(
-        f"<li>{html.escape(str(item))}</li>" for item in values[:3]
-    ) + "</ul>"
 
 
 reference_status = get_reference_status()
@@ -207,71 +173,14 @@ if result:
 <div class="result-card {html.escape(result['decision_state'])}">
   <div class="result-label">Keputusan saringan</div>
   <div class="result-level">{html.escape(display_level)}</div>
-  <div class="result-summary">{html.escape(result['decision_summary'])}</div>
   {category_html}
 </div>
 """,
         unsafe_allow_html=True,
     )
 
-    st.markdown("### Mengapa keputusan ini diberikan?")
-    st.markdown(list_html(result["risk_reasons"]), unsafe_allow_html=True)
-
-    st.markdown("### Tindakan disarankan")
+    st.markdown("### Cadangan Tindakan")
     st.markdown(
         f'<div class="action-box"><strong>{html.escape(result["recommended_action"])}</strong></div>',
-        unsafe_allow_html=True,
-    )
-
-    with st.expander("Lihat butiran analisis"):
-        st.markdown(
-            f"""
-<div class="mini-grid">
-  <div class="mini-card"><div class="mini-label">Indeks dalaman</div><div class="mini-value">{result['overall_score']}/100</div></div>
-  <div class="mini-card"><div class="mini-label">Peraturan bahasa</div><div class="mini-value">{result['rule_score']}/100</div></div>
-  <div class="mini-card"><div class="mini-label">Indeks rujukan</div><div class="mini-value">{result['data_index']:.1f}/100</div></div>
-  <div class="mini-card"><div class="mini-label">Persamaan terbaik</div><div class="mini-value">{result['best_similarity'] * 100:.1f}%</div></div>
-</div>
-""",
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            f"""
-- **Lakuan pertuturan:** {result['speech_score']}/100 · {html.escape(result['speech_type'])}
-- **Pencetus emosi:** {result['emotion_score']}/100
-- **Gerakan strategi:** {result['move_score']}/100
-- **Penggunaan data rujukan:** {result['data_weight'] * 100:.1f}%
-            """
-        )
-        st.caption(
-            "Skor ialah indeks saringan yang boleh dijelaskan, bukan kebarangkalian "
-            "bahawa pengirim ialah penipu."
-        )
-
-        if result["risk_matches"] or result["control_matches"]:
-            st.markdown("#### Rujukan teks terdekat")
-            if result["risk_matches"]:
-                st.markdown(match_card(result["risk_matches"][0], "risk"), unsafe_allow_html=True)
-            if result["control_matches"]:
-                st.markdown(match_card(result["control_matches"][0], "control"), unsafe_allow_html=True)
-
-        if st.session_state.get("ocr_result"):
-            ocr_result = st.session_state["ocr_result"]
-            st.markdown("#### Maklumat OCR")
-            st.caption(
-                f'{ocr_result["word_count"]} perkataan diekstrak · '
-                f'keyakinan bacaan {ocr_result["confidence"]:.1f}% · '
-                f'bahasa {ocr_result["language"]}'
-            )
-
-    with st.expander("Had sistem dan privasi"):
-        st.markdown(
-            "ScamAlert ialah prototaip amaran awal berasaskan peraturan linguistik dan "
-            "data rujukan terkawal. Ia belum menggantikan semakan bank, penyedia "
-            "perkhidmatan atau pihak berkuasa. OCR boleh tersalah membaca imej; semak "
-            "teks sebelum membuat keputusan."
-        )
-    st.markdown(
-        '<div class="footer-note">Saringan awal sahaja. Jangan klik, bayar atau berkongsi OTP sebelum pengesahan melalui saluran rasmi.</div>',
         unsafe_allow_html=True,
     )

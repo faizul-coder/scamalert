@@ -9,8 +9,8 @@ Version 1.3 is the prospect-facing release. It keeps the existing local OCR,
 deduplicated reference data and explainable linguistic analysis, while making
 two major corrections:
 
-1. the public interface now presents the result and recommended action first;
-   technical evidence is collapsed by default; and
+1. the public interface now presents only the screening result, category and
+   proposed action; and
 2. the detector covers multi-cue paraphrases for parcel, refund, e-wallet,
    family impersonation, romance, investment, authority, phishing, remote
    access and task/job scams.
@@ -34,12 +34,10 @@ Cloud installs these from `packages.txt`.
 2. A new screenshot is read automatically and its text appears in the editable
    message field.
 3. Review the text and click **Semak Mesej**.
-4. Read the screening level, three main reasons and recommended action.
-5. Open **Lihat butiran analisis** only when technical evidence is needed.
+4. Read the screening level, category when available and **Cadangan Tindakan**.
 
-OCR word count and recognition confidence are not displayed in the main flow.
-They remain available inside the technical expander and are never presented as
-scam probability.
+OCR word count, recognition confidence, internal scores and reference matches
+are not displayed in the public interface.
 
 ## Runtime evidence
 

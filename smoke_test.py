@@ -25,6 +25,7 @@ class _SessionState(dict):
 
 
 streamlit = types.ModuleType("streamlit")
+rendered_markdown = []
 streamlit.session_state = _SessionState(
     message_input=(
         "Pihak bank mengesan aktiviti luar biasa. Berikan OTP sekarang. "
@@ -32,7 +33,7 @@ streamlit.session_state = _SessionState(
     )
 )
 streamlit.set_page_config = lambda *args, **kwargs: None
-streamlit.markdown = lambda *args, **kwargs: None
+streamlit.markdown = lambda body, *args, **kwargs: rendered_markdown.append(str(body))
 streamlit.caption = lambda *args, **kwargs: None
 streamlit.info = lambda *args, **kwargs: None
 streamlit.warning = lambda *args, **kwargs: None
@@ -53,4 +54,17 @@ streamlit.spinner = lambda *args, **kwargs: _Context()
 
 sys.modules["streamlit"] = streamlit
 importlib.import_module("app")
+rendered_text = "\n".join(rendered_markdown)
+result = streamlit.session_state["analysis_result"]
+assert "Cadangan Tindakan" in rendered_text
+assert result["decision_summary"] not in rendered_text
+assert result["risk_reasons"][0] not in rendered_text
+for removed_label in (
+    "Mengapa keputusan ini diberikan?",
+    "Tindakan disarankan",
+    "Lihat butiran analisis",
+    "Had sistem dan privasi",
+    "Saringan awal sahaja.",
+):
+    assert removed_label not in rendered_text, removed_label
 print("UI smoke test passed: data loaded and complete result path rendered.")
