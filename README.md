@@ -15,7 +15,7 @@ three major corrections:
    notice and proposed action; and
 3. the detector covers multi-cue paraphrases for parcel, refund, e-wallet,
    family impersonation, romance, investment, authority, phishing, remote
-   access and task/job scams.
+   access, task/job scams and fake cash-aid phishing links.
 
 Messages without enough evidence are labelled **Bukti Tidak Mencukupi** rather
 than being presented as confidently low risk.
@@ -70,7 +70,7 @@ python smoke_test_ocr_state.py
 python smoke_test_ocr_ui.py
 ```
 
-The release suite contains 36 automated test methods, including 36 open scam
+The release suite contains 38 automated test methods, including 36 open scam
 paraphrases, 22 control/ordinary messages, abstention checks and OCR tests. The
 suite is a regression check, not a population accuracy estimate.
 

@@ -118,10 +118,19 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .stButton > button *, .stButton > button p, .stButton > button span { color:#FFFFFF !important; }
 .stButton > button:hover { background:var(--red-dark) !important; color:#FFFFFF !important; }
 [data-testid="stFileUploaderDropzone"] { background:white !important; border:1px dashed #9CA3AF !important; border-radius:12px !important; }
-[data-testid="stFileUploaderDropzone"] > span > button[data-testid="stBaseButton-secondary"] { background:white !important; color:var(--ink) !important; border:1px solid #CBD0D8 !important; font-size:0 !important; min-width:240px; }
-[data-testid="stFileUploaderDropzone"] > span > button[data-testid="stBaseButton-secondary"] > * { display:none !important; }
-[data-testid="stFileUploaderDropzone"] > span > button[data-testid="stBaseButton-secondary"]::after { content:"Muat naik gambar di sini"; display:block; font-size:.875rem; line-height:1.5; color:#707887; font-weight:400; }
-[data-testid="stFileUploaderFile"] { display:none !important; }
+div[data-testid="stFileUploader"] [data-testid^="stFileUploaderFile"] {
+    display:none !important;
+    visibility:hidden !important;
+    width:0 !important;
+    height:0 !important;
+    min-height:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow:hidden !important;
+}
+[data-testid="stFileUploaderDropzone"] button { background:white !important; color:var(--ink) !important; border:1px solid #CBD0D8 !important; font-size:0 !important; min-width:240px; }
+[data-testid="stFileUploaderDropzone"] button > * { display:none !important; }
+[data-testid="stFileUploaderDropzone"] button::after { content:"Muat naik gambar di sini"; display:block; font-size:.875rem; line-height:1.5; color:#707887; font-weight:400; }
 [data-testid="stFileUploaderDropzoneInstructions"] span,
 [data-testid="stFileUploaderDropzoneInstructions"] small,
 [data-testid="stFileUploaderDropzone"] small { color:var(--muted) !important; opacity:1 !important; }
@@ -177,7 +186,12 @@ with image_upload_area:
     if uploaded_image is not None:
         image_bytes = uploaded_image.getvalue()
         image_key = hashlib.sha256(image_bytes).hexdigest()
-        if st.session_state.get("ocr_upload_key") != image_key:
+        cached_ocr = st.session_state.get("ocr_result") or {}
+        needs_ocr = (
+            st.session_state.get("ocr_upload_key") != image_key
+            or not str(cached_ocr.get("text", "")).strip()
+        )
+        if needs_ocr:
             previous_ocr = st.session_state.get("ocr_result") or {}
             if st.session_state.get("message_input") == previous_ocr.get("text"):
                 st.session_state["message_input"] = ""
@@ -192,9 +206,16 @@ with image_upload_area:
                         ocr_result = extract_text_from_image(image_bytes)
                     st.session_state["ocr_result"] = ocr_result
                     st.session_state["message_input"] = ocr_result["text"]
-                    st.toast("Teks gambar telah dimasukkan.")
                 except (OCRUnavailableError, OCRInputError, OCRProcessingError) as exc:
                     st.session_state["ocr_error"] = str(exc)
+
+        cached_ocr_text = str(
+            (st.session_state.get("ocr_result") or {}).get("text", "")
+        ).strip()
+        if cached_ocr_text and not str(
+            st.session_state.get("message_input", "")
+        ).strip():
+            st.session_state["message_input"] = cached_ocr_text
 
         if st.session_state.get("ocr_error"):
             st.error(st.session_state["ocr_error"])
@@ -212,14 +233,21 @@ with text_input_area:
 check = st.button("Semak Mesej", type="primary")
 st.markdown("</div>", unsafe_allow_html=True)
 
-if check and message.strip():
-    st.session_state["analysis_result"] = analyse_text(message)
-    st.session_state["analysis_text"] = message
+ocr_fallback_text = ""
+if uploaded_image is not None:
+    ocr_fallback_text = str(
+        (st.session_state.get("ocr_result") or {}).get("text", "")
+    ).strip()
+message_for_analysis = message.strip() or ocr_fallback_text
+
+if check and message_for_analysis:
+    st.session_state["analysis_result"] = analyse_text(message_for_analysis)
+    st.session_state["analysis_text"] = message_for_analysis
 elif check:
-    st.warning("Masukkan mesej atau muat naik gambar terlebih dahulu.")
+    st.warning("Teks tidak dapat dibaca daripada gambar. Cuba gambar yang lebih jelas atau masukkan mesej secara manual.")
 
 result = None
-if st.session_state.get("analysis_text") == message:
+if st.session_state.get("analysis_text") == message_for_analysis:
     result = st.session_state.get("analysis_result")
 
 if result:

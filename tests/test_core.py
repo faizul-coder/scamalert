@@ -156,6 +156,37 @@ class ScamAlertCoreTests(unittest.TestCase):
         self.assertLessEqual(result["overall_score"], 24)
         self.assertNotIn("permintaan kata laluan/PIN", result["direct_phrases"])
 
+    def test_fake_cash_aid_link_is_very_high(self):
+        message = (
+            "TERKINI: PERMOHONAN BANTUAN TUNAI (SARA FASA 1 2025) KINI "
+            "TELAH DIBUKA UNTUK RAKYAT MALAYSIA SEBANYAK RM150-RM300. "
+            "SEMAK SEKARANG: https://new-malaysia.info-ind.com/bantuan26/ "
+            "Semak Status. Isi Nombor. Code Verification."
+        )
+        result = analyse_text(message)
+        self.assertGreaterEqual(result["overall_score"], 75)
+        self.assertEqual(result["display_level"], "Sangat Tinggi")
+        self.assertEqual(
+            result["threat_category"],
+            "Risiko bantuan tunai palsu atau pancingan data",
+        )
+        self.assertIn("arahan menyemak segera", result["direct_phrases"])
+        self.assertIn("desakan masa", result["indirect_phrases"])
+        self.assertIn("E2 Kecemasan", result["emotions"])
+        self.assertIn("M5", [move["code"] for move in result["moves"]])
+
+    def test_official_cash_aid_notice_does_not_receive_fake_aid_floor(self):
+        message = (
+            "Maklumat Bantuan Tunai: semak status melalui portal rasmi "
+            "https://bantuantunai.hasil.gov.my. Tiada bayaran dan jangan kongsi OTP."
+        )
+        result = analyse_text(message)
+        self.assertLess(result["overall_score"], 50)
+        self.assertNotEqual(
+            result["threat_category"],
+            "Risiko bantuan tunai palsu atau pancingan data",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

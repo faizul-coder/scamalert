@@ -5,7 +5,7 @@ Date: 2026-08-26
 ## Automated result
 
 - Python compile check: passed.
-- Unit/regression test methods: 36/36 passed.
+- Unit/regression test methods: 38/38 passed.
 - Open scam paraphrases: 36/36 reached the high-risk boundary.
 - Control and ordinary messages: 22/22 remained below the high-risk boundary.
 - Unknown neutral messages: 3/3 returned **Bukti Tidak Mencukupi**.
@@ -38,6 +38,8 @@ Date: 2026-08-26
 - Romance and emergency requests.
 - E-wallet and account takeover.
 - Bank/email phishing.
+- Fake cash-aid notices combining a stated amount, urgent application language
+  and a non-government link.
 - Guaranteed investment and crypto return claims.
 - Police, court, bank and tax-authority impersonation.
 - Job/task/top-up scams.
@@ -54,6 +56,10 @@ Date: 2026-08-26
 - Lunch transfer, contracted rent deposit and registered-company invoice remain
   below high.
 - Family, romance and parcel vocabulary alone do not create a high warning.
+- Cash-aid information on an official government portal is not given the
+  fake-aid high-risk floor.
+- The OCR success toast and selected-file pill are hidden from the compact
+  public interface.
 
 ## OCR checks
 

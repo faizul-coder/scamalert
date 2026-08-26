@@ -55,8 +55,9 @@ streamlit.spinner = lambda *args, **kwargs: _Context()
 sys.modules["streamlit"] = streamlit
 importlib.import_module("app")
 rendered_text = "\n".join(rendered_markdown)
-assert '[data-testid="stFileUploaderFile"] { display:none !important; }' in rendered_text
-assert '[data-testid="stFileUploaderDropzone"] button {' not in rendered_text
+assert '[data-testid^="stFileUploaderFile"] {' in rendered_text
+assert 'visibility:hidden !important;' in rendered_text
+assert '[data-testid="stFileUploaderDropzone"] button {' in rendered_text
 result = streamlit.session_state["analysis_result"]
 for required_label in (
     "Skor Risiko",

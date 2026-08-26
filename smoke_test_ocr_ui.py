@@ -63,7 +63,8 @@ streamlit.info = lambda *args, **kwargs: None
 streamlit.warning = lambda *args, **kwargs: None
 streamlit.error = lambda *args, **kwargs: None
 streamlit.success = lambda *args, **kwargs: None
-streamlit.toast = lambda *args, **kwargs: None
+toast_calls = []
+streamlit.toast = lambda *args, **kwargs: toast_calls.append((args, kwargs))
 streamlit.image = lambda *args, **kwargs: None
 streamlit.selectbox = lambda *args, **kwargs: args[1][0]
 streamlit.file_uploader = lambda *args, **kwargs: _Upload()
@@ -82,6 +83,7 @@ importlib.import_module("app")
 visible_text = streamlit.session_state.get("message_input", "")
 assert visible_text == streamlit.session_state["ocr_result"]["text"]
 assert "deposit tambahan" in visible_text.lower()
+assert not toast_calls, "OCR success toast should stay hidden in the compact UI"
 
 from scamalert_core import analyse_text
 

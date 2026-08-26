@@ -75,6 +75,17 @@ app = importlib.import_module("app")
 first_text = streamlit.session_state["message_input"]
 assert first_text and first_text == streamlit.session_state["ocr_result"]["text"]
 
+# A code refresh can preserve the upload key while losing the OCR payload.
+# The same selected image must be processed again instead of leaving the text
+# box empty and claiming that no image was uploaded.
+preserved_key = streamlit.session_state["ocr_upload_key"]
+streamlit.session_state.pop("ocr_result", None)
+streamlit.session_state["message_input"] = ""
+importlib.reload(app)
+assert streamlit.session_state["ocr_upload_key"] == preserved_key
+assert streamlit.session_state["ocr_result"]["text"]
+assert streamlit.session_state["message_input"] == streamlit.session_state["ocr_result"]["text"]
+
 # Replacing the screenshot must automatically replace OCR text from image A;
 # stale text must never be analysed as though it came from image B.
 runtime["upload"] = _screenshot(

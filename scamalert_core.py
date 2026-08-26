@@ -31,6 +31,8 @@ DIRECT_PATTERNS: Dict[str, Tuple[int, str]] = {
     r"\b(?:pindahkan|transfer|send)\s+(?:(?:the|your)\s+)?(?:wang|duit|money|funds|rm)|\b(?:buat bayaran|make (?:a )?payment)\b|\b(?:bayar|pay)\s+rm\b|\b(?:bayar\s+(?:dulu|dahulu)|pay\s+(?:first|now|upfront))\b": (35, "arahan pindahan wang"),
     r"\b(?:daftar|aktifkan akaun|sahkan akaun|register|activate (?:your )?account|verify (?:your )?account)\s+(?:segera|sekarang|hari ini|urgently|now|today|immediately)\b": (20, "arahan segera mendaftar/mengesahkan"),
     r"\b(?:klik|tekan|buka|click|tap|open)\s+(?:(?:the|this)\s+)?(?:pautan|link)(?:\s+(?:ini|di bawah|below))?\b": (22, "arahan menekan pautan"),
+    r"\b(?:semak\s+sekarang|check\s+now)\b": (22, "arahan menyemak segera"),
+    r"\b(?:isi|masukkan|enter|fill(?:\s+in)?)[^.!?;:]{0,35}(?:nombor|number|kod pengesahan|verification code)\b": (30, "permintaan nombor/kod pengesahan"),
     r"\b(?:hantar|berikan|beri|masukkan|kongsi|dedahkan|send|provide|enter|share|reveal)[^.!?;:]{0,40}(?:maklumat bank|butiran bank|kad pengenalan|nombor akaun|maklumat peribadi|bank details|identity card|account number|personal information)\b": (35, "permintaan data peribadi/kewangan"),
     r"\b(?:akaun|account)[^.!?;:]{0,35}(?:dibekukan|disekat|ditutup|frozen|blocked|suspended|closed)\b": (35, "ancaman akaun dibekukan/disekat"),
 }
@@ -54,7 +56,7 @@ INDIRECT_PATTERNS: Dict[str, Tuple[int, str]] = {
 # co-occur (for example parcel + fee + link), not from one keyword alone.
 SCENARIO_PATTERNS: Dict[str, str] = {
     "url": r"(?:https?://|hxxps?://|www\.|\b(?:bit\.ly|tinyurl\.com|t\.me)/\S+|\b[a-z0-9][a-z0-9-]{2,}\.(?:com|net|org|my|xyz|top|site|online|live|link)(?:/\S*)?)",
-    "click_or_login": r"\b(?:klik|tekan|buka|layari|log masuk|login|sign in|click|tap|open|visit|verify|sahkan|kemas kini|update)\b",
+    "click_or_login": r"\b(?:klik|tekan|buka|layari|log masuk|login|sign in|click|tap|open|visit|verify|sahkan|kemas kini|update|semak|check|mohon|apply|isi|fill)\b",
     "money_request": r"\b(?:bayar|bayaran|buat bayaran|pindah(?:kan)?|transfer|bank in|duitnow|top ?up|reload|deposit|caj|yuran|fee|payment|pay|send money|pinjam(?:kan)? duit|bantu[^.!?;:]{0,20}(?:wang|duit))\b",
     "fee": r"\b(?:caj|yuran|fee|tax|cukai|kastam|customs|clearance|insurans|insurance|processing|pengesahan|verification|penghantaran|delivery charge)\b",
     "amount": r"(?:\b(?:rm|myr|usd|sgd)\s*\d|\$\s*\d|\b\d+(?:[.,]\d+)?\s*%|\b\d+\s*(?:kali|x|ganda)\b)",
@@ -74,6 +76,10 @@ SCENARIO_PATTERNS: Dict[str, str] = {
     "romance": r"\b(?:sayang|dear|darling|honey|love you|cinta|kekasih|tunang|fianc[eé]|pasangan|kenal (?:dalam talian|online)|online partner)\b",
     "emergency": r"\b(?:kecemasan|emergency|hospital|kemalangan|accident|sakit|operation|pembedahan|visa|tiket|ticket|terkandas|stranded)\b",
     "authority": r"\b(?:bank|bnm|bank negara|pdrm|polis|mahkamah|lhdn|hasil|mcmc|skmm|kwsp|epf|perkeso|socso|kastam|customs|pegawai|officer|mahkamah|court|kerajaan|government)\b",
+    "benefit": r"\b(?:bantuan(?:\s+tunai)?|sumbangan tunai rahmah|subsidi|geran|cash aid|cash assistance|financial assistance|government aid)\b|\bsara\s+(?:fasa|202\d)\b|\bstr(?:\s+202\d)?\b",
+    "application_action": r"\b(?:permohonan|mohon|semak\s+(?:sekarang|status|kelayakan)|isi\s+(?:nombor|maklumat|borang)|code verification|kod pengesahan|application|apply|check\s+(?:now|status|eligibility)|fill\s+(?:in|out))\b",
+    "government_domain": r"https?://(?:[a-z0-9-]+\.)*gov\.my(?:[/:]|$)",
+    "official_source": r"\b(?:portal|laman|aplikasi|saluran)\s+rasmi\b|\bofficial\s+(?:portal|website|app|application|channel)\b",
     "remote_access": r"\b(?:anydesk|teamviewer|quicksupport|remote access|screen sharing|kongsi skrin|perkongsian skrin)\b",
     "secrecy": r"\b(?:jangan beritahu|jangan maklumkan|rahsia|sulit|secret|confidential|do not tell|don't tell|keep (?:this|it) secret)\b",
     "victim_report": r"\b(?:dia|mereka|admin|ejen|agen|penjual|scammer|penipu|he|she|they|agent|seller)[^.!?]{0,55}(?:minta|meminta|suruh|menyuruh|desak|janji|ask|asked|asking|told|demand|promised)\b|\b(?:saya|kami|i|we)[^.!?]{0,50}(?:diminta|disuruh|didesak|was asked|were asked|was told|were told)\b",
@@ -106,6 +112,41 @@ def analyse_scenarios(text: str) -> dict:
         reasons.extend(evidence)
 
     dangerous_action = flags["money_request"] or flags["sensitive_request"] or flags["click_or_login"]
+    non_official_url = (
+        flags["url"]
+        and not flags["government_domain"]
+        and not flags["official_source"]
+    )
+
+    # Fake-aid phishing commonly combines a public-benefit claim, a cash
+    # amount, an instruction to check/apply and a non-government link. No
+    # single cue is sufficient; the high floor only applies to the complete
+    # combination so genuine notices on official portals stay low.
+    if (
+        flags["benefit"]
+        and flags["application_action"]
+        and flags["amount"]
+        and non_official_url
+    ):
+        elevate(
+            84,
+            "Risiko bantuan tunai palsu atau pancingan data",
+            "Dakwaan bantuan tunai atau kelayakan digunakan untuk menarik perhatian",
+            "Jumlah wang tertentu ditonjolkan",
+            "Pengguna diarahkan menyemak atau mengisi maklumat melalui pautan bukan domain kerajaan",
+        )
+    elif (
+        flags["benefit"]
+        and flags["application_action"]
+        and flags["urgency"]
+        and non_official_url
+    ):
+        elevate(
+            78,
+            "Risiko bantuan tunai palsu atau pancingan data",
+            "Dakwaan bantuan disertai arahan segera",
+            "Pautan yang diberikan bukan domain kerajaan",
+        )
 
     if flags["sensitive_request"] and (
         flags["authority"] or flags["account_threat"] or flags["ewallet"]
@@ -198,7 +239,7 @@ def analyse_scenarios(text: str) -> dict:
             "Bayaran, deposit atau tambah nilai diminta",
         )
 
-    if flags["url"] and flags["click_or_login"] and (
+    if non_official_url and flags["click_or_login"] and (
         flags["account_threat"] or flags["authority"] or flags["parcel"]
         or flags["refund"] or flags["ewallet"]
     ):
@@ -410,7 +451,7 @@ SCAMMOVE_PATTERNS = [
         "code": "M5",
         "name": "Arahan Bayaran/Data",
         "function": "Menggerakkan pengguna untuk membayar, menekan pautan atau menyerahkan data sensitif.",
-        "patterns": [r"\bbayar\b", r"\bpay\b", r"buat bayaran", r"make (?:a )?payment", r"bayaran deposit", r"deposit payment", r"bayaran pengesahan", r"verification (?:payment|fee)", r"caj proses", r"processing fee", r"caj pengesahan", r"verification fee", r"\bdeposit\b", r"\btransfer\b", r"\bpindahan\b", r"\b(?:otp|tac|pin)\b", r"one[ -]time password", r"kata laluan", r"\bpassword\b", r"kad pengenalan", r"identity card", r"nombor akaun", r"account number", r"maklumat bank", r"bank details", r"klik pautan", r"tekan pautan", r"click (?:the |this )?link", r"aktifkan pengeluaran", r"activate (?:the )?withdrawal"],
+        "patterns": [r"\bbayar\b", r"\bpay\b", r"buat bayaran", r"make (?:a )?payment", r"bayaran deposit", r"deposit payment", r"bayaran pengesahan", r"verification (?:payment|fee)", r"caj proses", r"processing fee", r"caj pengesahan", r"verification fee", r"\bdeposit\b", r"\btransfer\b", r"\bpindahan\b", r"\b(?:otp|tac|pin)\b", r"one[ -]time password", r"kata laluan", r"\bpassword\b", r"kad pengenalan", r"identity card", r"nombor akaun", r"account number", r"maklumat bank", r"bank details", r"klik pautan", r"tekan pautan", r"click (?:the |this )?link", r"\bsemak sekarang\b", r"\bcheck now\b", r"\bisi (?:nombor|maklumat|borang)\b", r"\bcode verification\b", r"aktifkan pengeluaran", r"activate (?:the )?withdrawal"],
         "weight": 26,
     },
     {
