@@ -1,4 +1,5 @@
-ScamAlert NICE 2026 Demo 1.3
+ScamAlert NICE 2026 Demo 1.3.1
 Build date: 2026-08-26
 Data schema: 1.1
 Decision schema: 1.3 with explicit abstention and conditional analysis display
+Engine build: 2026-08-26-aid-phishing-v2

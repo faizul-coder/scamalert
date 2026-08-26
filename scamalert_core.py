@@ -20,6 +20,7 @@ from scamalert_similarity import ReferenceRecord, ReferenceSimilarityEngine
 
 
 DATA_PATH = Path(__file__).resolve().parent / "data" / "reference_data.json"
+ENGINE_BUILD = "2026-08-26-aid-phishing-v2"
 
 
 DIRECT_PATTERNS: Dict[str, Tuple[int, str]] = {

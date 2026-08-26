@@ -4,6 +4,7 @@ from pathlib import Path
 
 from scamalert_core import (
     DATA_PATH,
+    ENGINE_BUILD,
     analyse_text,
     get_reference_status,
     load_reference_bundle,
@@ -11,6 +12,9 @@ from scamalert_core import (
 
 
 class ScamAlertCoreTests(unittest.TestCase):
+    def test_engine_build_is_current(self):
+        self.assertEqual(ENGINE_BUILD, "2026-08-26-aid-phishing-v2")
+
     def test_reference_data_is_loaded_with_audited_counts(self):
         status = get_reference_status()
         self.assertTrue(status["loaded"])

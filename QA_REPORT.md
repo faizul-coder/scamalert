@@ -1,11 +1,11 @@
-# ScamAlert Demo 1.3 — QA report
+# ScamAlert Demo 1.3.1 — QA report
 
 Date: 2026-08-26
 
 ## Automated result
 
 - Python compile check: passed.
-- Unit/regression test methods: 38/38 passed.
+- Unit/regression test methods: 39/39 passed.
 - Open scam paraphrases: 36/36 reached the high-risk boundary.
 - Control and ordinary messages: 22/22 remained below the high-risk boundary.
 - Unknown neutral messages: 3/3 returned **Bukti Tidak Mencukupi**.
@@ -58,8 +58,11 @@ Date: 2026-08-26
 - Family, romance and parcel vocabulary alone do not create a high warning.
 - Cash-aid information on an official government portal is not given the
   fake-aid high-risk floor.
-- The OCR success toast and selected-file pill are hidden from the compact
-  public interface.
+- The OCR success toast and selected-file chip list are hidden from the compact
+  public interface. Both the empty and selected uploader states retain one
+  regular-weight Malay upload label only.
+- A build-compatibility check prevents a new `app.py` from silently analysing
+  messages with an obsolete `scamalert_core.py`.
 
 ## OCR checks
 

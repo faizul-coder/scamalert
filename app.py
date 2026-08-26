@@ -2,6 +2,7 @@ import hashlib
 import html
 
 import streamlit as st
+import scamalert_core as core
 
 from scamalert_core import analyse_text, get_reference_status
 from scamalert_ocr import (
@@ -47,6 +48,9 @@ def move_pathway_html(moves):
             f'<span class="move-step">{html.escape(move["name"])}</span>'
         )
     return '<div class="move-pathway">' + "".join(pathway) + "</div>"
+
+
+REQUIRED_ENGINE_BUILD = "2026-08-26-aid-phishing-v2"
 
 
 st.set_page_config(page_title="ScamAlert", page_icon="🛡️", layout="wide")
@@ -118,7 +122,8 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .stButton > button *, .stButton > button p, .stButton > button span { color:#FFFFFF !important; }
 .stButton > button:hover { background:var(--red-dark) !important; color:#FFFFFF !important; }
 [data-testid="stFileUploaderDropzone"] { background:white !important; border:1px dashed #9CA3AF !important; border-radius:12px !important; }
-div[data-testid="stFileUploader"] [data-testid^="stFileUploaderFile"] {
+div[data-testid="stFileUploader"] [data-testid^="stFileUploaderFile"],
+[data-testid="stFileChips"] > :first-child {
     display:none !important;
     visibility:hidden !important;
     width:0 !important;
@@ -128,9 +133,50 @@ div[data-testid="stFileUploader"] [data-testid^="stFileUploaderFile"] {
     padding:0 !important;
     overflow:hidden !important;
 }
-[data-testid="stFileUploaderDropzone"] button { background:white !important; color:var(--ink) !important; border:1px solid #CBD0D8 !important; font-size:0 !important; min-width:240px; }
-[data-testid="stFileUploaderDropzone"] button > * { display:none !important; }
-[data-testid="stFileUploaderDropzone"] button::after { content:"Muat naik gambar di sini"; display:block; font-size:.875rem; line-height:1.5; color:#707887; font-weight:400; }
+[data-testid="stFileUploaderDropzone"] + div {
+    display:none !important;
+    visibility:hidden !important;
+    height:0 !important;
+    min-height:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow:hidden !important;
+}
+[data-testid="stFileChips"] {
+    width:100% !important;
+    justify-content:flex-start !important;
+    align-items:center !important;
+    gap:1rem !important;
+}
+[data-testid="stFileUploaderDropzone"] button[data-testid="stBaseButton-secondary"],
+[data-testid="stFileChips"] button[aria-label="Add files"] {
+    background:white !important;
+    color:var(--ink) !important;
+    border:1px solid #CBD0D8 !important;
+    border-radius:10px !important;
+    font-size:0 !important;
+    min-width:240px !important;
+    min-height:44px !important;
+}
+[data-testid="stFileUploaderDropzone"] button[data-testid="stBaseButton-secondary"] > *,
+[data-testid="stFileChips"] button[aria-label="Add files"] > * { display:none !important; }
+[data-testid="stFileUploaderDropzone"] button[data-testid="stBaseButton-secondary"]::after,
+[data-testid="stFileChips"] button[aria-label="Add files"]::after {
+    content:"Muat naik gambar di sini";
+    display:block;
+    font-size:.875rem;
+    line-height:1.5;
+    color:#707887;
+    font-weight:400;
+}
+[data-testid="stFileChips"]::after {
+    content:"8MB per file • PNG, JPG";
+    color:var(--muted);
+    font-size:.875rem;
+    font-weight:400;
+    line-height:1.5;
+}
+[data-testid="stToast"] { display:none !important; }
 [data-testid="stFileUploaderDropzoneInstructions"] span,
 [data-testid="stFileUploaderDropzoneInstructions"] small,
 [data-testid="stFileUploaderDropzone"] small { color:var(--muted) !important; opacity:1 !important; }
@@ -149,6 +195,7 @@ div[data-baseweb="select"] * { color:var(--ink) !important; }
 
 reference_status = get_reference_status()
 ocr_status = get_ocr_status()
+engine_ready = getattr(core, "ENGINE_BUILD", "") == REQUIRED_ENGINE_BUILD
 
 st.markdown(
     """
@@ -162,6 +209,8 @@ st.markdown(
 
 if not reference_status["loaded"]:
     st.error("Analisis data tidak dapat dimuatkan. Aplikasi menggunakan peraturan bahasa sahaja.")
+if not engine_ready:
+    st.error("Kemas kini aplikasi tidak lengkap. Gantikan fail scamalert_core.py dengan versi baharu sebelum membuat analisis.")
 if not ocr_status["available"]:
     st.warning("OCR tidak tersedia. Anda masih boleh menampal teks secara manual.")
 
@@ -240,7 +289,10 @@ if uploaded_image is not None:
     ).strip()
 message_for_analysis = message.strip() or ocr_fallback_text
 
-if check and message_for_analysis:
+if check and not engine_ready:
+    st.session_state.pop("analysis_result", None)
+    st.session_state.pop("analysis_text", None)
+elif check and message_for_analysis:
     st.session_state["analysis_result"] = analyse_text(message_for_analysis)
     st.session_state["analysis_text"] = message_for_analysis
 elif check:

@@ -55,9 +55,13 @@ streamlit.spinner = lambda *args, **kwargs: _Context()
 sys.modules["streamlit"] = streamlit
 importlib.import_module("app")
 rendered_text = "\n".join(rendered_markdown)
-assert '[data-testid^="stFileUploaderFile"] {' in rendered_text
+assert '[data-testid^="stFileUploaderFile"],' in rendered_text
 assert 'visibility:hidden !important;' in rendered_text
-assert '[data-testid="stFileUploaderDropzone"] button {' in rendered_text
+assert '[data-testid="stFileUploaderDropzone"] + div {' in rendered_text
+assert '[data-testid="stFileChips"] > :first-child {' in rendered_text
+assert 'button[data-testid="stBaseButton-secondary"]' in rendered_text
+assert 'button[aria-label="Add files"]' in rendered_text
+assert '[data-testid="stToast"] { display:none !important; }' in rendered_text
 result = streamlit.session_state["analysis_result"]
 for required_label in (
     "Skor Risiko",

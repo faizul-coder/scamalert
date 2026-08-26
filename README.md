@@ -1,4 +1,4 @@
-# ScamAlert NICE 2026 — Demo 1.3
+# ScamAlert NICE 2026 — Demo 1.3.1
 
 ScamAlert ialah sistem amaran awal penipuan siber berasaskan Kecerdasan Buatan
 (AI) yang menganalisis corak bahasa, manipulasi emosi dan gerakan strategi
@@ -45,6 +45,10 @@ Cloud installs these from `packages.txt`.
 OCR word count, recognition confidence and technical reference matches are not
 displayed in the public interface.
 
+For an urgent deployment from an older public build, follow
+`DEPLOY_HOTFIX_1.3.1.md` and replace both `app.py` and `scamalert_core.py` in the
+repository root. The two files carry a matching engine-build identifier.
+
 ## Runtime evidence
 
 - 6,072 source rows audited.
@@ -70,7 +74,7 @@ python smoke_test_ocr_state.py
 python smoke_test_ocr_ui.py
 ```
 
-The release suite contains 38 automated test methods, including 36 open scam
+The release suite contains 39 automated test methods, including 36 open scam
 paraphrases, 22 control/ordinary messages, abstention checks and OCR tests. The
 suite is a regression check, not a population accuracy estimate.
 
