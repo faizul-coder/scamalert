@@ -118,10 +118,10 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .stButton > button *, .stButton > button p, .stButton > button span { color:#FFFFFF !important; }
 .stButton > button:hover { background:var(--red-dark) !important; color:#FFFFFF !important; }
 [data-testid="stFileUploaderDropzone"] { background:white !important; border:1px dashed #9CA3AF !important; border-radius:12px !important; }
-[data-testid="stFileUploaderDropzone"] button { background:white !important; color:var(--ink) !important; border:1px solid #CBD0D8 !important; }
-[data-testid="stFileUploaderDropzone"] button { font-size:0 !important; min-width:240px; }
-[data-testid="stFileUploaderDropzone"] button > * { display:none !important; }
-[data-testid="stFileUploaderDropzone"] button::after { content:"Muat naik gambar di sini"; display:block; font-size:.875rem; line-height:1.5; color:#707887; font-weight:400; }
+[data-testid="stFileUploaderDropzone"] > span > button[data-testid="stBaseButton-secondary"] { background:white !important; color:var(--ink) !important; border:1px solid #CBD0D8 !important; font-size:0 !important; min-width:240px; }
+[data-testid="stFileUploaderDropzone"] > span > button[data-testid="stBaseButton-secondary"] > * { display:none !important; }
+[data-testid="stFileUploaderDropzone"] > span > button[data-testid="stBaseButton-secondary"]::after { content:"Muat naik gambar di sini"; display:block; font-size:.875rem; line-height:1.5; color:#707887; font-weight:400; }
+[data-testid="stFileUploaderFile"] { display:none !important; }
 [data-testid="stFileUploaderDropzoneInstructions"] span,
 [data-testid="stFileUploaderDropzoneInstructions"] small,
 [data-testid="stFileUploaderDropzone"] small { color:var(--muted) !important; opacity:1 !important; }
@@ -192,7 +192,7 @@ with image_upload_area:
                         ocr_result = extract_text_from_image(image_bytes)
                     st.session_state["ocr_result"] = ocr_result
                     st.session_state["message_input"] = ocr_result["text"]
-                    st.toast("Teks gambar telah dimasukkan.", icon="✓")
+                    st.toast("Teks gambar telah dimasukkan.")
                 except (OCRUnavailableError, OCRInputError, OCRProcessingError) as exc:
                     st.session_state["ocr_error"] = str(exc)
 
