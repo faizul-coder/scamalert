@@ -5,9 +5,9 @@ Date: 2026-08-26
 ## Automated result
 
 - Python compile check: passed.
-- Unit/regression test methods: 34/34 passed.
-- Open scam paraphrases: 34/34 reached the high-risk boundary.
-- Control and ordinary messages: 20/20 remained below the high-risk boundary.
+- Unit/regression test methods: 36/36 passed.
+- Open scam paraphrases: 36/36 reached the high-risk boundary.
+- Control and ordinary messages: 22/22 remained below the high-risk boundary.
 - Unknown neutral messages: 3/3 returned **Bukti Tidak Mencukupi**.
 - Pasted-text UI smoke path: passed.
 - Screenshot → editable text → analysis path: passed.
@@ -39,6 +39,8 @@ Date: 2026-08-26
 - Job/task/top-up scams.
 - Remote-access software requests.
 - Victim reports containing repeated or relayed dangerous requests.
+- Completed victim experiences using past-tense actions such as clicking a
+  link, entering card details, sharing an OTP and reporting lost money.
 
 ## False-escalation checks
 

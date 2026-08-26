@@ -63,8 +63,8 @@ python smoke_test_ocr_state.py
 python smoke_test_ocr_ui.py
 ```
 
-The release suite contains 34 automated test methods, including 34 open scam
-paraphrases, 20 control/ordinary messages, abstention checks and OCR tests. The
+The release suite contains 36 automated test methods, including 36 open scam
+paraphrases, 22 control/ordinary messages, abstention checks and OCR tests. The
 suite is a regression check, not a population accuracy estimate.
 
 ## Important limitation

@@ -84,6 +84,38 @@ class ScamAlertCoreTests(unittest.TestCase):
         for message in messages:
             self.assertGreaterEqual(analyse_text(message)["overall_score"], 68, message)
 
+    def test_completed_victim_experiences_are_high(self):
+        messages = [
+            "Semalam saya menerima mesej kononnya daripada syarikat kurier. Saya "
+            "telah menekan pautan itu, memasukkan nombor kad dan memberikan kod OTP "
+            "sebelum wang RM1,200 hilang daripada akaun.",
+            "Saya sudah ditipu. Saya klik pautan yang dihantar dan beri OTP, kemudian "
+            "duit dalam akaun saya lesap.",
+            "Saya dah memasukkan OTP dan membuat pindahan RM900. Wang itu hilang "
+            "selepas transaksi tersebut.",
+            "Kami telah memasang AnyDesk selepas orang yang mengaku pegawai bank "
+            "menghubungi kami. Wang dalam akaun kemudian dikeluarkan.",
+            "I clicked the courier link, entered my card number and shared the OTP. "
+            "The money was taken from my account.",
+            "I was scammed after I provided my password and transferred USD500. "
+            "The funds are now gone.",
+        ]
+        for message in messages:
+            result = analyse_text(message)
+            self.assertGreaterEqual(result["overall_score"], 75, message)
+            self.assertIn(result["display_level"], {"Tinggi", "Sangat Tinggi"})
+
+    def test_completed_benign_actions_do_not_become_high(self):
+        messages = [
+            "Saya telah membuka portal rasmi universiti dan menghantar tugasan.",
+            "Saya memasukkan nombor kad pada portal rasmi bank untuk membayar bil.",
+            "Saya tidak menekan pautan dan tidak memberikan OTP kepada sesiapa.",
+            "Dalam simulasi keselamatan, tiada wang hilang dan tiada OTP sebenar digunakan.",
+            "I entered my student number on the official university portal.",
+        ]
+        for message in messages:
+            self.assertLess(analyse_text(message)["overall_score"], 50, message)
+
     def test_english_safety_warning_stays_low(self):
         message = (
             "The bank will never ask for your OTP. Do not share your OTP or PIN with "

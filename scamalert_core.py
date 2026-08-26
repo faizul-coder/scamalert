@@ -58,7 +58,7 @@ SCENARIO_PATTERNS: Dict[str, str] = {
     "money_request": r"\b(?:bayar|bayaran|buat bayaran|pindah(?:kan)?|transfer|bank in|duitnow|top ?up|reload|deposit|caj|yuran|fee|payment|pay|send money|pinjam(?:kan)? duit|bantu[^.!?;:]{0,20}(?:wang|duit))\b",
     "fee": r"\b(?:caj|yuran|fee|tax|cukai|kastam|customs|clearance|insurans|insurance|processing|pengesahan|verification|penghantaran|delivery charge)\b",
     "amount": r"(?:\b(?:rm|myr|usd|sgd)\s*\d|\$\s*\d|\b\d+(?:[.,]\d+)?\s*%|\b\d+\s*(?:kali|x|ganda)\b)",
-    "sensitive": r"\b(?:otp|tac|pin|kata laluan|password|nombor akaun|account number|maklumat bank|bank details|kad pengenalan|ic|identity card|cvv|butiran kad|card details)\b",
+    "sensitive": r"\b(?:otp|tac|pin|kata laluan|password|nombor akaun|account number|maklumat bank|bank details|kad pengenalan|ic|identity card|cvv|nombor kad|card number|butiran kad|card details)\b",
     "sensitive_request": r"\b(?:berikan|beri|masukkan|kongsi|hantar|dedahkan|isi|provide|enter|share|send|reveal|submit)[^.!?;:]{0,45}(?:otp|tac|pin|kata laluan|password|nombor akaun|account number|maklumat bank|bank details|kad pengenalan|identity card|cvv|butiran kad|card details)\b|\b(?:otp|tac|pin|kata laluan|password|nombor akaun|account number|maklumat bank|bank details|kad pengenalan|identity card|cvv|butiran kad|card details)[^.!?;:]{0,25}(?:diperlukan|diminta|required|requested)\b",
     "account_threat": r"\b(?:akaun|account|emel|email|mailbox|wallet|dompet)[^.!?;:]{0,45}(?:dibekukan|disekat|ditutup|digantung|ditamatkan|frozen|blocked|suspended|closed|disabled|terminated)\b",
     "consequence": r"\b(?:ditahan|tertahan|dibatalkan|disekat|gagal dihantar|dirampas|denda|saman|tangkap|waran|tindakan mahkamah|tindakan undang-undang|held|on hold|cancelled|blocked|failed delivery|seized|fine|arrest|warrant|court action|legal action)\b",
@@ -77,6 +77,11 @@ SCENARIO_PATTERNS: Dict[str, str] = {
     "remote_access": r"\b(?:anydesk|teamviewer|quicksupport|remote access|screen sharing|kongsi skrin|perkongsian skrin)\b",
     "secrecy": r"\b(?:jangan beritahu|jangan maklumkan|rahsia|sulit|secret|confidential|do not tell|don't tell|keep (?:this|it) secret)\b",
     "victim_report": r"\b(?:dia|mereka|admin|ejen|agen|penjual|scammer|penipu|he|she|they|agent|seller)[^.!?]{0,55}(?:minta|meminta|suruh|menyuruh|desak|janji|ask|asked|asking|told|demand|promised)\b|\b(?:saya|kami|i|we)[^.!?]{0,50}(?:diminta|disuruh|didesak|was asked|were asked|was told|were told)\b",
+    "victim_marker": r"\b(?:saya|kami|i|we)\b[^.!?]{0,70}\b(?:ditipu|terpedaya|terkena tipu|menjadi mangsa|jadi mangsa|scammed|defrauded|fooled|tricked)\b",
+    "victim_action": r"\b(?:saya|kami|i|we)\b[^.!?]{0,90}\b(?:klik|menekan|tekan|membuka|buka|melayari|memasukkan|masukkan|mengisi|isi|memberikan|berikan|beri|berkongsi|kongsi|menghantar|hantar|membayar|bayar|memindahkan|pindahkan|transfer|memasang|pasang|clicked|tapped|opened|visited|entered|submitted|provided|shared|sent|paid|transferred|installed)\b",
+    "loss_outcome": r"\b(?:wang|duit|baki|money|funds|balance)\b[^.!?]{0,55}\b(?:hilang|lesap|dicuri|dikeluarkan|dipindahkan|ditolak|gone|missing|stolen|taken|withdrawn|transferred|deducted|drained)\b|\b(?:rm|myr|usd|sgd|\$)\s*\d[^.!?]{0,35}\b(?:hilang|lesap|dicuri|gone|missing|stolen|taken|withdrawn|deducted|drained)\b|\b(?:kehilangan|kerugian|lost)\b[^.!?]{0,35}\b(?:rm|myr|usd|sgd|wang|duit|money|funds)\b",
+    "loss_denial": r"\b(?:tiada|tidak ada|tak ada|no)\b[^.!?]{0,25}\b(?:wang|duit|money|funds)\b[^.!?]{0,25}\b(?:hilang|lesap|gone|missing|stolen|taken)\b",
+    "impersonation_report": r"\b(?:kononnya|menyamar sebagai|mengaku sebagai|pretending to be|claimed to be|impersonat(?:ed|ing))\b",
 }
 
 
@@ -87,6 +92,8 @@ def analyse_scenarios(text: str) -> dict:
         name: bool(re.search(pattern, text, flags=re.I))
         for name, pattern in SCENARIO_PATTERNS.items()
     }
+    if flags["loss_denial"]:
+        flags["loss_outcome"] = False
     floor = 0
     category = ""
     reasons: List[str] = []
@@ -208,6 +215,27 @@ def analyse_scenarios(text: str) -> dict:
             "Risiko akses jauh kepada peranti",
             "Aplikasi kawalan jauh diminta",
             "Arahan dikaitkan dengan autoriti atau transaksi",
+        )
+
+    retrospective_victim = flags["victim_action"] and (
+        flags["victim_marker"]
+        or flags["loss_outcome"]
+        or flags["impersonation_report"]
+    )
+    retrospective_risk_cue = (
+        flags["sensitive"]
+        or flags["money_request"]
+        or flags["url"]
+        or flags["remote_access"]
+        or flags["amount"]
+        or flags["loss_outcome"]
+    )
+    if retrospective_victim and retrospective_risk_cue:
+        elevate(
+            78,
+            category or "Risiko kehilangan wang atau penyalahgunaan data",
+            "Mesej melaporkan tindakan berisiko yang telah berlaku",
+            "Data sensitif, wang atau kesan kerugian dikenal pasti",
         )
 
     if flags["victim_report"] and (

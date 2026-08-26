@@ -45,6 +45,10 @@ RISK_MESSAGES = [
     "Complete one more merchant task and reload RM200 to unlock all your commission.",
     "Saya sudah transfer semalam tetapi ejen itu masih menyuruh saya bayar caj tambahan.",
     "Mereka minta saya berikan OTP kononnya untuk pulangkan wang yang hilang.",
+    "Saya telah menekan pautan kurier, memasukkan nombor kad dan memberikan OTP "
+    "sebelum wang RM1,200 hilang daripada akaun.",
+    "I clicked the fake delivery link, entered my card number and shared the OTP. "
+    "The money was taken from my account.",
 ]
 
 
@@ -69,6 +73,8 @@ NON_HIGH_MESSAGES = [
     "Kurier mengesahkan bahawa parcel sudah selamat dihantar kepada penerima.",
     "I love you. See you for dinner tonight.",
     "Mak, nombor telefon saya masih sama. Saya cuma mahu bertanya khabar.",
+    "Saya telah membuka portal rasmi universiti dan menghantar tugasan.",
+    "I entered my student number on the official university portal.",
 ]
 
 
