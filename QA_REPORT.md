@@ -10,6 +10,8 @@ Date: 2026-08-26
 - Control and ordinary messages: 22/22 remained below the high-risk boundary.
 - Unknown neutral messages: 3/3 returned **Bukti Tidak Mencukupi**.
 - Pasted-text UI smoke path: passed.
+- Conditional result UI: passed for high-risk, assessed low-risk and
+  insufficient-evidence paths.
 - Screenshot → editable text → analysis path: passed.
 - Replacement screenshot automatically replaced stale OCR text: passed.
 - Streamlit runtime component test: no exceptions; one text area, one primary
@@ -21,10 +23,12 @@ Date: 2026-08-26
   placeholder.
 - Message placeholder and uploader label are both explicitly set to 0.875 rem,
   regular weight and 1.5 line height.
-- Decision explanation, reason list, technical expanders and safety footer are
-  absent from the public result.
-- Result runtime test: screening state, category and **Cadangan Tindakan**
-  rendered without exceptions.
+- Assessed results display risk score, explicit phrases, implicit phrases,
+  emotional triggers, move analysis, scam type and **Cadangan Tindakan**.
+- Insufficient-evidence results display only a concise notice and
+  **Cadangan Tindakan**, without score, phrase, emotion, move or scam-type
+  panels.
+- Decision reason list, technical expanders and safety footer remain absent.
 
 ## Scenario coverage exercised
 

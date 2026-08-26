@@ -7,11 +7,13 @@ menekan pautan atau membuat transaksi kewangan.
 
 Version 1.3 is the prospect-facing release. It keeps the existing local OCR,
 deduplicated reference data and explainable linguistic analysis, while making
-two major corrections:
+three major corrections:
 
-1. the public interface now presents only the screening result, category and
-   proposed action; and
-2. the detector covers multi-cue paraphrases for parcel, refund, e-wallet,
+1. assessed messages display the risk score, explicit and implicit phrases,
+   emotional triggers, move analysis, scam type and proposed action;
+2. messages with insufficient evidence display only a concise insufficiency
+   notice and proposed action; and
+3. the detector covers multi-cue paraphrases for parcel, refund, e-wallet,
    family impersonation, romance, investment, authority, phishing, remote
    access and task/job scams.
 
@@ -34,10 +36,14 @@ Cloud installs these from `packages.txt`.
 2. A new screenshot is read automatically and its text appears in the editable
    message field.
 3. Review the text and click **Semak Mesej**.
-4. Read the screening level, category when available and **Cadangan Tindakan**.
+4. For an assessed message, read the score, screening level, scam type,
+   explicit/implicit phrases, emotional triggers, move analysis and
+   **Cadangan Tindakan**.
+5. For insufficient evidence, only the insufficiency notice and
+   **Cadangan Tindakan** are shown.
 
-OCR word count, recognition confidence, internal scores and reference matches
-are not displayed in the public interface.
+OCR word count, recognition confidence and technical reference matches are not
+displayed in the public interface.
 
 ## Runtime evidence
 
@@ -59,6 +65,7 @@ message.
 ```bash
 python -m unittest discover -s tests -v
 python smoke_test.py
+python smoke_test_conditional_ui.py
 python smoke_test_ocr_state.py
 python smoke_test_ocr_ui.py
 ```

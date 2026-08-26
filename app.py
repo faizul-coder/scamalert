@@ -13,6 +13,42 @@ from scamalert_ocr import (
 )
 
 
+def risk_meter(score):
+    """Render a compact, accessible 0-100 screening index."""
+    value = max(0, min(100, int(score)))
+    return f"""
+<div class="meter-wrap" aria-label="Skor risiko {value} daripada 100">
+  <div class="meter-score">{value}<span>/100</span></div>
+  <div class="meter-zones">
+    <span class="meter-pointer" style="left:{value}%"></span>
+  </div>
+  <div class="meter-scale"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+</div>
+"""
+
+
+def tag_html(items, css_class, empty_text):
+    values = [str(item) for item in items if item] if items else [empty_text]
+    tags = "".join(
+        f'<span class="tag {css_class}">{html.escape(value)}</span>'
+        for value in values
+    )
+    return f'<div class="tag-wrap">{tags}</div>'
+
+
+def move_pathway_html(moves):
+    if not moves:
+        return '<div class="empty-analysis">Tiada gerakan penipuan yang ketara dikesan.</div>'
+    pathway = []
+    for index, move in enumerate(moves):
+        if index:
+            pathway.append('<span class="move-arrow">→</span>')
+        pathway.append(
+            f'<span class="move-step">{html.escape(move["name"])}</span>'
+        )
+    return '<div class="move-pathway">' + "".join(pathway) + "</div>"
+
+
 st.set_page_config(page_title="ScamAlert", page_icon="🛡️", layout="wide")
 
 st.markdown(
@@ -52,6 +88,32 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .result-category { display:inline-block; margin-top:.35rem; padding:.38rem .62rem; border-radius:9px; background:rgba(255,255,255,.68); border:1px solid rgba(17,24,39,.10); font-weight:750; }
 .action-box { background:#111827; color:white; border-radius:14px; padding:1rem 1.08rem; font-size:1rem; line-height:1.5; margin-top:.4rem; }
 .action-box strong, .action-box span { color:white !important; }
+.result-category-label { color:var(--muted); font-size:.82rem; font-weight:800; margin-top:.7rem; }
+.analysis-section { border-top:1px solid var(--line); padding-top:1.25rem; margin-top:1.35rem; }
+.analysis-section h3 { margin-top:0; }
+.score-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:1rem 1.1rem; }
+.meter-wrap { margin-top:.3rem; }
+.meter-score { font-size:1.9rem; font-weight:900; line-height:1.1; margin-bottom:.6rem; }
+.meter-score span { color:var(--muted); font-size:1rem; font-weight:650; }
+.meter-zones { position:relative; width:100%; height:10px; border-radius:999px; background:linear-gradient(90deg,#15803D 0%,#15803D 25%,#D48B11 25%,#D48B11 50%,#DC2626 50%,#DC2626 75%,#8B1E16 75%,#8B1E16 100%); }
+.meter-pointer { position:absolute; top:-5px; width:7px; height:20px; border-radius:999px; background:#111827; box-shadow:0 0 0 2px #FFFFFF; transform:translateX(-50%); }
+.meter-scale { display:flex; justify-content:space-between; color:var(--muted); font-size:.72rem; margin-top:.35rem; }
+.analysis-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; }
+.analysis-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:1rem; min-height:120px; }
+.analysis-title { font-size:1rem; font-weight:850; margin-bottom:.25rem; }
+.analysis-caption { color:var(--muted); font-size:.86rem; line-height:1.45; }
+.tag-wrap { display:flex; flex-wrap:wrap; gap:.45rem; margin-top:.7rem; }
+.tag { display:inline-block; padding:.42rem .62rem; border-radius:10px; font-size:.88rem; font-weight:650; border:1px solid var(--line); }
+.tag-red { background:var(--red-soft); border-color:#FECACA; }
+.tag-amber { background:var(--amber-soft); border-color:#F5D394; }
+.tag-blue { background:#EFF6FF; border-color:#BFDBFE; }
+.move-pathway { display:flex; flex-wrap:wrap; align-items:center; gap:.45rem; margin:.7rem 0; }
+.move-step { background:#FFFFFF; border:1px solid #FECACA; color:var(--red-dark); border-radius:11px; padding:.45rem .62rem; font-size:.88rem; font-weight:750; }
+.move-arrow { color:var(--muted); font-weight:900; }
+.move-box { border-left:4px solid var(--red); background:#FFFFFF; border-radius:12px; padding:.75rem .85rem; margin:.55rem 0; border-top:1px solid var(--line); border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
+.move-name { font-weight:850; margin-bottom:.2rem; }
+.move-function, .empty-analysis { color:var(--muted); font-size:.9rem; line-height:1.45; }
+.insufficient-message { color:var(--muted); line-height:1.55; margin-top:.35rem; }
 .stTextArea textarea { background:white !important; color:var(--ink) !important; border:1px solid #AEB5BF !important; border-radius:12px !important; min-height:170px !important; font-size:.875rem !important; font-weight:400 !important; line-height:1.5 !important; }
 .stTextArea textarea::placeholder { color:#707887 !important; opacity:1 !important; font-size:.875rem !important; font-weight:400 !important; line-height:1.5 !important; }
 .stButton > button { background:var(--red) !important; color:#FFFFFF !important; border:none !important; border-radius:11px !important; font-weight:850 !important; padding:.72rem 1.25rem !important; }
@@ -70,6 +132,7 @@ div[data-baseweb="select"] * { color:var(--ink) !important; }
 @media (max-width: 700px) {
     .title-main { font-size:2.45rem; }
     .block-container { padding-left:1rem; padding-right:1rem; }
+    .analysis-grid { grid-template-columns:1fr; }
 }
 </style>
 """,
@@ -163,21 +226,101 @@ if st.session_state.get("analysis_text") == message:
 
 if result:
     display_level = result["display_level"]
-    category = result["threat_category"]
-    category_html = ""
-    if category != "Tiada kategori ancaman yang jelas":
-        category_html = f'<div class="result-category">{html.escape(category)}</div>'
+    decision_state = result["decision_state"]
 
-    st.markdown(
-        f"""
-<div class="result-card {html.escape(result['decision_state'])}">
+    if decision_state == "insufficient":
+        st.markdown(
+            f"""
+<div class="result-card insufficient">
   <div class="result-label">Keputusan saringan</div>
-  <div class="result-level">{html.escape(display_level)}</div>
-  {category_html}
+  <div class="result-level">Mesej Tidak Mencukupi</div>
+  <div class="insufficient-message">Mesej ini terlalu pendek atau tidak mempunyai konteks yang mencukupi untuk diberikan skor risiko.</div>
 </div>
 """,
-        unsafe_allow_html=True,
-    )
+            unsafe_allow_html=True,
+        )
+    else:
+        category = result["threat_category"]
+        st.markdown(
+            f"""
+<div class="result-card {html.escape(decision_state)}">
+  <div class="result-label">Keputusan saringan</div>
+  <div class="result-level">{html.escape(display_level)}</div>
+  <div class="result-category-label">Jenis Penipuan</div>
+  <div class="result-category">{html.escape(category)}</div>
+</div>
+""",
+            unsafe_allow_html=True,
+        )
+
+        st.markdown('<div class="analysis-section">', unsafe_allow_html=True)
+        st.markdown("### Skor Risiko")
+        st.markdown(
+            f'<div class="score-card">{risk_meter(result["overall_score"])}</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        direct_tags = tag_html(
+            result.get("direct_phrases", []),
+            "tag-red",
+            "Tiada frasa tersurat yang ketara dikesan",
+        )
+        indirect_tags = tag_html(
+            result.get("indirect_phrases", []),
+            "tag-amber",
+            "Tiada frasa tersirat yang ketara dikesan",
+        )
+        emotion_tags = tag_html(
+            result.get("emotion_phrases", []),
+            "tag-blue",
+            "Tiada pencetus emosi yang ketara dikesan",
+        )
+        st.markdown(
+            f"""
+<div class="analysis-section">
+  <h3>Analisis Bahasa</h3>
+  <div class="analysis-grid">
+    <div class="analysis-card">
+      <div class="analysis-title">Frasa Tersurat</div>
+      <div class="analysis-caption">Arahan atau permintaan yang dinyatakan secara langsung.</div>
+      {direct_tags}
+    </div>
+    <div class="analysis-card">
+      <div class="analysis-title">Frasa Tersirat</div>
+      <div class="analysis-caption">Tekanan, ancaman atau pujukan yang dibina secara tidak langsung.</div>
+      {indirect_tags}
+    </div>
+    <div class="analysis-card">
+      <div class="analysis-title">Pencetus Emosi</div>
+      <div class="analysis-caption">Emosi yang digunakan untuk mempengaruhi tindakan penerima.</div>
+      {emotion_tags}
+    </div>
+    <div class="analysis-card">
+      <div class="analysis-title">Jenis Lakuan Pertuturan</div>
+      <div class="analysis-caption">{html.escape(result.get("speech_type", "Tiada pola lakuan yang ketara"))}</div>
+    </div>
+  </div>
+</div>
+""",
+            unsafe_allow_html=True,
+        )
+
+        moves = result.get("moves", [])
+        st.markdown('<div class="analysis-section">', unsafe_allow_html=True)
+        st.markdown("### Analisis Gerakan")
+        st.markdown(move_pathway_html(moves), unsafe_allow_html=True)
+        for move in moves:
+            st.markdown(
+                f"""
+<div class="move-box">
+  <div class="move-name">{html.escape(move["code"])} · {html.escape(move["name"])}</div>
+  <div class="move-function">{html.escape(move["function"])}</div>
+</div>
+""",
+                unsafe_allow_html=True,
+            )
+        st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("### Cadangan Tindakan")
     st.markdown(

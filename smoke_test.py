@@ -56,7 +56,17 @@ sys.modules["streamlit"] = streamlit
 importlib.import_module("app")
 rendered_text = "\n".join(rendered_markdown)
 result = streamlit.session_state["analysis_result"]
-assert "Cadangan Tindakan" in rendered_text
+for required_label in (
+    "Skor Risiko",
+    "Frasa Tersurat",
+    "Frasa Tersirat",
+    "Pencetus Emosi",
+    "Analisis Gerakan",
+    "Jenis Penipuan",
+    "Cadangan Tindakan",
+):
+    assert required_label in rendered_text, required_label
+assert result["threat_category"] in rendered_text
 assert result["decision_summary"] not in rendered_text
 assert result["risk_reasons"][0] not in rendered_text
 for removed_label in (
