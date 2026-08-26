@@ -67,6 +67,8 @@ for required_label in (
 ):
     assert required_label in rendered_text, required_label
 assert result["threat_category"] in rendered_text
+assert "Jenis Lakuan Pertuturan" not in rendered_text
+assert rendered_text.count("Analisis Gerakan") == 1
 assert result["decision_summary"] not in rendered_text
 assert result["risk_reasons"][0] not in rendered_text
 for removed_label in (

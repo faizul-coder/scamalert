@@ -73,6 +73,8 @@ low_text, low_result = render_for(
 )
 assert low_result["decision_state"] == "low"
 assert "Cadangan Tindakan" in low_text
+assert "Jenis Lakuan Pertuturan" not in low_text
+assert low_text.count("Analisis Gerakan") == 1
 for label in DETAIL_LABELS:
     assert label in low_text, label
 

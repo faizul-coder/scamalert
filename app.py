@@ -110,9 +110,7 @@ h1, h2, h3, h4, p, label, div, span { color: var(--ink); }
 .move-pathway { display:flex; flex-wrap:wrap; align-items:center; gap:.45rem; margin:.7rem 0; }
 .move-step { background:#FFFFFF; border:1px solid #FECACA; color:var(--red-dark); border-radius:11px; padding:.45rem .62rem; font-size:.88rem; font-weight:750; }
 .move-arrow { color:var(--muted); font-weight:900; }
-.move-box { border-left:4px solid var(--red); background:#FFFFFF; border-radius:12px; padding:.75rem .85rem; margin:.55rem 0; border-top:1px solid var(--line); border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
-.move-name { font-weight:850; margin-bottom:.2rem; }
-.move-function, .empty-analysis { color:var(--muted); font-size:.9rem; line-height:1.45; }
+.empty-analysis { color:var(--muted); font-size:.9rem; line-height:1.45; }
 .insufficient-message { color:var(--muted); line-height:1.55; margin-top:.35rem; }
 .stTextArea textarea { background:white !important; color:var(--ink) !important; border:1px solid #AEB5BF !important; border-radius:12px !important; min-height:170px !important; font-size:.875rem !important; font-weight:400 !important; line-height:1.5 !important; }
 .stTextArea textarea::placeholder { color:#707887 !important; opacity:1 !important; font-size:.875rem !important; font-weight:400 !important; line-height:1.5 !important; }
@@ -276,6 +274,8 @@ if result:
             "tag-blue",
             "Tiada pencetus emosi yang ketara dikesan",
         )
+        moves = result.get("moves", [])
+        move_summary = move_pathway_html(moves)
         st.markdown(
             f"""
 <div class="analysis-section">
@@ -297,30 +297,15 @@ if result:
       {emotion_tags}
     </div>
     <div class="analysis-card">
-      <div class="analysis-title">Jenis Lakuan Pertuturan</div>
-      <div class="analysis-caption">{html.escape(result.get("speech_type", "Tiada pola lakuan yang ketara"))}</div>
+      <div class="analysis-title">Analisis Gerakan</div>
+      <div class="analysis-caption">Urutan strategi yang digunakan untuk mendorong penerima bertindak.</div>
+      {move_summary}
     </div>
   </div>
 </div>
 """,
             unsafe_allow_html=True,
         )
-
-        moves = result.get("moves", [])
-        st.markdown('<div class="analysis-section">', unsafe_allow_html=True)
-        st.markdown("### Analisis Gerakan")
-        st.markdown(move_pathway_html(moves), unsafe_allow_html=True)
-        for move in moves:
-            st.markdown(
-                f"""
-<div class="move-box">
-  <div class="move-name">{html.escape(move["code"])} · {html.escape(move["name"])}</div>
-  <div class="move-function">{html.escape(move["function"])}</div>
-</div>
-""",
-                unsafe_allow_html=True,
-            )
-        st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("### Cadangan Tindakan")
     st.markdown(
